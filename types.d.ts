@@ -1,25 +1,40 @@
 type User = {
   _id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
   email: string;
-  password?: string;
-  phone_number: string;
-  brand: string;
-  address: {
+  picture?: string;
+  last_name: string;
+  first_name: string;
+  is_suspended?: boolean;
+  phone_number?: string;
+  address?: {
     address_line1: string;
     address_line2: string;
     city: string;
     postal_code: string;
   };
-  subscription: Subscription;
-  roles: string[];
-  active: boolean;
   createdAt: Date;
   updatedAt: Date;
   __v: number;
 };
+
+type Users = {
+  _id: string;
+  email: string;
+  picture?: string;
+  last_name: string;
+  first_name: string;
+  is_suspended?: boolean;
+  phone_number?: string;
+  address?: {
+    address_line1: string;
+    address_line2: string;
+    city: string;
+    postal_code: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}[];
 
 type Subscription = {
   plan: string;
@@ -33,6 +48,7 @@ type Subscription = {
 type Product = {
   _id: string;
   name: string;
+  image_url: string;
   description: string;
   price: number;
   ratings: number;
@@ -40,7 +56,6 @@ type Product = {
   brand: string;
   stock: number;
   category: Category;
-  image_url: string;
   createdAt: Date;
   updatedAt: Date;
   __v: number;
@@ -85,9 +100,51 @@ type OrderedItem = {
   __v: number;
 };
 
+type Cart = {
+  _id: string;
+  user: User;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+};
+
+type CartItem = {
+  _id: string;
+  name: string;
+  image_url: string;
+  price: number;
+  product: Product;
+  quantity: number;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+};
+
 type Address = {
   address_line1: string;
   address_line2: string;
   city: string;
   postal_code: string;
 };
+
+type UsersArray =
+  | {
+      id?: string;
+      provided_id?: string;
+      email?: string;
+      username?: string;
+      last_name?: string;
+      first_name?: string;
+      is_suspended?: boolean;
+      picture?: string;
+      total_sign_ins?: number | null;
+      failed_sign_ins?: number | null;
+      last_signed_in?: string | null;
+      created_on?: string | null;
+      organizations?: Array<string>;
+      identities?: Array<{
+        type?: string;
+        identity?: string;
+      }>;
+    }[]
+  | undefined;

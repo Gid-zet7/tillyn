@@ -1,0 +1,118 @@
+"use client";
+import * as React from "react";
+import { useDispatch, UseDispatch } from "react-redux";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Button } from "../ui/button";
+import { getProductByCategory } from "@/lib/actions";
+import { addToCart } from "@/redux/slices/cartSlice";
+import { useRouter } from "next/navigation";
+import { SkeletonCard } from "../skeleton/Skeleton";
+
+export function FeaturedProducts() {
+  const [featuredProducts, setFeaturedProducts] = React.useState<Product[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isError, setIsError] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setIsLoading(true);
+        const featuredProductsData = await getProductByCategory("Featured");
+        console.log(featuredProductsData);
+        setFeaturedProducts(featuredProductsData);
+      } catch (error) {
+        console.log(error);
+        setIsError(true);
+        setErrorMessage("Failed to fetch");
+      } finally {
+        setIsLoading(false);
+        setIsSuccess(true);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  let content;
+  if (isLoading)
+    content = (
+      <section className="flex flex-col items-center justify-center">
+        <SkeletonCard />
+      </section>
+    );
+
+  if (isError)
+    content = (
+      <section className="flex flex-col items-center justify-center">
+        {errorMessage}
+      </section>
+    );
+
+  if (isSuccess) {
+    content = (
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full max-w-3xl md:max-w-7xl"
+      >
+        <CarouselContent>
+          {featuredProducts?.map((item: Product, index: number) => (
+            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+              <div className="p-1">
+                <Card>
+                  <CardContent
+                    style={{ backgroundImage: `url(${item.image_url})` }}
+                    className={`relative bg-no-repeat bg-cover bg-center md:w-full h-1/2 md:h-full cursor-pointer flex aspect-square items-center justify-center rounded-lg p-6 group`}
+                  >
+                    {/* Overlay container for hover content */}
+                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-100 flex flex-col items-center justify-center transition-opacity duration-300 rounded-lg">
+                      {/* Display price */}
+                      <p className="text-white text-lg font-semibold mb-2">
+                        ${item.price}
+                      </p>
+
+                      {/* Add to Cart button */}
+                      <div className=" flex flex-col gap-2">
+                        <Button
+                          className="bg-white text-black px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200"
+                          onClick={() => dispatch(addToCart(item))}
+                        >
+                          Add to Cart
+                        </Button>
+                        <Button
+                          className="bg-black/50 text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors duration-200"
+                          onClick={() =>
+                            router.push(
+                              `http://localhost:3000/products/${item._id}`
+                            )
+                          }
+                        >
+                          View Product
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="hidden md:block" />
+        <CarouselNext className="hidden md:block" />
+      </Carousel>
+    );
+  }
+
+  return <>{content}</>;
+}

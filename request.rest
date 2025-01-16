@@ -1,0 +1,265 @@
+
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "",
+    "password": ""
+}
+
+###
+GET http://localhost:3000/api/users
+Authorization: Bearer
+###
+GET http://localhost:3000/api/users/66f1f10d362858eb26e4b5cc
+
+###
+POST http://localhost:3000/api/users/new
+Content-Type: application/json
+
+{
+    "username": "demo_user2",
+    "first_name": "Demo first name",
+    "last_name": "Demo last name",
+    "email": "demo@gmail.com",
+    "password": "123456789",
+    "phone_number": "0500000000",
+    "address": {"address_line1": "Gz-xxx-xxxx",  "address_line2": "", "city": "Accra", "postal_code": "0023"},
+    "roles": ["User"],
+    "active": true
+}
+
+###
+PATCH http://localhost:3000/api/users/update
+Content-Type: application/json
+
+{
+    "id": "66b7b0ff753992e5653550d7",
+    "username": "thrifTillyAdmin",
+    "first_name": "Thriftilly",
+    "last_name": "Admin",
+    "email": "thriftillyAdmin@gmail.com",
+    "password": "",
+    "roles": ["User", "Admin"]
+}
+
+###
+DELETE http://localhost:3000/api/users/delete
+Content-Type: application/json
+
+{
+    "id": "66b7b0ff753992e5653550d5"
+
+}
+
+###
+GET http://localhost:3000/api/category
+
+
+###
+POST http://localhost:3000/api/category/new
+Content-Type: application/json
+
+{
+    "name": "Accessories",
+    "description": "This is accessories category"
+}
+
+###
+PATCH http://localhost:3000/api/category/update
+Content-Type: application/json
+
+{
+    "id": "66bc4282dce95b85aa70735d",
+    "name": "Premium Men Shirts",
+    "description": "This is premium men shirts collection"
+}
+
+###
+GET http://localhost:3000/api/products
+
+###
+GET http://localhost:3000/api/products/66fd5ea575e495a9bbc278d5
+
+
+###
+POST http://localhost:3000/api/products/new
+Content-Type: application/json
+
+{
+    "name": "Women dress",
+    "description": "This is a gibberish description. lorem dndn djjdc vchwhjwek bbchch jvwcv hwvehvb vcwsnc cvhew v vwbcvv cvvwcv bwvcc gvec vwjchb hvwc bwcvvhv vwh vhwve vhveb bvcnw",
+    "price": 30,
+    "ratings": 4,
+    "stock": 12,
+    "category": "Women",
+    "image_url": "/twenty.jpeg"
+}
+
+###
+POST http://localhost:3000/api/products/new
+Content-Type: application/json
+
+{
+    "name": "Crewneck sweater",
+    "description": "The Omar Sweater stands out with its space-dyed linen-cotton blend yarn. Each yarn is individually tie-dyed, creating a subtle yet captivating multi-color effect that makes this crewneck a unique addition to any ensemble. Featuring a jersey curl detail at the neck for refined sophistication",
+    "price": 80,
+    "ratings": 4.5,
+    "stock": 10,
+    "category": "Women",
+    "image_url": "/edoardo-cuoghi.jpg"
+}
+
+###
+PATCH http://localhost:3000/api/products/update
+Content-Type: application/json
+
+{
+    "id": "66bc47fcdce95b85aa7073b3",
+    "image_url": "/sixteen.jpeg"
+   
+}
+
+###
+DELETE  http://localhost:3000/api/products/delete
+Content-Type: application/json
+
+{
+    "id": "66bc428bdce95b85aa707361"
+}
+
+###
+GET http://localhost:3000/api/cart-item/your-item?id=66bb7c65506ecdd7977ab05e
+
+###
+GET http://localhost:3000/api/cart
+
+###
+GET http://localhost:3000/api/cart-item
+
+
+###
+POST http://localhost:3000/api/add-to-cart
+Content-Type: application/json
+
+{
+    "userId": "66bb7c65506ecdd7977ab05e",
+    "productId": "66b89d044d24ea279614ae39",
+    "quantity": 1
+
+}
+
+###
+POST http://localhost:3000/api/order/new
+Content-Type: application/json
+
+{
+    "userId": "66b7b0ff753992e5653550d7"
+
+}
+
+###
+DELETE  http://localhost:3000/api/managers/delete
+Content-Type: application/json
+
+{
+    "id": "65911e5e63eea24b065d8855"
+
+}
+
+###
+GET http://localhost:3000/api/order
+
+###
+POST http://localhost:3000/api/meeting/new
+Content-Type: application/json
+
+{
+    "title": "Meeting_02",
+    "date": "1-1-2024",
+    "startTime": "1pm",
+    "endTime": "2pm",
+    "participants": ["Demo_user"],
+    "agenda": "Improving performance"
+
+}
+
+###
+PATCH http://localhost:3000/api/meeting/update
+Content-Type: application/json
+
+{
+    "id": "65912f7c63eea24b065d88a4",
+    "title": "Meeting_01",
+    "date": "1-1-2024",
+    "startTime": "1pm",
+    "endTime": "3pm",
+    "participants": ["Demo_user"],
+    "agenda": "Failed to hit target"
+
+}
+
+###
+GET http://localhost:3000/api/order
+Authorization: Bearer 
+
+
+###
+DELETE  http://localhost:3000/api/cart-item/clear
+Content-Type: application/json
+
+{
+    "id": "66b7b0ff753992e5653550d7"
+}
+
+###
+GET http://localhost:3000/api/search?query=blue
+
+###
+POST http://localhost:3000/api/mail/mailgun
+Content-Type: application/json
+
+{
+    "emailTo": "adontenggideon57@gmail.com",
+    "subject": "New Order Placed",
+    "startTime": "1pm",
+    "htmlContent": "Test"
+    
+
+}
+
+###
+POST http://localhost:3000/api/paystack
+Content-Type: application/json
+
+{
+    "email": "adontenggideon57@gmail.com",
+    "amount": 29.99
+    
+
+}
+
+
+###
+POST http://localhost:3000/api/paystack/verify
+Content-Type: application/json
+
+{
+    "reference": "69en1oht8p" 
+}
+
+###
+POST http://localhost:3000/api/register-seller/new
+Content-Type: application/json
+
+{
+    "username": "testing",
+    "first_name": "test",
+    "last_name": "ing",
+    "email": "test@gmail.com",
+    "password": "testing",
+    "phone_number": "0500000000",
+    "brand": "testingBrandd",
+    "address": {"address_line1": "Gz-xxx-xxxx",  "address_line2": "", "city": "Accra", "postal_code": "0023"},
+    "active": true
+}

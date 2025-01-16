@@ -2,20 +2,299 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+    --primary: 220.9 39.3% 11%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 71.4% 4.1%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 210 20% 98%;
+    --primary-foreground: 220.9 39.3% 11%;
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 216 12.2% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.blur-nav {
+  background-color: hsla(0, 0%, 100%, 0.8);
+  backdrop-filter: blur(10px);
+}
+.clamp-text {
+  font-size: clamp(3rem, 5vw, 9rem);
+  font-weight: 700;
+}
+
+.clamp-text_count {
+  font-size: clamp(2rem, 3vw, 4rem);
+  font-weight: 700;
+}
+
+@media (max-width: 350px) {
+  .custom-image_width {
+    width: 35%;
+  }
+}
+
+@media (min-width: 350px) and (max-width: 526px) {
+  .custom-width {
+    max-width: 32rem;
+  }
+
+  .custom-image_width {
+    width: 40%;
+  }
+}
+
+@media (min-width: 526px) and (max-width: 768px) {
+  .custom-width {
+    max-width: 40rem;
+  }
+
+  .custom-image_width {
+    width: 30%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .custom-width {
+    max-width: 50rem;
+  }
+
+  .custom-image_width {
+    width: 30%;
+  }
+
+  .custom-grid-rows {
+    grid-template-rows: repeat(2, 20rem);
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1224px) {
+  .custom-width {
+    max-width: 60rem;
+  }
+
+  .custom-image_width {
+    width: 40%;
+  }
+}
+
+@media (min-width: 1224px) {
+  .custom-width {
+    max-width: 100rem;
+  }
+
+  /* .custom-image_width {
+    width: 40%;
+  } */
+}
+
+.container {
+  margin-top: 5rem;
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+.circTxt1,
+.circTxt2 {
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.circTxt1 {
+  animation: moveAround 5s ease-in-out infinite;
+}
+
+.circTxt1 p {
+  color: #000;
+  font-size: 2em;
+  margin: 0;
+}
+
+.circTxt1 p span {
+  animation: moveAround1 5s ease-in-out infinite;
+}
+
+.circTxt2 p {
+  color: #000;
+  font-size: 0.8em;
+  margin: 0;
+}
+
+@keyframes moveAround {
+  0% {
+    transform: rotate(-2deg);
+  }
+  25% {
+    transform: rotate(2deg);
+  }
+  50% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(-2deg);
+  }
+}
+
+/* PARALLAX TEXT */
+
+.parallax {
+  overflow: hidden;
+  letter-spacing: -2px;
+  line-height: 0.8;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.parallax .scroller {
+  text-transform: uppercase;
+  font-size: 8rem;
+  font-weight: 750;
+  line-height: 1.1;
+  display: flex;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.parallax span {
+  display: block;
+  margin-right: 30px;
+}
+
+/* END OF PARALLAX TEXT */
+
+@media (max-width: 768px) {
+  .parallax .scroller {
+    font-size: 3.5rem;
+  }
+}
+
+/* Small screens (phones, 480px and up) */
+@media (max-width: 480px) {
+  .parallax .scroller {
+    font-size: 3rem;
+  }
+}
+
+.hover_translate {
+  transition: transform 500ms ease-in-out;
+}
+
+.hover_translate:hover {
+  transform: translateY(-5px);
+}
+
+/* Initial styles for the hamburger lines */
+.hamburger div {
+  width: 25px;
+  height: 3.5px;
+  background-color: black;
+  margin: 5px 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.hamburger div:nth-child(2) {
+  width: 18px;
+}
+
+/* Animation for when the button is toggled */
+.hamburger.toggle-btn div:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger.toggle-btn div:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.toggle-btn div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
 }
