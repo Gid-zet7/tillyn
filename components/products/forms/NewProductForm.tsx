@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { getAllCategories } from "@/lib/actions";
 import Image from "next/image";
 import { useAddNewProductMutation } from "@/redux/slices/productsApiSlice";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function NewProductForm() {
   const [addNewProduct, { isLoading, isSuccess, isError, error }] =
@@ -247,14 +249,23 @@ export default function NewProductForm() {
             </div>
             <div>
               <div>
-                <div className="flex flex-col items-center justify-center p-5">
+                <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
+                  <Label htmlFor="picture">Picture</Label>
+                  <Input
+                    id="picture"
+                    type="file"
+                    onChange={fileSelected}
+                    accept="image/*"
+                  />
+                </div>
+                {/* <div className="flex flex-col items-center justify-center p-5">
                   <input
                     onChange={fileSelected}
                     id="files"
                     type="file"
                     accept="image/*"
                   ></input>
-                </div>
+                </div> */}
               </div>
             </div>
 

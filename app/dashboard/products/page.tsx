@@ -42,7 +42,7 @@ export default function ProductsPage() {
   }
   return (
     <main>
-      <div className="flex">{content}</div>
+      <div className="flex flex-wrap px-8">{content}</div>
     </main>
   );
 }

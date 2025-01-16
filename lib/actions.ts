@@ -39,7 +39,7 @@ export const getProductByCategory = async (category: string) => {
     method: "GET",
   });
   if (!result.ok) {
-    const errorMessage = `Failed to fetch user. Status: ${result.status}, ${result.statusText}`;
+    const errorMessage = `Failed to fetch product. Status: ${result.status}, ${result.statusText}`;
     throw new Error(errorMessage);
   }
   return result.json();

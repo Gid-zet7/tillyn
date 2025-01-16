@@ -298,3 +298,8 @@ body {
 .hamburger.toggle-btn div:nth-child(3) {
   transform: rotate(-45deg) translate(5px, -5px);
 }
+
+.active {
+  background-color: #000;
+  color: #fff;
+}

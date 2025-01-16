@@ -53,7 +53,7 @@ export default function Product({ productId }: Props) {
 
   if (!product) {
     return (
-      <div className=" flex items-center justify-center">
+      <div className=" flex items-center justify-center mt-10">
         <ProductSkeletonCard />
       </div>
     );
@@ -62,7 +62,7 @@ export default function Product({ productId }: Props) {
   return (
     <>
       <section>
-        <div className="flex flex-col md:flex-row justify-around p-5 md:p-10 gap-8">
+        <div className="flex flex-col md:flex-row justify-around p-5 md:p-10 lg:px-20 gap-8">
           {product.image_url && (
             <Image
               src={product.image_url}
@@ -96,7 +96,7 @@ export default function Product({ productId }: Props) {
               <span className="text-sm">Delivery excluded</span>
             </div>
             <p>{product.description || "No description available."}</p>
-            <div>
+            <div className=" flex flex-col gap-2">
               <h1 className={`${poppins.className}`}>Product size</h1>
               <div className="flex gap-3">
                 {["Medium", "Large", "Extra Large"].map((size) => (
@@ -124,7 +124,7 @@ export default function Product({ productId }: Props) {
               </div>
               <div className="flex gap-2">
                 <PartyPopper /> Exclusive discounts, early access to new
-                arrivals, and birthday/anniversary rewards.
+                arrivals and birthday/anniversary rewards.
               </div>
             </div>
           </div>

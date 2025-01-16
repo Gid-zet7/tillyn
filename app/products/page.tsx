@@ -1,89 +1,141 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useGetProductsQuery } from "../../redux/slices/productsApiSlice";
-
-import ProductCard from "@/components/products/cards/ProductCard";
-import Loader from "@/components/Loader/page";
-import Snackbar from "@/components/Snackbar/Snackbar";
 import { Button } from "@/components/ui/button";
+import { ThriftSkeletonCard } from "@/components/homepage/Thrift/ThriftSkeleton";
+import Card from "@/components/homepage/Card";
+import { addToCart } from "@/redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
+import { getProductByCategory } from "@/lib/actions";
+import { SkeletonCard } from "@/components/skeleton/Skeleton";
+
+// Define the structure of the products state
+type ProductsState = {
+  [key: string]: {
+    [key: string]: Product[];
+  };
+};
+
+// Define the structure of the activeCategory state
+interface ActiveCategory {
+  type: keyof typeof categories;
+  category: string;
+}
+
+// Define the categories structure
+const categories = {
+  Men: ["Tops", "Shorts", "Pants", "Outerwear", "Top and Down set"],
+  Women: ["Tops", "Bottoms", "Dresses", "Outerwear"],
+} as const;
 
 export default function ProductsPage() {
-  const {
-    data: products,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetProductsQuery(undefined, {
-    pollingInterval: 68000,
-    refetchOnFocus: false,
-    refetchOnMountOrArgChange: false,
+  const [products, setProducts] = useState<ProductsState>({});
+  const [activeCategory, setActiveCategory] = useState<ActiveCategory>({
+    type: "Men",
+    category: "All",
   });
-
-  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
-  // const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (error) {
-      setShowErrorSnackbar(true);
-      const timer = setTimeout(() => {
-        setShowErrorSnackbar(false);
-      }, 3000);
+    const fetchProducts = async (): Promise<void> => {
+      setIsLoading(true);
+      try {
+        const fetchPromises = categories[activeCategory.type].map((cat) =>
+          getProductByCategory(`${activeCategory.type} ${cat}`)
+        );
+        const results = await Promise.all(fetchPromises);
+        const data = Object.fromEntries(
+          categories[activeCategory.type].map((cat, index) => [
+            cat,
+            results[index] as Product[],
+          ])
+        );
+        setProducts((prev) => ({ ...prev, [activeCategory.type]: data }));
+      } catch (error) {
+        console.error(error);
+        setIsError(true);
+        setErrorMessage("Failed to fetch products.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
+    fetchProducts();
+  }, [activeCategory]);
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     setShowSuccessSnackbar(true);
-  //     const timer = setTimeout(() => {
-  //       setShowSuccessSnackbar(false);
-  //     }, 3000);
+  const renderProducts = (category: string) => {
+    const selectedProducts = products[activeCategory.type]?.[category] || [];
+    return selectedProducts.map((product: Product) => (
+      <Card
+        key={product._id}
+        productId={product._id}
+        price={product.price}
+        ratings={product.ratings}
+        imageSrc={product.image_url}
+        title={product.name}
+        stock={product.stock}
+        addToCart={() => dispatch(addToCart(product))}
+      />
+    ));
+  };
 
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [isSuccess]);
-
-  let content;
-
-  if (isLoading)
-    content = (
-      <div>
-        <Loader message="Fetching products..." />
-      </div>
-    );
-
-  if (isError) {
-    setShowErrorSnackbar(true);
-    content = showErrorSnackbar && <Snackbar message={error.data} />;
-  }
-
-  if (isSuccess) {
-    const { ids } = products;
-
-    content =
-      ids?.length &&
-      ids?.map((productId) => (
-        <ProductCard key={productId} productId={productId} />
-      ));
-  }
   return (
     <main>
-      <section className="lg:flex lg:flex-col  w-screen">
+      <section className="lg:flex lg:flex-col w-screen">
         <div className="px-5">
           <div className="relative p-4 md:p-8 border rounded-md">
-            <div className=" flex gap-3">
-              <Button className="mb-6">Best Deals</Button>
-              <Button className="mb-6">Thrift</Button>
+            <div className="flex flex-wrap gap-3">
+              {Object.keys(categories).map((type) => (
+                <Button
+                  key={type}
+                  variant={"outline"}
+                  className={`mb-6 ${
+                    activeCategory.type === type ? "active" : ""
+                  }`}
+                  onClick={() =>
+                    setActiveCategory({
+                      type: type as keyof typeof categories,
+                      category: "Men",
+                    })
+                  }
+                >
+                  {type}
+                </Button>
+              ))}
+            </div>
+            <hr className="my-5" />
+            <div className="flex gap-3 flex-wrap">
+              {categories[activeCategory.type].map((category) => (
+                <Button
+                  key={category}
+                  variant={"outline"}
+                  className={`mb-6 ${
+                    activeCategory.category === category ? "active" : ""
+                  }`}
+                  onClick={() =>
+                    setActiveCategory((prev) => ({ ...prev, category }))
+                  }
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
             <div className="flex overflow-x-scroll scrollbar-hide space-x-4 p-3 md:p-6">
-              {content}
+              {isLoading ? (
+                <SkeletonCard />
+              ) : isError ? (
+                <section className="flex flex-col items-center justify-center">
+                  {errorMessage}
+                </section>
+              ) : (
+                renderProducts(activeCategory.category)
+              )}
             </div>
           </div>
         </div>
       </section>
-      {/* <div className="flex">{content}</div> */}
     </main>
   );
 }
