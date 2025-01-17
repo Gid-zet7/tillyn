@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ThriftSkeletonCard } from "@/components/homepage/Thrift/ThriftSkeleton";
 import Card from "@/components/homepage/Card";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
@@ -122,7 +121,8 @@ export default function ProductsPage() {
                 </Button>
               ))}
             </div>
-            <div className="flex overflow-x-scroll scrollbar-hide space-x-4 p-3 md:p-6">
+            <hr className="my-5" />
+            <div className="flex overflow-x-scroll lg:overflow-x-hidden lg:flex-wrap scrollbar-hide space-x-4 p-3 md:p-6 lg:space-y-3">
               {isLoading ? (
                 <SkeletonCard />
               ) : isError ? (

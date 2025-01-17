@@ -1,6 +1,8 @@
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
+type OrderDetails = { email: string; subtotal: number; cartItem: CartItem[] };
+
 // Create an EntityAdapter for order
 const ordersAdapter = createEntityAdapter({});
 
@@ -62,7 +64,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
             ]
           : [{ type: "Order", id: "USERS-ORDERS-LIST" }],
     }),
-    addNewOrder: builder.mutation<void, Partial<Order>>({
+    addNewOrder: builder.mutation<void, Partial<OrderDetails>>({
       query: (initialOrderData) => ({
         url: "/orders/new",
         method: "POST",

@@ -13,7 +13,12 @@ export const PATCH = async (request: Request) => {
 
     // Find the user by ID
     const user = await UserModel.findOne({ email: preferred_email }).exec();
-    if (!user) return new Response("User not found", { status: 404 });
+    if (!user) {
+      return new Response(JSON.stringify({ message: "User not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     // Update the user fields only if they are provided
     if (preferred_email) user.email = preferred_email;
@@ -23,11 +28,22 @@ export const PATCH = async (request: Request) => {
     // Save the updated user
     const updatedUser = await user.save();
 
-    return new Response(`${updatedUser.username} updated successfully`, {
-      status: 200,
-    });
+    // Return the updated user in JSON format
+    return new Response(
+      JSON.stringify({
+        message: `${updatedUser.first_name} updated successfully`,
+        user: updatedUser,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     console.error(error);
-    return new Response("Internal Server Error", { status: 500 });
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 };

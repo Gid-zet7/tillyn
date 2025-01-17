@@ -7,11 +7,11 @@ import React, { useEffect, useState } from "react";
 import Cart from "../cart/Cart";
 // import Login from "../Auth/LoginForm/Login";
 // import NewUserForm from "../Auth/NewUserForm.tsx/NewUserForm";
-// import Search from "../Search/Search";
+import Search from "../Search/Search";
 import Image from "next/image";
 import styles from "@/components/Header/nav.module.css";
 import ProfileMenu from "./ProfileMenu";
-import { getUsersession } from "@/lib/actions";
+import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
@@ -20,6 +20,10 @@ import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 export default function Navbar() {
   const [session, setSession] = useState();
   const [openCart, setOpenCart] = useState(false);
+  const [openSearchForm, setOpenSearchForm] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [loadSearch, setLoadSearch] = useState(false);
+  const [searchItems, setSearchItems] = useState(false);
   const cart = useSelector((state: any) => state.cart.items);
   const totalCartItems = cart.length;
 
@@ -29,6 +33,10 @@ export default function Navbar() {
 
   const toggleCart = () => {
     setOpenCart((prevState) => !prevState);
+  };
+
+  const toggleSearchForm = () => {
+    setOpenSearchForm((prevState) => !prevState);
   };
 
   useEffect(() => {
@@ -66,6 +74,29 @@ export default function Navbar() {
     };
   }, []);
 
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoadSearch(true);
+
+    try {
+      const response = await search(productName);
+      setSearchItems(response);
+
+      // setError("");
+      // setIsSuccess("Account created successfully!");
+
+      // toggleRegisterForm();
+      // toggleLoginForm();
+    } catch (error) {
+      // Ensure the error is a string or convert it to a string
+      const errorMessage =
+        error instanceof Error ? error.message : "An unexpected error occurred";
+      // setError(errorMessage);
+    } finally {
+      setLoadSearch(false);
+    }
+  };
+
   return (
     <>
       <header className="py-5 px-4 md:px-8 border-b gap-4 sticky top-0 z-50 blur-nav">
@@ -86,7 +117,7 @@ export default function Navbar() {
               className="hidden space-x-8 text-xl md:block"
               aria-label="main"
             >
-              <ul className="flex gap-2">
+              <ul className="flex gap-2 text-sm">
                 <li>
                   <Link href={"/"}>Home</Link>
                 </li>
@@ -115,7 +146,7 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               fill="none"
               className="cursor-pointer"
-              // onClick={toggleSearchForm}
+              onClick={toggleSearchForm}
               xmlns="http://www.w3.org/2000/svg"
             >
               <g clipPath="url(#clip0_15_152)">
@@ -234,17 +265,15 @@ export default function Navbar() {
       </header>
       {/* End of nav bar */}
 
-      {/* <Search
-        name={name}
-        setName={setName}
+      <Search
+        productName={productName}
+        setProductName={setProductName}
         openSearchForm={openSearchForm}
         loadSearch={loadSearch}
         searchItems={searchItems}
         toggleSearchForm={toggleSearchForm}
         handleSearch={handleSearch}
-        toggleLoginForm={toggleLoginForm}
-        toggleRegisterForm={toggleRegisterForm}
-      /> */}
+      />
 
       <Cart
         // session={session}

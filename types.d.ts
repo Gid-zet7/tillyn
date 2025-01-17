@@ -1,6 +1,7 @@
 type User = {
   _id: string;
   email: string;
+  preferred_email: string;
   picture?: string;
   last_name: string;
   first_name: string;
@@ -115,6 +116,7 @@ type CartItem = {
   price: number;
   product: Product;
   quantity: number;
+  brand: string;
   createdAt: Date;
   updatedAt: Date;
   __v: number;

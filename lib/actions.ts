@@ -103,3 +103,42 @@ export const getAllCategories = async () => {
   }
   return result.json();
 };
+export const search = async (name: string) => {
+  const endpoint = `http://localhost:3000/api/search?query=${name}`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to get products. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const payStackHandler = async (email: string, amount: number) => {
+  const endpoint = `http://localhost:3000/api/paystack`;
+  const result = await fetch(endpoint, {
+    method: "POST",
+    body: JSON.stringify({ email, amount }),
+  });
+  if (!result.ok) {
+    const errorText = await result.text();
+    console.error("Server response:", errorText);
+    return undefined;
+  }
+  const contentType = result.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return await result.json();
+  } else {
+    return await result.text();
+  }
+};
+export const verifyPayment = async (email: string, reference: string) => {
+  const endpoint = `http://localhost:3000/api/paystack/verify`;
+  const result = await fetch(endpoint, {
+    method: "POST",
+    body: JSON.stringify({ email, reference }),
+  });
+  if (!result.ok) {
+    const errorMessage = `Payment verification failed. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};

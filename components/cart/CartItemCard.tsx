@@ -55,7 +55,7 @@ export default function CartItemCard({
               </div>
               <button onClick={removeItemFromCart}>
                 {" "}
-                <Trash2 />
+                <Trash2 className="h-4 w-4" />
               </button>
             </div>
           </div>

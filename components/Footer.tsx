@@ -131,7 +131,7 @@ const Footer = () => {
         </ul>
         <hr className="border-gray-600 my-10" />
         <div className="flex flex-wrap justify-around items-center text-white mt-10 text-sm ">
-          <p>Copyright © 2024 TillynClothings</p>
+          <p>Copyright © 2025 TillynClothings</p>
           {/* <p>All rights reserved</p> */}
           <div className=" hidden md:block">
             <div className="flex flex-row md:gap-4 space-x-8 items-center">

@@ -61,8 +61,8 @@ POST http://localhost:3000/api/category/new
 Content-Type: application/json
 
 {
-    "name": "Accessories",
-    "description": "This is accessories category"
+    "name": "Women Thrift",
+    "description": "This is women thrift category"
 }
 
 ###

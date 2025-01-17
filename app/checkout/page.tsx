@@ -1,433 +1,216 @@
 "use client";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-// import Loader from "@/components/Loader/page";
-// import Snackbar from "@/components/Snackbar/Snackbar";
-import Image from "next/image";
-import { getUserData, getUsersession, sendEmail } from "@/lib/actions";
-import { useUpdateUserMutation } from "@/redux/slices/usersApiSlice";
-import { useAddNewOrderMutation } from "@/redux/slices/orderApiSlice";
-// import Paper from "@mui/material/Paper";
-// import PulseLoader from "@/components/Loader/Loader-two/page";
-// import LoaderSimple from "@/components/Loader/Loader-simple/page";
-// import ModalThankyou from "../Thankyou/ModalThankyou";
-
 import { useSelector, useDispatch } from "react-redux";
 
-export default function Checkout() {
-  const [updateUser, { isLoading, isSuccess, isError, error }] =
-    useUpdateUserMutation();
+import { useUpdateUserMutation } from "@/redux/slices/usersApiSlice";
+import { useAddNewOrderMutation } from "@/redux/slices/orderApiSlice";
+import { clearCart } from "@/redux/slices/cartSlice";
+import { getUserData, getUsersession, sendEmail } from "@/lib/actions";
 
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { FormSkeletonCard } from "@/components/skeleton/FormSkeleton";
+import CheckoutEditForm from "@/components/checkout/CheckoutEditForm";
+import CheckoutForm from "@/components/checkout/CheckOutForm";
+import CheckoutCart from "@/components/checkout/CheckoutCart";
+import OrderSummary from "@/components/checkout/OrderSummary";
+import ModalThankyou from "@/components/Thankyou/ModalThankyou";
+
+export default function Checkout() {
+  const [updateUser] = useUpdateUserMutation();
   const [addNewOrder] = useAddNewOrderMutation();
 
-  const cartItem = useSelector((state) => state.cart.items);
-  console.log(cartItem);
+  // Redux state
+  const dispatch = useDispatch();
+  const cartItem = useSelector((state: any) => state.cart.items);
+
+  const [user, setUser] = useState<User>();
+  const [address, setAddress] = useState({});
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [modalOrder, setModalOrder] = useState(false);
   const [modalThankyou, setModalThankyou] = useState(false);
-  // const [cartItem, setCartItem] = useState<CartItem[]>([]);
-  const [user, setUser] = useState();
-  console.log(user);
-
-  const [phone_number, setPhoneNumber] = useState(user?.phone_number || "");
-  const [address, setAddress] = useState(
-    user?.address || {
-      address_line1: "",
-      address_line2: "",
-      city: "",
-      postal_code: "",
-    }
-  );
-  const [isCartLoading, setIsCartLoading] = useState(false);
-  const [isUserLoading, setIsUserLoading] = useState(false);
-  const [loaderMsg, setLoaderMsg] = useState("");
-  const [result, setResult] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [edit, setEdit] = useState(false);
-  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
-  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+
+  const [selectedOption, setSelectedOption] = useState("");
+  console.log(selectedOption);
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedOption(event.target.value);
+  };
 
   const router = useRouter();
 
-  const subTotal = cartItem.reduce((acc: number, item: CartItem) => {
-    return acc + (item?.price || 0) * (item?.quantity || 0);
-  }, 0);
+  const subTotal = cartItem.reduce(
+    (acc: number, item: CartItem) =>
+      acc + (item?.price || 0) * (item?.quantity || 0),
+    0
+  );
 
+  // Fetch user session and data
   useEffect(() => {
-    const fetchSession = async () => {
+    const fetchUserSession = async () => {
       try {
-        const userSession = await getUsersession();
-        console.log(userSession);
-        const userData = await getUserData(userSession.preferred_email);
+        setIsLoading(true);
+        const session = await getUsersession();
+        const userData = await getUserData(session.preferred_email);
         setUser(userData);
+        setAddress(userData?.address || {});
+        setPhoneNumber(userData?.phone_number || "");
       } catch (error) {
-        console.error("Error fetching session:", error);
+        setErrorMsg("Failed to fetch user session");
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchSession();
+    fetchUserSession();
   }, []);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     setShowErrorSnackbar(true);
-  //     const timer = setTimeout(() => {
-  //       setShowErrorSnackbar(false);
-  //       setError("");
-  //     }, 3000);
-
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [error]);
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     setShowSuccessSnackbar(true);
-  //     const timer = setTimeout(() => {
-  //       setShowSuccessSnackbar(false);
-  //       setIsSuccess("");
-  //     }, 3000);
-
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [isSuccess]);
-
-  const placeOrder = async (
-    email: string,
-    subtotal: number,
-    cartItem: CartItem[]
-  ) => {
-    // setIsLoading(true);
-    // setLoaderMsg("Placing order");
+  // Place order
+  const placeOrder = useCallback(async () => {
+    if (!user?.email) {
+      setErrorMsg("User email is missing");
+      return;
+    }
 
     try {
       const orderDetails = {
-        email,
-        subtotal,
+        email: user.email,
+        subtotal: subTotal,
         cartItem,
       };
-      const result = await addNewOrder(orderDetails);
-      console.log("result:", result);
+      const orderResult = await addNewOrder(orderDetails).unwrap();
 
-      if (result) {
-        try {
-          await sendEmail(
-            `tillynclothings@gmail.com`,
-            `New Order Placed: ${result._id}`,
-            `
-        <p>We have received a new order from a client. Please find the details of the order below:</p>
-        <h3>Client Information:</h3>
+      // Send email notification
+      await sendEmail(
+        "tillynclothings@gmail.com",
+        `New Order Placed: ${orderResult._id}`,
+        generateEmailBody(user, cartItem, subTotal, orderResult._id)
+      );
+
+      toggleModalThankyou();
+      dispatch(clearCart());
+    } catch (error) {
+      console.error("Error placing order:", error);
+      setErrorMsg("Failed to place the order. Please try again.");
+    }
+  }, [user, subTotal, cartItem, addNewOrder, dispatch]);
+
+  // Generate email body
+  const generateEmailBody = (
+    user: User,
+    cartItems: CartItem[],
+    subtotal: number,
+    orderId: string
+  ) => `
+    <p>We have received a new order. Here are the details:</p>
+    <h3>Client Info:</h3>
+    <ul>
+      <li>Name: ${user.first_name} ${user.last_name}</li>
+      <li>Email: ${user.email}</li>
+      <li>Phone: ${user.phone_number}</li>
+    </ul>
+    <h3>Order Details:</h3>
+    <ul>
+      ${cartItems
+        .map(
+          (item) => `
+          <li>
+          <img src="${item.image_url}" alt="${
+            item.name
+          }" style="width:100px; height:100px;" onerror="this.style.display='none';"/>
+            Product: ${item.name}<br>
+            Quantity: ${item.quantity}<br>
+            Total Price: ${item.price * item.quantity}
+          </li>`
+        )
+        .join("")}
+    </ul>
+    <h3>Subtotal: ${subtotal}</h3>
+    <p>Order ID: ${orderId}</p>
+      <h3>Address Information:</h3>
         <ul>
-          <li>Client Name: ${user?.first_name} ${user?.last_name}</li>
-          <li>Email Address: ${user?.email}</li>
-          <li>Phone Number: ${user?.phone_number}</li>
-        </ul>
-        <h3>Order Details:</h3>
-        <ul>
-          <li>Order ID: ${result._id}</li>
-          ${cart
-            .map(
-              (item) => `
-              <li>
-                <img src="${item.image_url}" alt="${
-                item.name
-              }" style="width:100px; height:100px;" onerror="this.style.display='none';"/>
-                Product: ${item.name} <br>
-                Price: ${item.price} <br>
-                Quantity: ${item.quantity} <br>
-                Total Price: ${item.price * item.quantity}
-                Brand: ${item.brand}
-              </li>
-              <br>
-            `
-            )
-            .join("")}
-        </ul>
-        <h2>Sub Total: ${subtotal}</h2>
-        <h3>Address Information:</h3>
-        <ul>
-          <li>Client Address: ${user?.address.address_line1}, ${
-              user?.address.city
-            }, ${user?.address.postal_code}</li>
+          <li>Client Address: ${user?.address?.address_line1}, ${
+    user?.address?.city
+  }, ${user?.address?.postal_code}</li>
 
         </ul>
         <p>Please ensure that the order is processed promptly and the client is notified of the shipping status. If there are any issues or further actions required, kindly coordinate with the relevant departments.</p>
         <p>Thank you for your attention to this order.</p>
         <p>Best regards,</p>
         <p>Tillyn<br>Your Contact Information</p>
-      `
-          );
-        } catch (emailError) {
-          console.error("Error sending email:", emailError);
-        }
+  `;
+  // Modal toggles
+  const toggleModalOrder = () => setModalOrder((prev) => !prev);
+  const toggleModalThankyou = () => setModalThankyou((prev) => !prev);
 
-        // setIsSuccess("Order placed successfully");
-        toggleModalOrder();
-        toggleModalThankyou();
-        // const updatedCartItems = await getCartItem(userId);
-        // setCartItem(updatedCartItems);
-      } else {
-        throw new Error("Order result is undefined or empty");
-      }
-    } catch (error) {
-      console.error("Error in placeOrder function:", error);
-      // setError("Error placing order.");
-    } finally {
-      // setIsLoading(false);
-    }
-  };
+  // toggle edit
+  const toggleEdit = () => setEdit((prev) => !prev);
 
-  const toggleModalOrder = () => {
-    setModalOrder((prevState) => !prevState);
-  };
-
-  const toggleModalThankyou = () => {
-    setModalThankyou((prevState) => !prevState);
-  };
-
-  const toggleEdit = () => {
-    setEdit((prevState) => !prevState);
-  };
-
-  const handleAddressChange = (e: any) => {
+  // Handle address changes
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setAddress((prevData) => ({
-      ...(prevData || {}),
-      [name]: value,
-    }));
+    setAddress((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSaveSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setLoadRegister(true);
+    if (!user?.email) {
+      setErrorMsg("User email is missing");
+      return;
+    }
+
     const updateObj = {
-      preferred_email: email,
-      phone_number,
+      preferred_email: user.email,
       address,
+      phone_number: phoneNumber,
     };
 
     try {
-      const response = await updateUser(updateObj);
-
-      // setError("");
-      // setIsSuccess("updated successfully!");
-      if (!user?._id) {
-        console.error("User ID is not defined.");
-        // setError("Failed to fetch user. User ID is not defined.");
-        return;
-      }
-      try {
-        const updatedUser = await getUserData(user?.prefered_email);
-        setUser(updatedUser);
-        setPhoneNumber(updatedUser.phone_number);
-        setAddress(updatedUser.address);
-      } catch (error) {
-        // setError("Failed to fetch user.");
-        console.error("Error fetching data", error);
-      }
-      toggleEdit();
+      const updatedUser = await updateUser(updateObj).unwrap();
+      console.log(updatedUser);
+      setUser(updatedUser.user);
+      setAddress(updatedUser.user.address);
+      setPhoneNumber(updatedUser.user.phone_number);
+      setErrorMsg("");
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unexpected error occurred";
-      // setError(errorMessage);
-    } finally {
-      // setLoadRegister(false);
+      console.error("Failed to update user:", error);
+      setErrorMsg("Failed to update your information. Please try again.");
     }
+    toggleEdit();
   };
 
   return (
     <>
-      {/* {isLoading && <Loader message={loaderMsg} />}
-      {showErrorSnackbar && <Snackbar message={error} />}
-      {showSuccessSnackbar && <Snackbar message={isSuccess} />} */}
-
       {modalOrder && (
-        <div>
-          <div className="flex flex-col justify-between fixed top-1/2 left-1/2 p-10 transform -translate-x-1/2 -translate-y-1/2 z-10 h-52">
-            <h1 className="text-2xl text-black">Confirm your order </h1>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  toggleModalOrder();
-                }}
-                className="px-4 py-2 bg-white border-2 rounded-md text-gray-600 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  placeOrder(user?.email, subTotal, cartItem);
-                }}
-                className="px-4 py-2 bg-black/50 rounded-md text-white border-black hover:bg-black"
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-          <div
-            onClick={() => {
-              toggleModalOrder();
-            }}
-            className="overlay"
-          ></div>
-        </div>
+        <OrderConfirmationModal
+          toggleModalOrder={toggleModalOrder}
+          placeOrder={placeOrder}
+        />
       )}
 
-      {/* <ModalThankyou
-        // session={session}
-        // result={result}
+      <ModalThankyou
         modalThankyou={modalThankyou}
         toggleModalThankyou={toggleModalThankyou}
-      /> */}
+      />
 
       {/* <Navbar /> */}
       <div className="flex md:justify-center md:items-center">
         <div className="flex flex-col-reverse md:flex-row px-5 w-full md:max-w-7xl gap-10">
           {edit ? (
-            <form className="w-full md:w-1/2 p-5" onSubmit={handleSaveSubmit}>
-              <h1 className="text-2xl font-bold my-3">Edit details</h1>
-              <div className="mb-4">
-                <label
-                  htmlFor="first_name"
-                  className="block font-semibold mb-2 text-black"
-                >
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="first_name"
-                  className="w-full p-2 border rounded bg-slate-100 text-black"
-                  name="first_name"
-                  placeholder="first name"
-                  // onChange={(e) => setFirstName(e.target.value)}
-                  defaultValue={user?.first_name || ""}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="last_name"
-                  className="block font-semibold mb-2 text-black"
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="last_name"
-                  className="w-full p-2 border rounded bg-slate-100 text-black"
-                  name="last_name"
-                  // onChange={(e) => setLastName(e.target.value)}
-                  defaultValue={user?.last_name || ""}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block font-semibold mb-2 text-black"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full p-2 border rounded bg-slate-100 text-black"
-                  name="email"
-                  placeholder="email"
-                  // onChange={(e) => setEmail(e.target.value)}
-                  defaultValue={user?.email || ""}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="phone_number"
-                  className="block font-semibold mb-2 text-black"
-                >
-                  Phone Number
-                </label>
-                <input
-                  type="text"
-                  id="phone_number"
-                  className="w-full p-2 border rounded bg-slate-100 text-black"
-                  name="phone_number"
-                  placeholder="phone_number"
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  value={phone_number || ""}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="address_line1"
-                  className="block font-semibold mb-2 text-black"
-                >
-                  Address line 1
-                </label>
-                <input
-                  type="text"
-                  id="address_line1"
-                  name="address_line1"
-                  className="w-full p-2 border rounded bg-slate-100 text-black"
-                  placeholder="address line 1"
-                  onChange={handleAddressChange}
-                  value={address?.address_line1 || ""}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="address_line2"
-                  className="block font-semibold mb-2 text-black"
-                >
-                  Address line 2
-                </label>
-                <input
-                  type="text"
-                  id="address_line2"
-                  name="address_line2"
-                  className="w-full p-2 border rounded bg-slate-100 text-black"
-                  placeholder="address line 2"
-                  onChange={handleAddressChange}
-                  value={address?.address_line2 || ""}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="city"
-                  className="block font-semibold mb-2 text-black"
-                >
-                  City
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  className="w-full p-2 border rounded bg-slate-100 text-black"
-                  placeholder="eg., Accra"
-                  onChange={handleAddressChange}
-                  value={address?.city || ""}
-                />
-              </div>
-
-              <div className="flex gap-3 h-10">
-                <button
-                  type="button"
-                  className="px-2 py-1 bg-white border-2"
-                  onClick={toggleEdit}
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="px-2 py-1 w-full bg-emerald-300"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+            <CheckoutEditForm
+              user={user}
+              setPhoneNumber={setPhoneNumber}
+              phone_number={phoneNumber}
+              address={address}
+              toggleEdit={toggleEdit}
+              handleAddressChange={handleAddressChange}
+              handleSaveSubmit={handleSaveSubmit}
+            />
           ) : (
             <div className="flex flex-col gap-5 w-full md:w-1/2 p-5">
               <div className=" flex justify-between">
@@ -459,187 +242,54 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <h2 className="font-semibold">First Name</h2>
-                {isUserLoading ? (
-                  // <LoaderSimple />
-                  <h1>Loading...</h1>
-                ) : (
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value={user?.first_name}
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="font-semibold">Last Name</h2>
-                {isUserLoading ? (
-                  // <LoaderSimple />
-                  <h1>Loading...</h1>
-                ) : (
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value={user?.last_name}
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="font-semibold">Email</h2>
-                {isUserLoading ? (
-                  // <LoaderSimple />
-                  <h1>Loading...</h1>
-                ) : (
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value={user?.email}
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="font-semibold">Phone Number</h2>
-                {isUserLoading ? (
-                  // <LoaderSimple />
-                  <h1>Loading...</h1>
-                ) : (
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value={user?.phone_number}
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="font-semibold">Address line 1</h2>
-
-                {isUserLoading ? (
-                  // <LoaderSimple />
-                  <h1>Loading...</h1>
-                ) : (
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value={user?.address.address_line1}
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="font-semibold">Address line 2</h2>
-
-                {isUserLoading ? (
-                  // <LoaderSimple />
-                  <h1>Loading...</h1>
-                ) : user?.address.address_line2 ? (
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value={user?.address.address_line2}
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value="N/A"
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="font-semibold">City</h2>
-                {isUserLoading ? (
-                  <h1>Loading...</h1>
-                ) : (
-                  // <LoaderSimple />
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded text-black outline-none"
-                    value={user?.address.city}
-                  />
-                )}
-              </div>
-              <button
-                type="button"
-                className="px-4 py-3 my-5 w-full hover:bg-emerald-400 bg-emerald-300 rounded-md text-white"
-                onClick={toggleModalOrder}
-              >
-                Place Order
-              </button>
+              {isLoading ? (
+                <FormSkeletonCard />
+              ) : errorMsg ? (
+                <h1>{errorMsg}</h1>
+              ) : (
+                <CheckoutForm
+                  user={user}
+                  toggleModalOrder={toggleModalOrder}
+                  toggleModalThankyou={toggleModalThankyou}
+                  selectedOption={selectedOption}
+                  subTotal={subTotal}
+                  placeOrder={placeOrder}
+                  handleOptionChange={handleOptionChange}
+                  setSelectedOption={setSelectedOption}
+                />
+              )}
             </div>
           )}
-
-          {/* {isCartLoading ? (
-            <div className="flex justify-center items-center">
-              <PulseLoader />
-            </div>
-          ) : ( */}
           <div className="w-full border-l p-5">
-            {cartItem.map((item: CartItem) => {
-              return (
-                <>
-                  <div
-                    key={item._id}
-                    className="flex justify-between md:justify-around mb-3"
-                  >
-                    <img
-                      src={item?.image_url}
-                      width={60}
-                      height={60}
-                      alt="product image"
-                    />
-                    <h4 className="text-black">
-                      GHS {item.price} x {item.quantity}{" "}
-                    </h4>
-                  </div>
-                  <hr className="bg-slate-700 w-full my-2" />
-                </>
-              );
+            {cartItem.map((item: CartItem, index: number) => {
+              return <CheckoutCart key={index} item={item} />;
             })}
-            <div className="text-black mt-10 flex flex-col gap-5">
-              <div className="flex ">
-                <h1 className="font-bold">Order Summary</h1>
-              </div>
-              <div className="flex gap-4 items-center">
-                <input
-                  type="text"
-                  className="p-2 border-black border rounded text-black w-3/5"
-                  placeholder="apply discount code"
-                />
-                <button
-                  type="button"
-                  className="px-4 py-2 my-5 bg-black text-white rounded-md"
-                >
-                  Apply
-                </button>
-              </div>
-              <div className="flex flex-col gap-3">
-                <div className="flex justify-between text-sm w-full">
-                  <h4>Delivery</h4>
-                  <h2>GHS 50.00 </h2>
-                </div>
-                <div className="flex justify-between text-sm w-full">
-                  <h4>Discount</h4>
-                  <h2>GHS 00.00 </h2>
-                </div>
-                <div className="flex justify-between text-sm w-full">
-                  <h4>Tax</h4>
-                  <h2>GHS 00.00 </h2>
-                </div>
-                <hr className="bg-slate-700 w-full my-2" />
-                <div className="flex justify-between text-sm">
-                  <h4>Subtotal</h4>
-                  <h2>GHS {subTotal}.00 </h2>
-                </div>
-                <div className="flex justify-between">
-                  <h4 className="font-bold text-xl">Total</h4>
-                  <h2 className="font-bold text-xl">GHS {subTotal + 50}.00 </h2>
-                </div>
-              </div>
-            </div>
+            <OrderSummary subTotal={subTotal} />
           </div>
-          {/* )} */}
         </div>
       </div>
     </>
   );
 }
+
+// Order confirmation modal
+const OrderConfirmationModal = ({
+  toggleModalOrder,
+  placeOrder,
+}: {
+  toggleModalOrder: () => void;
+  placeOrder: () => void;
+}) => (
+  <Card>
+    <div className="flex flex-col justify-between fixed top-1/2 left-1/2 p-10 transform -translate-x-1/2 -translate-y-1/2 z-10 h-52 blur-nav rounded-xl">
+      <h1 className="text-xl text-black">Ready to make it yours?</h1>
+      <div className="flex gap-3">
+        <Button variant="outline" onClick={toggleModalOrder}>
+          Cancel
+        </Button>
+        <Button onClick={placeOrder}>Confirm</Button>
+      </div>
+    </div>
+    <div className="overlay" onClick={toggleModalOrder}></div>
+  </Card>
+);

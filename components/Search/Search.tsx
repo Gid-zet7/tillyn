@@ -3,32 +3,25 @@ import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
-  // session: any;
-  name: string | undefined;
-  setName: any | undefined;
+  productName: string | undefined;
+  setProductName: any | undefined;
   openSearchForm: boolean | undefined;
   loadSearch: boolean | undefined;
   searchItems?: any | undefined;
   setSearchItems?: any | undefined;
   toggleSearchForm: (() => void | undefined) | undefined;
-  handleSearch:
-    | ((e: React.FormEvent<HTMLFormElement>) => void | undefined)
-    | undefined;
-  toggleRegisterForm: (() => void | undefined) | undefined;
-  toggleLoginForm: (() => void | undefined) | undefined;
+  handleSearch: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 };
 
 export default function Search({
-  name,
-  setName,
+  productName,
+  setProductName,
   openSearchForm,
   loadSearch,
   searchItems,
   setSearchItems,
   toggleSearchForm,
   handleSearch,
-  toggleRegisterForm,
-  toggleLoginForm,
 }: Props) {
   return (
     <>
@@ -74,8 +67,8 @@ export default function Search({
               id="name"
               className="w-full p-2 border rounded bg-slate-100 text-black"
               placeholder="search..."
-              onChange={(e) => setName(e.target.value)}
-              value={name}
+              onChange={(e) => setProductName(e.target.value)}
+              value={productName}
             />
           </div>
 
@@ -94,7 +87,7 @@ export default function Search({
                   href={`http://localhost:3000/products/${item._id}`}
                 >
                   <div className="w-full flex px-6 py-4 gap-4 hover:bg-slate-50">
-                    <img
+                    <Image
                       width={300}
                       height={300}
                       src={item?.image_url}

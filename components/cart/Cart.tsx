@@ -12,6 +12,7 @@ import {
 } from "@/redux/slices/cartSlice";
 import CartItemCard from "./CartItemCard";
 import { Card } from "../ui/card";
+import { Button } from "../ui/button";
 
 type Props = {
   // session: any;
@@ -126,12 +127,21 @@ Props) {
             </div>
             <hr className="bg-slate-700 w-full mb-5" />
             <p>Taxes, delivery and discounts codes calculated at checkout</p>
-            <button
-              className="px-4 py-3 my-5 hover:bg-emerald-400 bg-black rounded-md text-white font-semibold"
-              onClick={() => router.push("http://localhost:3000/checkout")}
+            <p className="text-xs mt-2">
+              <em>
+                Don&apos;t worry—you can always review or modify your cart at
+                checkout before completing your order.
+              </em>
+            </p>
+            <Button
+              className="my-5 font-semibold"
+              onClick={() => {
+                router.push("http://localhost:3000/checkout");
+                toggleCart();
+              }}
             >
               Check Out
-            </button>
+            </Button>
           </div>
         )}
       </Card>
