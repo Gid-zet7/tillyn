@@ -17,7 +17,6 @@ export default function ModalThankyou({
 Props) {
   const router = useRouter();
 
-  console.log(modalThankyou);
   return (
     <>
       <Card

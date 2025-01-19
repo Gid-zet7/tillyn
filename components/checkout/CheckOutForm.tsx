@@ -3,15 +3,28 @@ import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { payStackHandler, verifyPayment } from "@/lib/actions";
 
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import localFont from "next/font/local";
+
+const poppins = localFont({
+  src: "../../app/fonts/Poppins-Medium.ttf",
+  variable: "--font-poppins",
+  weight: "100 900",
+});
+
 type Props = {
   user: User | undefined;
   toggleModalOrder: () => void;
   toggleModalThankyou: () => void;
   selectedOption: string;
   subTotal: number;
+  // showSpinner: boolean;
+  setShowSpinner: (value: boolean) => void;
+  toggleSpinner: () => void;
   placeOrder: () => void;
   setSelectedOption: Dispatch<SetStateAction<string>>;
-  handleOptionChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOptionChange: (value: string) => void;
 };
 
 export default function CheckoutForm({
@@ -21,6 +34,8 @@ export default function CheckoutForm({
   selectedOption,
   setSelectedOption,
   subTotal,
+  setShowSpinner,
+  toggleSpinner,
   placeOrder,
   handleOptionChange,
 }: Props) {
@@ -37,6 +52,7 @@ export default function CheckoutForm({
   const handlePayment = async () => {
     try {
       if (user?.email) {
+        setShowSpinner(true);
         const res = await payStackHandler(user.email, subTotal);
         console.log(res);
         router.push(res.data.data.authorization_url);
@@ -47,36 +63,35 @@ export default function CheckoutForm({
   };
 
   const handleCallback = async () => {
-    // Use router.query to get the query parameters from the callback URL
     const reference = searchParams.get("reference");
-
-    // Check if the reference is available and handle the logic
     if (reference && user?.email) {
       console.log("Transaction reference:", reference);
-
+      setShowSpinner(true);
       try {
         const result = await verifyPayment(user.email, reference);
         console.log("Payment verification result:", result);
         setOrderPlaced(true);
-        placeOrder();
+        await placeOrder();
+        toggleModalThankyou();
       } catch (error) {
         console.error("Payment verification error:", error);
+      } finally {
+        setShowSpinner(false);
+        router.push("http://localhost:3000/");
       }
     } else {
       console.error("Transaction reference or email is not available.");
     }
-    router.push("http://localhost:3000/");
-    toggleModalThankyou();
   };
 
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <div className={`flex flex-col gap-2 `}>
         <h2 className="font-semibold">First Name</h2>
 
         <input
           type="text"
-          className="w-full p-2 border rounded text-black outline-none"
+          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
           defaultValue={user?.first_name}
         />
       </div>
@@ -85,7 +100,7 @@ export default function CheckoutForm({
 
         <input
           type="text"
-          className="w-full p-2 border rounded text-black outline-none"
+          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
           defaultValue={user?.last_name}
         />
       </div>
@@ -94,7 +109,7 @@ export default function CheckoutForm({
 
         <input
           type="text"
-          className="w-full p-2 border rounded text-black outline-none"
+          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
           defaultValue={user?.email}
         />
       </div>
@@ -103,7 +118,7 @@ export default function CheckoutForm({
 
         <input
           type="text"
-          className="w-full p-2 border rounded text-black outline-none"
+          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
           defaultValue={user?.phone_number}
         />
       </div>
@@ -112,7 +127,7 @@ export default function CheckoutForm({
 
         <input
           type="text"
-          className="w-full p-2 border rounded text-black outline-none"
+          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
           defaultValue={user?.address?.address_line1}
         />
       </div>
@@ -122,13 +137,13 @@ export default function CheckoutForm({
         {user?.address?.address_line2 ? (
           <input
             type="text"
-            className="w-full p-2 border rounded text-black outline-none"
+            className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
             defaultValue={user?.address.address_line2}
           />
         ) : (
           <input
             type="text"
-            className="w-full p-2 border rounded text-black outline-none"
+            className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
             defaultValue="N/A"
           />
         )}
@@ -138,34 +153,41 @@ export default function CheckoutForm({
 
         <input
           type="text"
-          className="w-full p-2 border rounded text-black outline-none"
+          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
           defaultValue={user?.address?.city}
         />
       </div>
-      <div>
-        <label>
-          <input
-            type="radio"
-            name="options"
-            value="Pay before delivery"
-            checked={selectedOption === "Pay before delivery"}
-            onChange={handleOptionChange}
-          />
-          Pay before delivery
-        </label>
-      </div>
-      <div>
-        <label>
-          <input
-            type="radio"
-            name="options"
-            value="Pay after delivery"
-            checked={selectedOption === "Pay after delivery"}
-            onChange={handleOptionChange}
-          />
-          Pay after delivery
-        </label>
-      </div>
+      <RadioGroup
+        defaultValue={selectedOption}
+        onValueChange={handleOptionChange}
+      >
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Pay before delivery" id="r1" />
+          <Label htmlFor="r1">
+            <strong className={poppins.className}>Pay Before Delivery</strong>
+            <br />
+            <span className="text-xs text-gray-500 mt-2">
+              <em>
+                Get it faster with priority delivery and no payment hassle at
+                the door!
+              </em>
+            </span>
+          </Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Pay after delivery" id="r2" />
+          <Label htmlFor="r2">
+            <strong className={poppins.className}>Pay After Delivery</strong>
+            <br />
+            <span className="text-xs text-gray-500 mt-2">
+              <em>
+                Pay only after receiving your order, for complete peace of mind!
+              </em>
+            </span>
+          </Label>
+        </div>
+      </RadioGroup>
+
       <Button
         type="button"
         className="px-4 py-4 my-5 w-full bg-black rounded-md text-white"

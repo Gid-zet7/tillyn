@@ -18,7 +18,7 @@ export default function CheckoutCart({ item }: Prop) {
     <>
       <div
         key={item._id}
-        className="flex justify-between md:justify-around mb-3"
+        className="flex justify-between md:justify-around mb-3 items-center"
       >
         <div className="flex items-center justify-center gap-2">
           <Image
@@ -45,11 +45,11 @@ export default function CheckoutCart({ item }: Prop) {
             </div>
             <button onClick={() => dispatch(removeFromCart(item))}>
               {" "}
-              <Trash2 />
+              <Trash2 className="h-4 w-4 " />
             </button>
           </div>
         </div>
-        <h4 className="text-black">
+        <h4 className="text-black text-sm md:text-lg">
           GHS {item.price} x {item.quantity}{" "}
         </h4>
       </div>

@@ -16,6 +16,7 @@ import CheckoutForm from "@/components/checkout/CheckOutForm";
 import CheckoutCart from "@/components/checkout/CheckoutCart";
 import OrderSummary from "@/components/checkout/OrderSummary";
 import ModalThankyou from "@/components/Thankyou/ModalThankyou";
+import LoaderSimple from "@/components/Loader/Loader-simple/page";
 
 export default function Checkout() {
   const [updateUser] = useUpdateUserMutation();
@@ -34,12 +35,18 @@ export default function Checkout() {
   const [errorMsg, setErrorMsg] = useState("");
   const [edit, setEdit] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState("Pay before delivery");
+  const [showSpinner, setShowSpinner] = useState(false);
+
   console.log(selectedOption);
 
-  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(event.target.value);
+  const handleOptionChange = (value: string) => {
+    setSelectedOption(value);
+    console.log("Selected option:", value); // For debugging
   };
+
+  const toggleSpinner = () => setShowSpinner((prev) => !prev);
+  console.log(showSpinner);
 
   const router = useRouter();
 
@@ -76,6 +83,8 @@ export default function Checkout() {
       setErrorMsg("User email is missing");
       return;
     }
+    if (selectedOption === "Pay after delivery") toggleModalOrder();
+    toggleSpinner();
 
     try {
       const orderDetails = {
@@ -83,7 +92,7 @@ export default function Checkout() {
         subtotal: subTotal,
         cartItem,
       };
-      const orderResult = await addNewOrder(orderDetails).unwrap();
+      const orderResult: any = await addNewOrder(orderDetails).unwrap();
 
       // Send email notification
       await sendEmail(
@@ -92,11 +101,13 @@ export default function Checkout() {
         generateEmailBody(user, cartItem, subTotal, orderResult._id)
       );
 
-      toggleModalThankyou();
       dispatch(clearCart());
+      toggleModalThankyou();
     } catch (error) {
       console.error("Error placing order:", error);
       setErrorMsg("Failed to place the order. Please try again.");
+    } finally {
+      toggleSpinner();
     }
   }, [user, subTotal, cartItem, addNewOrder, dispatch]);
 
@@ -171,7 +182,7 @@ export default function Checkout() {
     };
 
     try {
-      const updatedUser = await updateUser(updateObj).unwrap();
+      const updatedUser: any = await updateUser(updateObj).unwrap();
       console.log(updatedUser);
       setUser(updatedUser.user);
       setAddress(updatedUser.user.address);
@@ -192,6 +203,8 @@ export default function Checkout() {
           placeOrder={placeOrder}
         />
       )}
+
+      {showSpinner && <LoaderSimple />}
 
       <ModalThankyou
         modalThankyou={modalThankyou}
@@ -253,7 +266,9 @@ export default function Checkout() {
                   toggleModalThankyou={toggleModalThankyou}
                   selectedOption={selectedOption}
                   subTotal={subTotal}
+                  setShowSpinner={setShowSpinner}
                   placeOrder={placeOrder}
+                  toggleSpinner={toggleSpinner}
                   handleOptionChange={handleOptionChange}
                   setSelectedOption={setSelectedOption}
                 />

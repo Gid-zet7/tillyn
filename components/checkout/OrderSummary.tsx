@@ -1,4 +1,11 @@
 import React from "react";
+import localFont from "next/font/local";
+
+const poppins = localFont({
+  src: "../../app/fonts/Poppins-Medium.ttf",
+  variable: "--font-poppins",
+  weight: "100 900",
+});
 
 type Prop = {
   subTotal: number;
@@ -6,7 +13,9 @@ type Prop = {
 
 export default function OrderSummary({ subTotal }: Prop) {
   return (
-    <div className="text-black mt-10 flex flex-col gap-5">
+    <div
+      className={`${poppins.className} text-black mt-10 flex flex-col gap-5`}
+    >
       <div className="flex ">
         <h1 className="font-bold">Order Summary</h1>
       </div>
