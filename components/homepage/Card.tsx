@@ -60,7 +60,9 @@ export default function Card({
           <Button
             className="bg-black/50 text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors duration-200"
             onClick={() =>
-              router.push(`http://localhost:3000/products/${productId}`)
+              router.push(
+                `https://tillyn-update.vercel.app/products/${productId}`
+              )
             }
           >
             View Product

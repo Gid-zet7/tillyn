@@ -23,11 +23,11 @@ export const POST = async (request: Request) => {
         email,
         amount: amount * 100,
         currency: "GHS",
-        callback_url: `http://localhost:3000/checkout`,
+        callback_url: `https://tillyn-update.vercel.app/checkout`,
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_TEST_KEY}`,
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
           "Content-Type": "application/json",
         },
       }

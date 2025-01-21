@@ -1,5 +1,5 @@
 
-POST http://localhost:3000/api/auth/login
+POST https://tillyn-update.vercel.app/api/auth/login
 Content-Type: application/json
 
 {
@@ -8,13 +8,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/users
+GET https://tillyn-update.vercel.app/api/users
 Authorization: Bearer
 ###
-GET http://localhost:3000/api/users/66f1f10d362858eb26e4b5cc
+GET https://tillyn-update.vercel.app/api/users/66f1f10d362858eb26e4b5cc
 
 ###
-POST http://localhost:3000/api/users/new
+POST https://tillyn-update.vercel.app/api/users/new
 Content-Type: application/json
 
 {
@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/api/users/update
+PATCH https://tillyn-update.vercel.app/api/users/update
 Content-Type: application/json
 
 {
@@ -44,7 +44,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/api/users/delete
+DELETE https://tillyn-update.vercel.app/api/users/delete
 Content-Type: application/json
 
 {
@@ -53,11 +53,11 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/category
+GET https://tillyn-update.vercel.app/api/category
 
 
 ###
-POST http://localhost:3000/api/category/new
+POST https://tillyn-update.vercel.app/api/category/new
 Content-Type: application/json
 
 {
@@ -66,7 +66,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/api/category/update
+PATCH https://tillyn-update.vercel.app/api/category/update
 Content-Type: application/json
 
 {
@@ -76,14 +76,14 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/products
+GET https://tillyn-update.vercel.app/api/products
 
 ###
-GET http://localhost:3000/api/products/66fd5ea575e495a9bbc278d5
+GET https://tillyn-update.vercel.app/api/products/66fd5ea575e495a9bbc278d5
 
 
 ###
-POST http://localhost:3000/api/products/new
+POST https://tillyn-update.vercel.app/api/products/new
 Content-Type: application/json
 
 {
@@ -97,7 +97,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/products/new
+POST https://tillyn-update.vercel.app/api/products/new
 Content-Type: application/json
 
 {
@@ -111,7 +111,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/api/products/update
+PATCH https://tillyn-update.vercel.app/api/products/update
 Content-Type: application/json
 
 {
@@ -121,7 +121,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE  http://localhost:3000/api/products/delete
+DELETE  https://tillyn-update.vercel.app/api/products/delete
 Content-Type: application/json
 
 {
@@ -129,17 +129,17 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/cart-item/your-item?id=66bb7c65506ecdd7977ab05e
+GET https://tillyn-update.vercel.app/api/cart-item/your-item?id=66bb7c65506ecdd7977ab05e
 
 ###
-GET http://localhost:3000/api/cart
+GET https://tillyn-update.vercel.app/api/cart
 
 ###
-GET http://localhost:3000/api/cart-item
+GET https://tillyn-update.vercel.app/api/cart-item
 
 
 ###
-POST http://localhost:3000/api/add-to-cart
+POST https://tillyn-update.vercel.app/api/add-to-cart
 Content-Type: application/json
 
 {
@@ -150,7 +150,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/order/new
+POST https://tillyn-update.vercel.app/api/order/new
 Content-Type: application/json
 
 {
@@ -159,7 +159,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE  http://localhost:3000/api/managers/delete
+DELETE  https://tillyn-update.vercel.app/api/managers/delete
 Content-Type: application/json
 
 {
@@ -168,10 +168,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/order
+GET https://tillyn-update.vercel.app/api/order
 
 ###
-POST http://localhost:3000/api/meeting/new
+POST https://tillyn-update.vercel.app/api/meeting/new
 Content-Type: application/json
 
 {
@@ -185,7 +185,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/api/meeting/update
+PATCH https://tillyn-update.vercel.app/api/meeting/update
 Content-Type: application/json
 
 {
@@ -200,12 +200,12 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/order
+GET https://tillyn-update.vercel.app/api/order
 Authorization: Bearer 
 
 
 ###
-DELETE  http://localhost:3000/api/cart-item/clear
+DELETE  https://tillyn-update.vercel.app/api/cart-item/clear
 Content-Type: application/json
 
 {
@@ -213,10 +213,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/search?query=blue
+GET https://tillyn-update.vercel.app/api/search?query=blue
 
 ###
-POST http://localhost:3000/api/mail/mailgun
+POST https://tillyn-update.vercel.app/api/mail/mailgun
 Content-Type: application/json
 
 {
@@ -229,7 +229,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/paystack
+POST https://tillyn-update.vercel.app/api/paystack
 Content-Type: application/json
 
 {
@@ -241,7 +241,7 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:3000/api/paystack/verify
+POST https://tillyn-update.vercel.app/api/paystack/verify
 Content-Type: application/json
 
 {
@@ -249,7 +249,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/register-seller/new
+POST https://tillyn-update.vercel.app/api/register-seller/new
 Content-Type: application/json
 
 {

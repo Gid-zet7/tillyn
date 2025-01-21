@@ -43,12 +43,12 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 const items = [
   {
     title: "Home",
-    url: "http://localhost:3000/dashboard",
+    url: "https://tillyn-update.vercel.app/dashboard",
     icon: Home,
   },
   {
     title: "Products",
-    url: "http://localhost:3000/dashboard/products",
+    url: "https://tillyn-update.vercel.app/dashboard/products",
     icon: Package,
   },
   {
@@ -58,7 +58,7 @@ const items = [
   },
   {
     title: "Users",
-    url: "http://localhost:3000/dashboard/users",
+    url: "https://tillyn-update.vercel.app/dashboard/users",
     icon: UserCircle2,
   },
   {
@@ -144,7 +144,7 @@ export function AppSidebar() {
                           <SidebarMenuButton asChild>
                             <a
                               href={
-                                "http://localhost:3000/dashboard/products/new"
+                                "https://tillyn-update.vercel.app/dashboard/products/new"
                               }
                             >
                               <PlusCircle />

@@ -51,7 +51,7 @@ export default function CheckoutForm({
           console.error("Payment verification error:", error);
         } finally {
           setShowSpinner(false);
-          router.push("http://localhost:3000/");
+          router.push("https://tillyn-update.vercel.app/");
         }
       } else {
         console.error("Transaction reference or email is not available.");

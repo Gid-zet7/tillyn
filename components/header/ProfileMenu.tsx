@@ -48,13 +48,13 @@ const ProfileMenu = ({ session }: any) => {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Link
-                href={`http://localhost:3000/profile/${session.preferred_email}`}
+                href={`https://tillyn-update.vercel.app/profile/${session.preferred_email}`}
               >
                 Profile
               </Link>
             </DropdownMenuItem>
             {isAdmin ? (
-              <Link href={"http://localhost:3000/dashboard"}>
+              <Link href={"https://tillyn-update.vercel.app/dashboard"}>
                 <DropdownMenuItem>Dashboard</DropdownMenuItem>
               </Link>
             ) : null}

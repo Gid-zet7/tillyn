@@ -84,7 +84,7 @@ export default function Search({
             ? searchItems.map((item: Product, i: number) => (
                 <Link
                   key={i}
-                  href={`http://localhost:3000/products/${item._id}`}
+                  href={`https://tillyn-update.vercel.app/products/${item._id}`}
                 >
                   <div className="w-full flex px-6 py-4 gap-4 hover:bg-slate-50">
                     <Image
