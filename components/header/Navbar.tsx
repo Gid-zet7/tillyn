@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Cart from "../cart/Cart";
 import Search from "../Search/Search";
 import Image from "next/image";
-import styles from "@/components/Header/nav.module.css";
 import ProfileMenu from "./ProfileMenu";
 import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
@@ -86,7 +85,7 @@ export default function Navbar() {
     <>
       <header className="py-5 px-4 md:px-8 border-b gap-4 sticky top-0 z-50 blur-nav">
         <section
-          className={`mx-auto flex md:px-20 items-center justify-between relative ${styles.navbarContent}`}
+          className={`mx-auto flex md:px-20 items-center justify-between relative navbarContent`}
         >
           <div>
             <button
@@ -156,7 +155,7 @@ export default function Navbar() {
             </svg>
 
             <div
-              className={`relative ${styles.cartIconWrapper}`}
+              className={`relative cartIconWrapper `}
               data-count={totalCartItems > 0 ? totalCartItems : "0"}
             >
               <svg
