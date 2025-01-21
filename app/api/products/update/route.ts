@@ -15,6 +15,7 @@ const s3 = new S3Client({
 export const PATCH = async (request: Request) => {
   try {
     const formData = await request.formData();
+    console.log(formData);
 
     // Get form fields
     const id = formData.get("id") as string;
@@ -27,6 +28,8 @@ export const PATCH = async (request: Request) => {
     const stock = parseInt(formData.get("stock") as string);
     const category = formData.get("category") as string;
     const files = formData.getAll("image") as File[];
+
+    console.log(files);
 
     // Validate that the ID is provided
     if (!id) return new Response("Id is required", { status: 400 });

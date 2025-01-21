@@ -1,5 +1,5 @@
 import Product from "@/db/models/productModel";
-import Category from "@/db/models/categoryModel";
+// import Category from "@/db/models/categoryModel";
 import { connectDB } from "@/db/mongodb";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
@@ -20,11 +20,10 @@ const s3 = new S3Client({
 });
 
 export const GET = async (request: Request, { params }: Params) => {
-  console.log("----api-------");
   const { id } = await params;
   try {
     await connectDB();
-    const category = Category.find().lean();
+    // const category = Category.find().lean();
     const product: Product | null = await Product.findById(id)
       .populate("category")
       .exec();
@@ -47,6 +46,7 @@ export const GET = async (request: Request, { params }: Params) => {
       },
     });
   } catch (error) {
+    console.log(error);
     return new Response("Failed to fetch product", { status: 500 });
   }
 };

@@ -1,12 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-// import Loader from "@/components/Loader/page";
-// import Snackbar from "@/components/Snackbar/Snackbar";
-// import ProfileMenu from "@/components/ProfileMenu/ProfileMenu";
 import Cart from "../cart/Cart";
-// import Login from "../Auth/LoginForm/Login";
-// import NewUserForm from "../Auth/NewUserForm.tsx/NewUserForm";
 import Search from "../Search/Search";
 import Image from "next/image";
 import styles from "@/components/Header/nav.module.css";
@@ -14,8 +9,6 @@ import ProfileMenu from "./ProfileMenu";
 import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-
-// init();
 
 export default function Navbar() {
   const [session, setSession] = useState();
@@ -44,7 +37,6 @@ export default function Navbar() {
       try {
         const userSession = await getUsersession();
         setSession(userSession);
-        // console.log(userSession);
       } catch (error) {
         console.error("Error fetching session:", error);
       }
@@ -81,17 +73,10 @@ export default function Navbar() {
     try {
       const response = await search(productName);
       setSearchItems(response);
-
-      // setError("");
-      // setIsSuccess("Account created successfully!");
-
-      // toggleRegisterForm();
-      // toggleLoginForm();
     } catch (error) {
-      // Ensure the error is a string or convert it to a string
       const errorMessage =
         error instanceof Error ? error.message : "An unexpected error occurred";
-      // setError(errorMessage);
+      console.log(errorMessage);
     } finally {
       setLoadSearch(false);
     }
@@ -124,9 +109,9 @@ export default function Navbar() {
                 <li>
                   <Link href={"/products"}>Products</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href={"/about"}>About</Link>
-                </li>
+                </li> */}
               </ul>
             </nav>
           </div>
@@ -198,7 +183,6 @@ export default function Navbar() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="cursor-pointer"
-                  // onClick={toggleLoginForm}
                 >
                   <path
                     opacity="0.4"
@@ -248,12 +232,12 @@ export default function Navbar() {
             >
               Products
             </Link>
-            <Link
+            {/* <Link
               href="/about"
               className="w-full py-6 text-center hover:opacity-90"
             >
               About
-            </Link>
+            </Link> */}
             {/* <a href="#contact" className="w-full py-6 text-center hover:opacity-90"
             >Contact Us</a
           >
@@ -275,21 +259,7 @@ export default function Navbar() {
         handleSearch={handleSearch}
       />
 
-      <Cart
-        // session={session}
-        openCart={openCart}
-        // cartItem={cartItem}
-        toggleCart={toggleCart}
-        // addToCart={addToCart}
-        // removeItemFromCart={removeItemFromCart}
-        subTotal={subTotal}
-        // loaderMsg={loaderMsg}
-        // error={error}
-        // isSuccess={isSuccess}
-        // isLoading={isLoading}
-        // showErrorSnackbar={showErrorSnackbar}
-        // showSuccessSnackbar={showSuccessSnackbar}
-      />
+      <Cart openCart={openCart} toggleCart={toggleCart} subTotal={subTotal} />
     </>
   );
 }

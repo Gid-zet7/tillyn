@@ -1,5 +1,5 @@
 import Product from "@/db/models/productModel";
-import Category from "@/db/models/categoryModel";
+// import Category from "@/db/models/categoryModel";
 import { connectDB } from "@/db/mongodb";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
@@ -18,7 +18,7 @@ export const GET = async () => {
     await connectDB();
 
     // Fetch products and populate the category field
-    const category = Category.find().lean();
+    // const category = Category.find().lean();
     const products = await Product.find().populate("category").lean();
 
     if (products?.length === 0) {

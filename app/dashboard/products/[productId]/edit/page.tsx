@@ -9,5 +9,9 @@ type Params = {
 
 export default async function EditProductPage({ params }: Params) {
   const { productId } = await params;
-  return <EditProductForm productId={productId} />;
+  return (
+    <div className="flex justify-center items-center w-screen">
+      <EditProductForm productId={productId} />;
+    </div>
+  );
 }

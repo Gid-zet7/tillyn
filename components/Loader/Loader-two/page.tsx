@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function PulseLoader() {
+export default function SpinnerSmall() {
   return <span className="loader-two"></span>;
 }

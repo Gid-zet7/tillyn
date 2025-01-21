@@ -3,6 +3,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
 import { useUpdateProductMutation } from "@/redux/slices/productsApiSlice";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import LoaderSimple from "@/components/Loader/Loader-simple/page";
+import { getAllCategories } from "@/lib/actions";
+import Image from "next/image";
 
 type Props = {
   productId: string;
@@ -11,7 +16,7 @@ type Props = {
 export default function EditProductForm({ productId }: Props) {
   const { product } = useGetProductsQuery(productId, {
     selectFromResult: ({ data }) => ({
-      product: data?.entities[productId],
+      product: data?.entities[productId] as Product | undefined,
     }),
   });
 
@@ -26,8 +31,19 @@ export default function EditProductForm({ productId }: Props) {
   const [stock, setStock] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await getAllCategories();
+        setCategories(categoriesData);
+      } catch (err) {
+        console.error("Error loading product page:", err);
+        //  setError("Failed to load product data.");
+      }
+    };
+
     if (product) {
       setName(product?.name);
       setDescription(product?.description);
@@ -37,8 +53,9 @@ export default function EditProductForm({ productId }: Props) {
       setBrand(product?.brand);
       setStock(product?.stock);
       setFile(product?.image_url);
-      setCategory(product?.category);
+      setCategory(product?.category?.name);
     }
+    fetchCategories();
   }, [product]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,36 +102,55 @@ export default function EditProductForm({ productId }: Props) {
     }
   };
 
-  const categories = ["Men", "Women"];
+  // const categories = ["Men", "Women"];
 
   const categoryOption = categories.map((category, i) => {
-    return <option key={i}> {category} </option>;
+    return <option key={i}> {category.name} </option>;
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <LoaderSimple />;
 
   return (
     <>
-      <div className="flex flex-col-reverse lg:flex-row">
-        <div className="lg:w-3/4 px-4 md:px-10 flex-1 flex flex-col justify-center items-center">
+      <div className="flex flex-col-reverse md:w-[60rem]">
+        <div className="px-4 flex-1 flex flex-col justify-center items-center">
           <h1 className="text-xl font-bold my-4 grid place-content-center mt-6">
             Edit product
           </h1>
-          <form onSubmit={handleSubmit} className="w-full lg:w-3/5">
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block font-semibold mb-2 text-black text-xs"
-              >
-                Product name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="w-full p-2 border rounded text-black"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-              />
+          <form onSubmit={handleSubmit} className="w-full">
+            <div className="mb-4 flex gap-10">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block font-semibold mb-2 text-black text-xs"
+                >
+                  Product name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className="w-full p-2 border rounded text-black"
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="price"
+                  className="block font-semibold text-xs mb-2 text-black"
+                >
+                  Price <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="price"
+                  className="w-full p-2 border rounded text-black"
+                  // placeholder="enter your last name..."
+                  onChange={(e) => setPrice(parseFloat(e.target.value))}
+                  value={price}
+                  required
+                />
+              </div>
             </div>
             <div className="mb-4">
               <label
@@ -131,90 +167,80 @@ export default function EditProductForm({ productId }: Props) {
                 required
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="price"
-                className="block font-semibold text-xs mb-2 text-black"
-              >
-                Price <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="number"
-                id="price"
-                className="w-full p-2 border rounded text-black"
-                // placeholder="enter your last name..."
-                onChange={(e) => setPrice(Number(e.target.value))}
-                value={price}
-                required
-              />
+
+            <div className="flex gap-10 mb-4">
+              <div>
+                <label
+                  htmlFor="ratings"
+                  className="block font-semibold mb-2 text-black text-xs"
+                >
+                  Rating <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="ratings"
+                  className="w-full p-2 border rounded text-black"
+                  onChange={(e) => setRatings(parseFloat(e.target.value))}
+                  value={ratings}
+                >
+                  <option>Select rating</option>
+                  <option>4</option>
+                  <option>4.5</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="brand"
+                  className="block font-semibold mb-2 text-black text-xs"
+                >
+                  Your Brand Label <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="brand"
+                  className="w-full p-2 border rounded text-black"
+                  onChange={(e) => setBrand(e.target.value)}
+                  value={brand}
+                >
+                  <option>Select status</option>
+                  <option>Tillyn</option>
+                </select>
+              </div>
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="ratings"
-                className="block font-semibold mb-2 text-black text-xs"
-              >
-                Rating <span className="text-red-500">*</span>
-              </label>
-              <select
-                id="ratings"
-                className="w-full p-2 border rounded text-black"
-                onChange={(e) => setRatings(Number(e.target.value))}
-                value={ratings}
-              >
-                <option>--Select rating--</option>
-                <option>4</option>
-                <option>4.5</option>
-              </select>
+
+            <div className="flex gap-10 mb-4">
+              <div>
+                <label
+                  htmlFor="size"
+                  className="block font-semibold mb-2 text-black text-xs"
+                >
+                  Available size(s) <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="size"
+                  className="w-full p-2 border rounded text-black"
+                  onChange={(e) => setSize(e.target.value)}
+                  value={size}
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="stock"
+                  className="block font-semibold text-xs mb-2 text-black"
+                >
+                  Stock <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="stock"
+                  className="w-full p-2 border rounded text-black"
+                  // placeholder="enter your last name..."
+                  onChange={(e) => setStock(parseInt(e.target.value, 10))}
+                  value={stock}
+                  required
+                />
+              </div>
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="size"
-                className="block font-semibold mb-2 text-black text-xs"
-              >
-                Available size(s) <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="size"
-                className="w-full p-2 border rounded text-black"
-                onChange={(e) => setSize(e.target.value)}
-                value={size}
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="brand"
-                className="block font-semibold mb-2 text-black text-xs"
-              >
-                Your Brand Label <span className="text-red-500">*</span>
-              </label>
-              <select
-                id="brand"
-                className="w-full p-2 border rounded text-black"
-                onChange={(e) => setBrand(e.target.value)}
-                value={brand}
-              >
-                <option>--Select status--</option>
-                <option>Tillyn</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="stock"
-                className="block font-semibold text-xs mb-2 text-black"
-              >
-                Stock <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="number"
-                id="stock"
-                className="w-full p-2 border rounded text-black"
-                // placeholder="enter your last name..."
-                onChange={(e) => setStock(Number(e.target.value))}
-                value={stock}
-                required
-              />
-            </div>
+
             <div className="mb-4">
               <label
                 htmlFor="category"
@@ -234,13 +260,32 @@ export default function EditProductForm({ productId }: Props) {
             </div>
             <div>
               <div>
-                <div className="flex flex-col items-center justify-center p-5">
-                  <input
-                    onChange={handleFileChange}
-                    id="files"
+                <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
+                  <Label htmlFor="picture">Picture</Label>
+
+                  {file && (
+                    <div className="mb-4">
+                      <p className="text-xs text-gray-500">Current Image:</p>
+                      <Image
+                        src={
+                          typeof file === "string"
+                            ? file
+                            : URL.createObjectURL(file)
+                        }
+                        alt="Current Product"
+                        className="h-32 w-32 object-cover border rounded-md"
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+                  )}
+
+                  <Input
+                    id="picture"
                     type="file"
+                    onChange={handleFileChange}
                     accept="image/*"
-                  ></input>
+                  />
                 </div>
               </div>
             </div>
@@ -249,9 +294,9 @@ export default function EditProductForm({ productId }: Props) {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full bg-blue-700 py-6 text-white rounded-md"
+                className="w-full bg-black py-6 text-white rounded-md"
               >
-                Add Product
+                Save
               </button>
               <button
                 type="button"

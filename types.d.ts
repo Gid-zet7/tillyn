@@ -13,8 +13,8 @@ type User = {
     city: string;
     postal_code: string;
   };
-  createdAt: Date;
-  updatedAt: Date;
+  // createdAt: Date;
+  // updatedAt: Date;
   __v: number;
 };
 

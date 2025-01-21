@@ -1,6 +1,6 @@
 "use client";
+import Image from "next/image";
 import React from "react";
-import { Button } from "./ui/button";
 
 const Footer = () => {
   return (
@@ -12,7 +12,7 @@ const Footer = () => {
         >
           <li className="list_item">
             <div className="flex gap-2 md:justify-center items-center">
-              <img
+              <Image
                 src={"tillyn-logo-whyte.svg"}
                 width={70}
                 height={60}

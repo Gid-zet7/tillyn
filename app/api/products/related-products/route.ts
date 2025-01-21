@@ -60,7 +60,7 @@ export const GET = async (request: Request) => {
       },
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return new Response("Failed to fetch products", { status: 500 });
   }
 };

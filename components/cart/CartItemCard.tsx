@@ -1,4 +1,5 @@
-import { Delete, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 export default function CartItemCard({
@@ -21,7 +22,7 @@ export default function CartItemCard({
   return (
     <>
       <div className="w-full flex px-8 py-4 gap-4">
-        <img
+        <Image
           width={300}
           height={300}
           src={imageSrc}

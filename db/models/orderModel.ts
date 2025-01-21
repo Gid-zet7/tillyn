@@ -9,7 +9,7 @@ const orderSchema = new Schema<Order>(
     address: {
       address_line1: { type: String, required: true },
       address_line2: String,
-      city: { type: String, required: true },
+      city: { type: String, required: false },
       postal_code: String,
     },
     status: { type: String, default: "Pending" },

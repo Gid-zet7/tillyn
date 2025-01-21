@@ -1,7 +1,7 @@
 "use client";
 import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
 import { EntityId } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 
 import Card from "@/components/homepage/Card";
@@ -13,7 +13,7 @@ type Props = {
 export default function ProductCard({ productId }: Props) {
   const { product } = useGetProductsQuery("productList", {
     selectFromResult: ({ data }) => ({
-      product: data?.entities[productId],
+      product: data?.entities[productId] as Product | undefined,
     }),
   });
 

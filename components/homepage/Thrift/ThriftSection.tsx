@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Card from "../Card";
 import { Button } from "../../ui/button";
 import localFont from "next/font/local";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { getProductByCategory } from "@/lib/actions";
-import { useRouter } from "next/navigation";
 import { ThriftSkeletonCard } from "./ThriftSkeleton";
 
 const poppins = localFont({

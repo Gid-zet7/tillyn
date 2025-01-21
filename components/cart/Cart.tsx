@@ -1,9 +1,6 @@
 import React from "react";
-import Image from "next/image";
-// import Loader from "../Loader/page";
-// import Snackbar from "../Snackbar/Snackbar";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import CartItemCard from "./CartItemCard";
 import { useSelector, useDispatch } from "react-redux";
 import {
   decrementQuantity,
@@ -15,41 +12,18 @@ import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 
 type Props = {
-  // session: any;
   openCart: boolean;
   cartItem?: CartItem[];
   toggleCart: () => void;
-  // addToCart: (userId: string, productId: string, quantity: number) => void;
-  // removeItemFromCart: (
-  //   userId: string,
-  //   productId: string,
-  //   quantity: number
-  // ) => void;
   subTotal: number;
-  // loaderMsg: string | undefined;
-  // error: string | undefined;
-  // isSuccess: string | undefined;
-  // isLoading: boolean | undefined;
-  // showErrorSnackbar: boolean | undefined;
-  // showSuccessSnackbar: boolean | undefined;
 };
 
 export default function Cart({
-  // session,
   openCart,
   cartItem,
   toggleCart,
   subTotal,
-}: // addToCart,
-// removeItemFromCart,
-
-// loaderMsg,
-// error,
-// isSuccess,
-// isLoading,
-// showErrorSnackbar,
-// showSuccessSnackbar,
-Props) {
+}: Props) {
   const cart = useSelector((state: any) => state.cart.items);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -57,9 +31,6 @@ Props) {
 
   return (
     <>
-      {/* {showErrorSnackbar && <Snackbar message={error} />}
-      {showSuccessSnackbar && <Snackbar message={isSuccess} />} */}
-      {/* Start of Shopping bag */}
       <Card
         className={`h-screen fixed w-full md:w-[30rem] border z-50 right-0 transform ${
           openCart ? "translate-x-0" : "translate-x-full"
@@ -115,9 +86,9 @@ Props) {
             />
           ))
         ) : (
-          <>
+          <div className="flex justify-center items-center">
             <h3 className="text-black/50">Cart is empty</h3>
-          </>
+          </div>
         )}
         {subTotal > 0 && (
           <div className="flex flex-col text-black px-6 md:px-10 shadow-sm sticky bottom-0 mt-48 md:mt-[30rem] bg-slate-100 w-full rounded-none">

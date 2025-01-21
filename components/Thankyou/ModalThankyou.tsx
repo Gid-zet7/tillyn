@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "../ui/card";

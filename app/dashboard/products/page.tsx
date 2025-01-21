@@ -3,6 +3,8 @@ import React from "react";
 import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
 
 import ProductCard from "@/components/products/cards/ProductCard";
+// import SpinnerSmall from "@/components/Loader/Loader-two/page";
+import LoaderSimple from "@/components/Loader/Loader-simple/page";
 
 export default function ProductsPage() {
   const {
@@ -19,12 +21,7 @@ export default function ProductsPage() {
 
   let content;
 
-  if (isLoading)
-    content = (
-      <div>
-        <h2>Loading...</h2>
-      </div>
-    );
+  if (isLoading) content = <LoaderSimple />;
 
   if (isError) {
     console.log(error.data);

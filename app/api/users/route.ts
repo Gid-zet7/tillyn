@@ -1,7 +1,7 @@
 import UserModel from "@/db/models/userModel";
 import { connectDB } from "@/db/mongodb";
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   console.log("api");
   try {
     await connectDB();
@@ -20,6 +20,7 @@ export const GET = async (request: Request) => {
       },
     });
   } catch (error) {
+    console.log(error);
     return new Response("Failed to fetch users", { status: 500 });
   }
 };

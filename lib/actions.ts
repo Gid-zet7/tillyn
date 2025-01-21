@@ -94,6 +94,34 @@ export const order = async (
     return undefined;
   }
 };
+export const getUserOrder = async (email: string) => {
+  const endpoint = `http://localhost:3000/api/orders/user-order?email=${email}`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch user orders. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const getOrderItems = async (id: string) => {
+  const endpoint = `http://localhost:3000/api/order-item/get-ordered-items?id=${id}`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to user order. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const getProduct = async (productId: string) => {
+  const endpoint = `http://localhost:3000/api/products/${productId}`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch product. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  const data = await result.json();
+  return data;
+};
 export const getAllCategories = async () => {
   const endpoint = `http://localhost:3000/api/category`;
   const result = await fetch(endpoint, { method: "GET" });

@@ -32,7 +32,7 @@ export const POST = async (request: Request) => {
     console.log(order);
 
     // // Create order items based on the cart items
-    const orderItems = await Promise.all(
+    await Promise.all(
       cartItem.map(async (cartItem: CartItem) => {
         const orderItem = new OrderedItem({
           order: order._id,
@@ -49,7 +49,7 @@ export const POST = async (request: Request) => {
 
     return new Response(JSON.stringify(order), { status: 200 });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return new Response("Failed to create order", { status: 500 });
   }
 };

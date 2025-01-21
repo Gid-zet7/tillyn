@@ -1,4 +1,4 @@
-import Order from "@/db/models/orderModel";
+// import Order from "@/db/models/orderModel";
 import { connectDB } from "@/db/mongodb";
 import OrderedItem from "@/db/models/orderedItem";
 
@@ -6,7 +6,7 @@ export const GET = async () => {
   try {
     await connectDB();
 
-    const order = Order.find().lean();
+    // const order = Order.find().lean();
 
     const orderItems = await OrderedItem.find()
       .populate("order")
@@ -24,7 +24,7 @@ export const GET = async () => {
       },
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return new Response("Failed to fetch orderItems", { status: 500 });
   }
 };

@@ -28,6 +28,7 @@ export const POST = async (request: Request) => {
     const stock = parseInt(formData.get("stock") as string);
     const category = formData.get("category") as string;
     const files = formData.getAll("image") as File[];
+    console.log(files);
 
     // Validate required fields
     if (

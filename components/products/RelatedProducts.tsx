@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { getProductByCategory } from "@/lib/actions";
 
@@ -19,7 +19,7 @@ export default function RelatedProducts({ productId, category }: Props) {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const dispatch = useDispatch();
-  const router = useRouter();
+  // const router = useRouter();
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -37,7 +37,7 @@ export default function RelatedProducts({ productId, category }: Props) {
       }
     };
     fetchCategories();
-  }, []);
+  }, [category]);
 
   const filteredRelatedProducts = relatedProducts.filter((item) => {
     return item._id !== productId;

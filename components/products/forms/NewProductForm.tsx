@@ -2,14 +2,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getAllCategories } from "@/lib/actions";
-import Image from "next/image";
+// import Image from "next/image";
 import { useAddNewProductMutation } from "@/redux/slices/productsApiSlice";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import LoaderSimple from "@/components/Loader/Loader-simple/page";
 
 export default function NewProductForm() {
-  const [addNewProduct, { isLoading, isSuccess, isError, error }] =
-    useAddNewProductMutation();
+  const [addNewProduct, { isLoading, isSuccess }] = useAddNewProductMutation();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -91,7 +91,7 @@ export default function NewProductForm() {
     return <option key={i}> {category.name} </option>;
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <LoaderSimple />;
 
   if (isSuccess) {
     console.log("Added new product");
@@ -258,14 +258,6 @@ export default function NewProductForm() {
                     accept="image/*"
                   />
                 </div>
-                {/* <div className="flex flex-col items-center justify-center p-5">
-                  <input
-                    onChange={fileSelected}
-                    id="files"
-                    type="file"
-                    accept="image/*"
-                  ></input>
-                </div> */}
               </div>
             </div>
 
@@ -286,15 +278,6 @@ export default function NewProductForm() {
             </div>
           </form>
         </div>
-        {/* <div className="flex-1">
-          <Image
-            src={"/oladimeji-odunsi2.jpg"}
-            width={800}
-            height={800}
-            alt="woman wearing blue sweatshirt"
-            className="w-full h-[30rem] lg:h-screen object-cover rounded-lg"
-          />
-        </div> */}
       </div>
     </>
   );

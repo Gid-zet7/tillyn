@@ -2,39 +2,17 @@
 import { Button } from "@/components/ui/button";
 import { EntityId } from "@reduxjs/toolkit";
 import Image from "next/image";
-import Link from "next/link";
 import localFont from "next/font/local";
 import { useDispatch } from "react-redux";
-import { addToCart, incrementQuantity } from "@/redux/slices/cartSlice";
-import { decrementQuantity } from "@/redux/slices/cartSlice";
+import { addToCart } from "@/redux/slices/cartSlice";
 import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
-import {
-  CircleCheckBig,
-  Eye,
-  Package2,
-  Package2Icon,
-  PackageOpen,
-  PartyPopper,
-} from "lucide-react";
+import { Eye, PackageOpen, PartyPopper } from "lucide-react";
 import { ProductSkeletonCard } from "@/components/skeleton/ProductSkeleton";
 import RelatedProducts from "../RelatedProducts";
 
 type Props = {
   productId: EntityId;
 };
-
-// const prod = {
-//   name: "Forest Art Shirt And Black Pants Set",
-//   image_url: "/forest-art-shirt-and-black-pants-set.jpeg",
-//   description:
-//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam culpa veritatis tempora. Delectus assumenda vitae neque ex! Quia fugiat accusantium, nam aut nisi quis porro ratione provident expedita ducimus commodi! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed, commodi. Doloremque deserunt quidem quam, ipsa laudantium velit quas libero esse magnam voluptates! Unde minima maiores ipsa dignissimos veritatis temporibus quos!",
-//   price: 420,
-//   ratings: 4.5,
-//   size: "M, XL, L",
-//   brand: "Tillyn",
-//   stock: 10,
-//   category: "Men Top and Down set",
-// };
 
 const poppins = localFont({
   src: "../../../app/fonts/Poppins-Medium.ttf",
@@ -45,7 +23,7 @@ const poppins = localFont({
 export default function Product({ productId }: Props) {
   const { product } = useGetProductsQuery("productList", {
     selectFromResult: ({ data }) => ({
-      product: data?.entities[productId],
+      product: data?.entities[productId] as Product | undefined,
     }),
   });
 
@@ -123,8 +101,11 @@ export default function Product({ productId }: Props) {
                 <PackageOpen /> Delivery right to your door
               </div>
               <div className="flex gap-2">
-                <PartyPopper /> Exclusive discounts, early access to new
-                arrivals and birthday/anniversary rewards.
+                <PartyPopper className="h-14 w-14 md:h-6 md:w-6" />{" "}
+                <span className="">
+                  Exclusive discounts, early access to new arrivals and
+                  birthday/anniversary rewards.
+                </span>
               </div>
             </div>
           </div>

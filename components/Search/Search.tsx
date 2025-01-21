@@ -19,7 +19,7 @@ export default function Search({
   openSearchForm,
   loadSearch,
   searchItems,
-  setSearchItems,
+  // setSearchItems,
   toggleSearchForm,
   handleSearch,
 }: Props) {

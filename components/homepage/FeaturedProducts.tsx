@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useDispatch, UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -79,7 +79,7 @@ export function FeaturedProducts() {
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-100 flex flex-col items-center justify-center transition-opacity duration-300 rounded-lg">
                       {/* Display price */}
                       <p className="text-white text-lg font-semibold mb-2">
-                        ${item.price}
+                        ₵{item.price}
                       </p>
 
                       {/* Add to Cart button */}

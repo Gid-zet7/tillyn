@@ -1,4 +1,4 @@
-import Order from "@/db/models/orderModel";
+// import Order from "@/db/models/orderModel";
 import { connectDB } from "@/db/mongodb";
 import OrderedItem from "@/db/models/orderedItem";
 
@@ -12,11 +12,9 @@ export const GET = async (request: Request) => {
 
     await connectDB();
 
-    const order = Order.find().lean();
+    // const order = Order.find().lean();
 
-    const orderItems = await OrderedItem.find({ order: id })
-      //   .populate("product")
-      .exec();
+    const orderItems = await OrderedItem.find({ order: id }).exec();
 
     if (orderItems.length === 0) {
       return new Response("No products posted yet", { status: 404 });
@@ -29,7 +27,7 @@ export const GET = async (request: Request) => {
       },
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return new Response("Failed to fetch orderItems", { status: 500 });
   }
 };

@@ -6,12 +6,13 @@ import {
   Home,
   ListOrdered,
   Package,
-  Search,
+  // Search,
   Settings,
   PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
 import {
   Sidebar,
@@ -173,7 +174,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger asChild className="p-6">
                 <SidebarMenuButton>
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={`${session?.picture}`} alt="profile" />
@@ -185,20 +186,22 @@ export function AppSidebar() {
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
+              <LogoutLink>
+                <DropdownMenuContent
+                  side="top"
+                  className="w-[--radix-popper-anchor-width] p-4 hover:bg-slate-100 rounded-2xl"
+                >
+                  {/* <DropdownMenuItem>
                   <span>Account</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
+                </DropdownMenuItem> */}
+                  <DropdownMenuItem>
+                    <span className="p-4 text-red-400"> Sign out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </LogoutLink>
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>

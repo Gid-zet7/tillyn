@@ -1,7 +1,7 @@
 import Order from "@/db/models/orderModel";
 import { connectDB } from "@/db/mongodb";
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   try {
     await connectDB();
 
@@ -14,6 +14,7 @@ export const GET = async (request: Request) => {
 
     return new Response(JSON.stringify(orders), { status: 200 });
   } catch (error) {
+    console.log(error);
     return new Response("Failed to fetch order", { status: 500 });
   }
 };

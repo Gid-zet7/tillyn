@@ -1,10 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import {
-  RegisterLink,
-  LoginLink,
-  LogoutLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
+import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import localFont from "next/font/local";
 
 const poppins = localFont({

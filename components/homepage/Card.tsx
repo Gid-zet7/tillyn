@@ -1,13 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function Card({
   imageSrc,
-  title,
+  // title,
   price,
-  ratings,
+  // ratings,
   productId,
   stock,
   addToCart,
@@ -21,6 +20,9 @@ export default function Card({
   addToCart?: () => void;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isDashboard = pathname.includes("dashboard");
   return (
     <div
       style={{ backgroundImage: `url(${imageSrc})` }}
@@ -38,12 +40,23 @@ export default function Card({
 
         {/* Add to Cart button */}
         <div className=" flex flex-col gap-2">
-          <Button
-            className="bg-white text-black px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200"
-            onClick={addToCart}
-          >
-            Add to Cart
-          </Button>
+          {isDashboard ? (
+            <Button
+              className="bg-yellow-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-yellow-600 transition-colors duration-200"
+              onClick={() =>
+                router.push(`/dashboard/products/${productId}/edit`)
+              }
+            >
+              Edit Product
+            </Button>
+          ) : (
+            <Button
+              className="bg-white text-black px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200"
+              onClick={addToCart}
+            >
+              Add to Cart
+            </Button>
+          )}
           <Button
             className="bg-black/50 text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors duration-200"
             onClick={() =>

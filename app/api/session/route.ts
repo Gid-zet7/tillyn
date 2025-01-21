@@ -3,7 +3,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 init();
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   try {
     const session = await getKindeServerSession().getUser();
     const userData = await Users.getUserData({ id: session.id });

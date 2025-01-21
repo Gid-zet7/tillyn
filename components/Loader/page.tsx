@@ -9,7 +9,7 @@ export default function Loader({ message }: Props) {
   const [snackbar, setSnackbar] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    var snackbar = document.getElementById("snackbar");
+    const snackbar = document.getElementById("snackbar");
 
     setSnackbar(snackbar);
   }, []);

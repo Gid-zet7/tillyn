@@ -1,9 +1,8 @@
-import UserModel from "@/db/models/userModel";
-import Order from "@/db/models/orderModel";
+// import UserModel from "@/db/models/userModel";
 import axios from "axios";
 
 export const POST = async (request: Request) => {
-  const { email, reference } = await request.json();
+  const { reference } = await request.json();
 
   console.log("reference:", reference);
 
@@ -20,16 +19,7 @@ export const POST = async (request: Request) => {
     const { message, data } = response.data;
 
     if (message === "Verification successful") {
-      const user = await UserModel.findOne({ email });
-      console.log(user);
-
-      if (user) {
-        const order = await Order.findOne({ user });
-        console.log(order);
-        order.payment_status = "Paid";
-
-        await order.save();
-      }
+      // const user = await UserModel.findOne({ email });
 
       return new Response(
         JSON.stringify({

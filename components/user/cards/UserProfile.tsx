@@ -1,35 +1,49 @@
 "use client";
-import React from "react";
-import { useEffect, useState } from "react";
-import { getUserData } from "@/lib/actions";
+import ProfileCard from "./ProfileCard";
+import AboutCard from "./AboutCard";
+import OrdersCard from "./OrdersCard";
 
 type Props = {
-  email: string;
+  user: User | undefined;
+  orders?: Order[] | undefined;
 };
 
-export default function UserProfile({ email }: Props) {
-  const [user, setUser] = useState<User>();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userData = await getUserData(email);
-        setUser(userData);
-      } catch (err) {
-        console.error("Error loading user page:", err);
-      }
-    };
-
-    fetchData();
-  }, [email]);
-
+export default function UserProfile({ user, orders }: Props) {
+  console.log(user?.picture);
   return (
     <>
-      <main>
-        <div>
-          <h1>{user?.email}</h1>
+      <section>
+        <div className="mx-auto my-5 p-5">
+          <div className="md:flex no-wrap md:-mx-2 ">
+            <div className="w-full md:w-3/12 md:mx-2">
+              <ProfileCard
+                id={user?._id}
+                picture={user?.picture}
+                //   avatar={user.}
+                firstname={user?.first_name}
+                lastname={user?.last_name}
+              />
+            </div>
+
+            <div className="w-full md:w-9/12 mt-3 md:mt-0">
+              <AboutCard
+                // username={user?.first_name}
+                firstname={user?.first_name}
+                lastname={user?.last_name}
+                email={user?.email}
+                address={user?.address}
+                phoneNumber={user?.phone_number}
+              />
+
+              <div className="my-4"></div>
+
+              <OrdersCard orders={orders} />
+
+              <div className="my-4"></div>
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
     </>
   );
 }
