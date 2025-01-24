@@ -4,8 +4,16 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 init();
 
 export const GET = async () => {
+  console.log("Fetching session...");
   try {
     const session = await getKindeServerSession().getUser();
+    if (!session) {
+      console.error("No session found");
+      return new Response(JSON.stringify({ error: "No session found" }), {
+        status: 401,
+      });
+    }
+
     const userData = await Users.getUserData({ id: session.id });
     return new Response(JSON.stringify(userData), {
       status: 200,
@@ -14,7 +22,10 @@ export const GET = async () => {
       },
     });
   } catch (error) {
-    console.error("Error fetching user data:", error);
-    return new Response("Something went wrong!", { status: 500 });
+    console.error("Error fetching user session:", error);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 };

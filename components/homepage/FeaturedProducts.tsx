@@ -9,6 +9,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import { CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { getProductByCategory } from "@/lib/actions";
 import { addToCart } from "@/redux/slices/cartSlice";
@@ -16,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { SkeletonCard } from "../skeleton/Skeleton";
 
 export function FeaturedProducts() {
+  const { toast } = useToast();
   const [featuredProducts, setFeaturedProducts] = React.useState<Product[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
@@ -86,7 +90,17 @@ export function FeaturedProducts() {
                       <div className=" flex flex-col gap-2">
                         <Button
                           className="bg-white text-black px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200"
-                          onClick={() => dispatch(addToCart(item))}
+                          onClick={() => {
+                            dispatch(addToCart(item));
+                            toast({
+                              title: "Added product to cart ",
+                              action: (
+                                <ToastAction altText="check">
+                                  <CheckCircle2 />
+                                </ToastAction>
+                              ),
+                            });
+                          }}
                         >
                           Add to Cart
                         </Button>

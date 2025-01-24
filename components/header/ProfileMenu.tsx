@@ -29,8 +29,6 @@ const ProfileMenu = ({ session }: any) => {
     .map((word: string) => word[0].toUpperCase())
     .join("");
 
-  console.log(session);
-
   return (
     <>
       <div>

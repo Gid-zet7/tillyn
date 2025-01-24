@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getUserData, getUserOrder } from "@/lib/actions";
 import UserProfile from "./UserProfile";
+import LoaderSimple from "@/components/Loader/Loader-simple/page";
 
 type Props = {
   email: string;
@@ -39,7 +40,7 @@ export default function User({ email }: Props) {
   }, [email]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoaderSimple />;
   }
 
   if (error) {

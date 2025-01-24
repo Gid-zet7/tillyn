@@ -7,6 +7,8 @@ export const GET = async (request: Request) => {
     const query = url.searchParams.get("query");
     const searchQuery = query ? String(query) : "";
 
+    console.log(searchQuery);
+
     const regex = new RegExp(searchQuery, "i");
     await connectDB();
 

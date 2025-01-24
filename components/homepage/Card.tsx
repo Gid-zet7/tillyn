@@ -1,6 +1,9 @@
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import { CheckCircle2 } from "lucide-react";
 
 export default function Card({
   imageSrc,
@@ -14,13 +17,14 @@ export default function Card({
   imageSrc: string;
   title: string;
   productId: string;
+  addToCart: () => void;
   price?: number;
   ratings?: number;
   stock?: number;
-  addToCart?: () => void;
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
 
   const isDashboard = pathname.includes("dashboard");
   return (
@@ -52,7 +56,18 @@ export default function Card({
           ) : (
             <Button
               className="bg-white text-black px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200"
-              onClick={addToCart}
+              onClick={() => {
+                addToCart();
+
+                toast({
+                  title: "Added product to cart ",
+                  action: (
+                    <ToastAction altText="check">
+                      <CheckCircle2 />
+                    </ToastAction>
+                  ),
+                });
+              }}
             >
               Add to Cart
             </Button>

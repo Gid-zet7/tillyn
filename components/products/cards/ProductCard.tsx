@@ -20,12 +20,7 @@ export default function ProductCard({ productId }: Props) {
   const dispatch = useDispatch();
 
   if (product) {
-    // console.log(product);
     return (
-      // <div>
-      //   <Link href={`products/${product._id}`}>{product.name} </Link>
-      // </div>
-
       <Card
         key={product._id}
         productId={product._id}

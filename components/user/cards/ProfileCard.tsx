@@ -7,16 +7,17 @@ type Props = {
   id: string | undefined;
   firstname?: string;
   lastname?: string;
+  email?: string;
   picture?: string;
 };
 
 export default function ProfileCard({
   id,
   picture,
+  email,
   firstname = "",
   lastname = "",
 }: Props) {
-  console.log(picture);
   const getInitials = (name: string) =>
     name
       .split(" ")
@@ -41,7 +42,7 @@ export default function ProfileCard({
           {firstname} {lastname}
         </h1>
         {id && (
-          <Link href={`/profile/${id}/edit`} aria-label="Edit Profile">
+          <Link href={`/profile/${email}/edit`} aria-label="Edit Profile">
             <Edit2 className="text-gray-600 hover:text-black" />
           </Link>
         )}

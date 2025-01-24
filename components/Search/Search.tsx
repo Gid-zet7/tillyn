@@ -1,6 +1,12 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { addToCart } from "@/redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "../ui/button";
+import { ToastAction } from "@/components/ui/toast";
+import { CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
 
 type Props = {
   productName: string | undefined;
@@ -23,6 +29,10 @@ export default function Search({
   toggleSearchForm,
   handleSearch,
 }: Props) {
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const router = useRouter();
+
   return (
     <>
       {/* Start of login form */}
@@ -81,99 +91,8 @@ export default function Search({
         </form>
         <div>
           {searchItems
-            ? searchItems.map((item: Product, i: number) => (
-                <Link
-                  key={i}
-                  href={`http://localhost:3000/products/${item._id}`}
-                >
-                  <div className="w-full flex px-6 py-4 gap-4 hover:bg-slate-50">
-                    <Image
-                      width={300}
-                      height={300}
-                      src={item?.image_url}
-                      alt={item.name}
-                      className="h-36 w-28 object-cover"
-                    />
-
-                    <div className="text-black flex flex-col justify-center gap-4 items-center">
-                      <div className="flex flex-col gap-2">
-                        <div className="flex justify-between mt-4 items-center text-black">
-                          <h3 className="text-sm font-semibold">{item.name}</h3>
-                        </div>
-                        {item.ratings === 4 ? (
-                          <div className="flex gap-1">
-                            {" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/star-black.svg"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />
-                          </div>
-                        ) : (
-                          <div className="flex gap-1">
-                            {" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/star.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />{" "}
-                            <Image
-                              src={"/favorite.png"}
-                              width={15}
-                              height={15}
-                              alt="review stars"
-                            />
-                          </div>
-                        )}
-                        <h2>GHS {item.price}</h2>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+            ? searchItems.map((item: Product, index: number) => (
+                // sd
               ))
             : "No products found"}
         </div>

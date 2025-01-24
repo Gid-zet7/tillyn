@@ -2,6 +2,7 @@
 import React from "react";
 import { useGetUsersQuery } from "@/redux/slices/usersApiSlice";
 import UserCard from "@/components/user/cards/UserCard";
+import LoaderSimple from "@/components/Loader/Loader-simple/page";
 
 export default function UsersPage() {
   const {
@@ -17,12 +18,7 @@ export default function UsersPage() {
 
   let content;
 
-  if (isLoading)
-    content = (
-      <div className="loader-container">
-        <h1>Loading...</h1>
-      </div>
-    );
+  if (isLoading) content = <LoaderSimple />;
 
   if (isError) {
     console.log(error);

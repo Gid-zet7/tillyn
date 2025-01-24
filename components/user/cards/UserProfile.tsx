@@ -19,7 +19,7 @@ export default function UserProfile({ user, orders }: Props) {
               <ProfileCard
                 id={user?._id}
                 picture={user?.picture}
-                //   avatar={user.}
+                email={user?.email}
                 firstname={user?.first_name}
                 lastname={user?.last_name}
               />

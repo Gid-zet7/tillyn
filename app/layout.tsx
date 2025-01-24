@@ -6,6 +6,7 @@ import "./globals.css";
 import Navbar from "@/components/header/Navbar";
 import Providers from "@/redux/Provider";
 
+import { Toaster } from "@/components/ui/toaster";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
 
           {children}
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

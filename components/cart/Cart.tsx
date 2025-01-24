@@ -27,7 +27,6 @@ export default function Cart({
   const cart = useSelector((state: any) => state.cart.items);
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log(subTotal);
 
   return (
     <>

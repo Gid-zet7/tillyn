@@ -9,6 +9,9 @@ import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
 import { Eye, PackageOpen, PartyPopper } from "lucide-react";
 import { ProductSkeletonCard } from "@/components/skeleton/ProductSkeleton";
 import RelatedProducts from "../RelatedProducts";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import { CheckCircle2 } from "lucide-react";
 
 type Props = {
   productId: EntityId;
@@ -21,6 +24,7 @@ const poppins = localFont({
 });
 
 export default function Product({ productId }: Props) {
+  const { toast } = useToast();
   const { product } = useGetProductsQuery("productList", {
     selectFromResult: ({ data }) => ({
       product: data?.entities[productId] as Product | undefined,
@@ -88,7 +92,17 @@ export default function Product({ productId }: Props) {
               <button
                 className="w-full bg-black text-white py-6 font-bold rounded-full"
                 disabled={product.stock === 0}
-                onClick={() => dispatch(addToCart(product))}
+                onClick={() => {
+                  dispatch(addToCart(product));
+                  toast({
+                    title: "Added product to cart ",
+                    action: (
+                      <ToastAction altText="check">
+                        <CheckCircle2 />
+                      </ToastAction>
+                    ),
+                  });
+                }}
               >
                 {product.stock === 0 ? "OUT OF STOCK" : "ADD TO CART"}
               </button>
