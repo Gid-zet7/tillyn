@@ -23,7 +23,7 @@ export default function Home() {
     const fetchSession = async () => {
       try {
         const userData = await getUsersession();
-        await fetch("https://tillyn-update.vercel.app/api/users/new", {
+        await fetch("http://localhost:3000/api/users/new", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

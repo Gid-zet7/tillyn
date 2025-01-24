@@ -1,5 +1,5 @@
 export const getAllUsers = async () => {
-  const endpoint = `https://tillyn-update.vercel.app/api/users`;
+  const endpoint = `http://localhost:3000/api/users`;
   const result = await fetch(endpoint, {
     method: "GET",
   });
@@ -12,7 +12,7 @@ export const getAllUsers = async () => {
 };
 
 export const getUserData = async (email: string) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/users/${email}`;
+  const endpoint = `http://localhost:3000/api/users/${email}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to fetch user. Status: ${result.status}, ${result.statusText}`;
@@ -22,7 +22,7 @@ export const getUserData = async (email: string) => {
 };
 
 export const getUsersession = async () => {
-  const endpoint = `https://tillyn-update.vercel.app/api/session`;
+  const endpoint = `http://localhost:3000/api/session`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to fetch user. Status: ${result.status}, ${result.statusText}`;
@@ -34,7 +34,7 @@ export const getUsersession = async () => {
 };
 
 export const getProductByCategory = async (category: string) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/products/category?category=${category}`;
+  const endpoint = `http://localhost:3000/api/products/category?category=${category}`;
   const result = await fetch(endpoint, {
     method: "GET",
   });
@@ -50,7 +50,7 @@ export const sendEmail = async (
   subject: string | undefined,
   htmlContent: any
 ) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/mail/mailgun`;
+  const endpoint = `http://localhost:3000/api/mail/mailgun`;
   try {
     const res = await fetch(endpoint, {
       method: "POST",
@@ -78,7 +78,7 @@ export const order = async (
   subtotal: number,
   cartItem: CartItem[]
 ) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/order/new`;
+  const endpoint = `http://localhost:3000/api/order/new`;
   try {
     const res = await fetch(endpoint, {
       method: "POST",
@@ -95,7 +95,7 @@ export const order = async (
   }
 };
 export const getUserOrder = async (email: string) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/orders/user-order?email=${email}`;
+  const endpoint = `http://localhost:3000/api/orders/user-order?email=${email}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to fetch user orders. Status: ${result.status}, ${result.statusText}`;
@@ -104,7 +104,7 @@ export const getUserOrder = async (email: string) => {
   return result.json();
 };
 export const getOrderItems = async (id: string) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/order-item/get-ordered-items?id=${id}`;
+  const endpoint = `http://localhost:3000/api/order-item/get-ordered-items?id=${id}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to user order. Status: ${result.status}, ${result.statusText}`;
@@ -113,7 +113,7 @@ export const getOrderItems = async (id: string) => {
   return result.json();
 };
 export const getProduct = async (productId: string) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/products/${productId}`;
+  const endpoint = `http://localhost:3000/api/products/${productId}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to fetch product. Status: ${result.status}, ${result.statusText}`;
@@ -123,7 +123,7 @@ export const getProduct = async (productId: string) => {
   return data;
 };
 export const getAllCategories = async () => {
-  const endpoint = `https://tillyn-update.vercel.app/api/category`;
+  const endpoint = `http://localhost:3000/api/category`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to fetch categories. Status: ${result.status}, ${result.statusText}`;
@@ -132,7 +132,7 @@ export const getAllCategories = async () => {
   return result.json();
 };
 export const search = async (name: string) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/search?query=${name}`;
+  const endpoint = `http://localhost:3000/api/search?query=${name}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to get products. Status: ${result.status}, ${result.statusText}`;
@@ -141,7 +141,7 @@ export const search = async (name: string) => {
   return result.json();
 };
 export const payStackHandler = async (email: string, amount: number) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/paystack`;
+  const endpoint = `http://localhost:3000/api/paystack`;
   const result = await fetch(endpoint, {
     method: "POST",
     body: JSON.stringify({ email, amount }),
@@ -159,7 +159,7 @@ export const payStackHandler = async (email: string, amount: number) => {
   }
 };
 export const verifyPayment = async (email: string, reference: string) => {
-  const endpoint = `https://tillyn-update.vercel.app/api/paystack/verify`;
+  const endpoint = `http://localhost:3000/api/paystack/verify`;
   const result = await fetch(endpoint, {
     method: "POST",
     body: JSON.stringify({ email, reference }),

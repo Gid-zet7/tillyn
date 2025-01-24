@@ -38,5 +38,5 @@ export const persistor = persistStore(store);
 
 persistor.subscribe(() => {
   const state = store.getState();
-  console.log("Updated state after persist:", state);
+  // console.log("Updated state after persist:", state);
 });

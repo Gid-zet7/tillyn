@@ -30,7 +30,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<ProductsState>({});
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>({
     type: "Men",
-    category: "All",
+    category: "Tops",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);

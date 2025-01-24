@@ -17,13 +17,13 @@ export const GET = async (request: Request) => {
   try {
     const url = new URL(request.url);
     const categoryName = url.searchParams.get("category");
-    console.log(categoryName);
+    // console.log(categoryName);
 
     await connectDB();
 
     const category = await Category.findOne({ name: categoryName }).exec();
 
-    console.log(category);
+    // console.log(category);
 
     if (!category) {
       return new Response(JSON.stringify({ error: "Category not found" }), {

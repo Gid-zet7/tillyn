@@ -107,7 +107,7 @@ export default function Cart({
             <Button
               className="my-5 font-semibold"
               onClick={() => {
-                router.push("https://tillyn-update.vercel.app/checkout");
+                router.push("http://localhost:3000/checkout");
                 toggleCart();
               }}
             >

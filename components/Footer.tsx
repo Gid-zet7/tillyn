@@ -34,16 +34,13 @@ const Footer = () => {
             </li>
 
             <li className="list_item">
-              <a
-                href={"https://tillyn-update.vercel.app/terms"}
-                className="text-white"
-              >
+              <a href={"http://localhost:3000/terms"} className="text-white">
                 Terms & Conditions
               </a>
             </li>
             <li className="list_item">
               <a
-                href={"https://tillyn-update.vercel.app/accessibility"}
+                href={"http://localhost:3000/accessibility"}
                 className="text-white"
               >
                 Accessibility statement
@@ -51,7 +48,7 @@ const Footer = () => {
             </li>
             <li className="list_item">
               <a
-                href={"https://tillyn-update.vercel.app/privacy-policy"}
+                href={"http://localhost:3000/privacy-policy"}
                 className="text-white"
               >
                 Privacy policy

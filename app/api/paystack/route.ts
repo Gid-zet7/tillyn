@@ -23,7 +23,7 @@ export const POST = async (request: Request) => {
         email,
         amount: amount * 100,
         currency: "GHS",
-        callback_url: `https://tillyn-update.vercel.app/checkout`,
+        callback_url: `http://localhost:3000/checkout`,
       },
       {
         headers: {
