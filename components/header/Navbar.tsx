@@ -8,6 +8,7 @@ import ProfileMenu from "./ProfileMenu";
 import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { Star } from "lucide-react";
 
 export default function Navbar() {
   const [session, setSession] = useState();
@@ -108,9 +109,9 @@ export default function Navbar() {
                 <li>
                   <Link href={"/products"}>Products</Link>
                 </li>
-                {/* <li>
-                  <Link href={"/about"}>About</Link>
-                </li> */}
+                <li>
+                  <Link href={"/products/new-arrivals"}>New Arrivals</Link>
+                </li>
               </ul>
             </nav>
           </div>
@@ -214,7 +215,7 @@ export default function Navbar() {
         </section>
         <section
           id="mobile-menu"
-          className="top-24 justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white text-5xl"
+          className="top-20 justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white text-5xl"
         >
           {/* <button className="text-8xl self-end px-6">
                 &times;
@@ -232,12 +233,12 @@ export default function Navbar() {
             >
               Products
             </Link>
-            {/* <Link
-              href="/about"
+            <Link
+              href="/products/new-arrivals"
               className="w-full py-6 text-center hover:opacity-90"
             >
-              About
-            </Link> */}
+              New arrivals
+            </Link>
             {/* <a href="#contact" className="w-full py-6 text-center hover:opacity-90"
             >Contact Us</a
           >

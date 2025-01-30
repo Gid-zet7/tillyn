@@ -47,6 +47,54 @@ export const getProductByCategory = async (category: string) => {
   return result.json();
 };
 
+export const getNewArrivals = async () => {
+  const endpoint = `${SERVER_URL}/api/products/new-arrivals`;
+  const result = await fetch(endpoint, {
+    method: "GET",
+  });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch new arrivals. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+
+export const getMenProducts = async () => {
+  const endpoint = `${SERVER_URL}/api/products/men`;
+  const result = await fetch(endpoint, {
+    method: "GET",
+  });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch new arrivals. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+
+export const getWomenProducts = async () => {
+  const endpoint = `${SERVER_URL}/api/products/women`;
+  const result = await fetch(endpoint, {
+    method: "GET",
+  });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch new arrivals. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+
+export const getKidsProducts = async () => {
+  const endpoint = `${SERVER_URL}/api/products/kids`;
+  const result = await fetch(endpoint, {
+    method: "GET",
+  });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch new arrivals. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+
 export const sendEmail = async (
   emailTo: string | undefined,
   subject: string | undefined,

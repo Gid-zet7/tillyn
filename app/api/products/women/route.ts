@@ -1,6 +1,6 @@
 import { connectDB } from "@/db/mongodb";
 import Product from "@/db/models/productModel";
-import Category from "@/db/models/categoryModel"; // Import category model
+import Category from "@/db/models/categoryModel";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
@@ -24,20 +24,12 @@ const s3 = new S3Client({
 
 export const GET = async (request: Request) => {
   try {
+    const regex = new RegExp("women", "i");
     await connectDB();
 
-    const url = new URL(request.url);
-    const query = url.searchParams.get("query") || ""; // Ensure query is a string
-    const regex = new RegExp(query, "i");
+    let products = await Product.find({ name: { $regex: regex } }).lean(); // Use `.lean()` to get plain objects
 
-    console.log(`Search query: ${query}`);
-
-    // Find products by name or description
-    let products = await Product.find({
-      $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
-    }).lean(); // Use `.lean()` to return plain JavaScript objects
-
-    // If no products found by name/description, search by category
+    // If no products found by name, search by category
     if (products.length === 0) {
       const matchingCategories = await Category.find({
         name: { $regex: regex },
@@ -47,27 +39,22 @@ export const GET = async (request: Request) => {
       products = await Product.find({ category: { $in: categoryIds } }).lean();
     }
 
-    // If still no products found, return 404
     if (products.length === 0) {
       return new Response("No product found", { status: 404 });
     }
 
-    console.log(`Found ${products.length} products`);
-
     // Generate signed URLs for product images
-    await Promise.all(
-      products.map(async (product) => {
-        if (product.image_url) {
-          const command = new GetObjectCommand({
-            Bucket,
-            Key: product.image_url,
-          });
-          product.image_url = await getSignedUrl(s3, command, {
-            expiresIn: 604800,
-          });
-        }
-      })
-    );
+    for (const product of products) {
+      if (product.image_url) {
+        const command = new GetObjectCommand({
+          Bucket,
+          Key: product.image_url,
+        });
+        product.image_url = await getSignedUrl(s3, command, {
+          expiresIn: 604800,
+        });
+      }
+    }
 
     return new Response(JSON.stringify(products), {
       status: 200,

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUsersession } from "@/lib/actions";
 import Categories from "@/components/homepage/Categories";
 import { FeaturedProducts } from "@/components/homepage/FeaturedProducts";
@@ -11,6 +11,9 @@ import Hero from "@/components/homepage/Hero";
 import Count from "@/components/homepage/Count";
 import localFont from "next/font/local";
 import ParallaxText from "@/components/ParallaxText";
+import { AlertHeadsUp } from "@/components/Alert/Alert";
+import { AlertHappy } from "@/components/Alert/HappyShopping";
+import Link from "next/link";
 
 const poppins = localFont({
   src: "../../../app/fonts/Poppins-Medium.ttf",
@@ -21,6 +24,12 @@ const poppins = localFont({
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function Home() {
+  const [error, setError] = useState<any>("");
+  // const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<string>("");
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -32,16 +41,43 @@ export default function Home() {
           },
           body: JSON.stringify(userData),
         });
-      } catch (error) {
-        console.error("Error fetching session:", error);
+        setIsSuccess("Happy Shoping!");
+      } catch {
+        setError(`Sign up or log in to unlock the best experience!`);
       }
     };
 
     fetchSession();
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      setShowErrorAlert(true);
+      const timer = setTimeout(() => {
+        setShowErrorAlert(false);
+        setError("");
+      }, 10000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setShowSuccessAlert(true);
+      const timer = setTimeout(() => {
+        setShowSuccessAlert(false);
+        setIsSuccess("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess]);
+
   return (
     <main>
+      {showErrorAlert && <AlertHeadsUp message={error} />}
+      {showSuccessAlert && <AlertHappy message={isSuccess} />}
       <Hero />
       <Count />
       <div className={`${poppins.className} mt-20 md:mt-40 bg-slate-50`}>
@@ -58,7 +94,9 @@ export default function Home() {
       </div>
       <ThriftSection />
       <section className="mt-32 lg:mt-[10rem] flex items-center justify-center">
-        <Button>Shop Now</Button>
+        <Button>
+          <Link href={`${SERVER_URL}/products`}>Shop Now</Link>{" "}
+        </Button>
       </section>
       <Footer />
     </main>

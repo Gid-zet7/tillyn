@@ -16,7 +16,8 @@ import { Button } from "../ui/button";
 import { getProductByCategory } from "@/lib/actions";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
-import { SkeletonCard } from "../skeleton/Skeleton";
+import { AlertDestructive } from "../Alert/AlertDestructive";
+import { FeaturedSkeletonCard } from "../skeleton/FeaturedSkeleton";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
@@ -34,18 +35,25 @@ export function FeaturedProducts() {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
+        setIsError(false);
+        setIsSuccess(false);
+
         const featuredProductsData = await getProductByCategory("Featured");
-        console.log(featuredProductsData);
+
+        if (!featuredProductsData || featuredProductsData.length === 0) {
+          throw new Error("No featured products found");
+        }
+
         setFeaturedProducts(featuredProductsData);
-      } catch (error) {
-        console.log(error);
+        setIsSuccess(true);
+      } catch {
         setIsError(true);
-        setErrorMessage("Failed to fetch");
+        setErrorMessage("Failed to fetch featured products. Please try again.");
       } finally {
         setIsLoading(false);
-        setIsSuccess(true);
       }
     };
+
     fetchCategories();
   }, []);
 
@@ -53,14 +61,14 @@ export function FeaturedProducts() {
   if (isLoading)
     content = (
       <section className="flex flex-col items-center justify-center">
-        <SkeletonCard />
+        <FeaturedSkeletonCard />
       </section>
     );
 
   if (isError)
     content = (
-      <section className="flex flex-col items-center justify-center">
-        {errorMessage}
+      <section className="flex flex-col items-center justify-center px-2">
+        <AlertDestructive message={errorMessage} />;
       </section>
     );
 

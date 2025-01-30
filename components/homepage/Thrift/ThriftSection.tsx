@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { getProductByCategory } from "@/lib/actions";
 import { ThriftSkeletonCard } from "./ThriftSkeleton";
+import { AlertDestructive } from "@/components/Alert/AlertDestructive";
 
 const poppins = localFont({
   src: "../../../app/fonts/Poppins-Medium.ttf",
@@ -49,23 +50,23 @@ export default function ThriftSection() {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
+        setIsError(false);
+        setIsSuccess(false);
         const fetchPromises = [
           getProductByCategory("Women Thrift"),
           getProductByCategory("Men Thrift"),
         ];
         const [WomenThrift, MenThrift] = await Promise.all(fetchPromises);
-        console.log(WomenThrift);
-        console.log(MenThrift);
+
         setThriftWomenProducts(WomenThrift);
         setThrifMenProducts(MenThrift);
         setAllThrift(WomenThrift.concat(MenThrift));
-      } catch (error) {
-        console.log(error);
+        setIsSuccess(true);
+      } catch {
         setIsError(true);
-        setErrorMessage("Failed to fetch");
+        setErrorMessage("Failed to fetch thrift products. Please try again.");
       } finally {
         setIsLoading(false);
-        setIsSuccess(true);
       }
     };
     fetchCategories();
@@ -81,8 +82,10 @@ export default function ThriftSection() {
 
   if (isError)
     content = (
-      <section className="flex flex-col items-center justify-center">
-        {errorMessage}
+      <section className="flex flex-col items-center justify-center ">
+        <div className="max-w-6xl">
+          <AlertDestructive message={errorMessage} />;
+        </div>
       </section>
     );
 

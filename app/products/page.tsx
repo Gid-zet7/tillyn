@@ -1,11 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import Card from "@/components/homepage/Card";
+// import Card from "@/components/homepage/Card";
+import { useRouter } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
 import { getProductByCategory } from "@/lib/actions";
 import { SkeletonCard } from "@/components/skeleton/Skeleton";
+import { AlertDestructive } from "@/components/Alert/AlertDestructive";
+
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 // Define the structure of the products state
 type ProductsState = {
@@ -36,6 +41,7 @@ export default function ProductsPage() {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async (): Promise<void> => {
@@ -66,26 +72,42 @@ export default function ProductsPage() {
 
   const renderProducts = (category: string) => {
     const selectedProducts = products[activeCategory.type]?.[category] || [];
-    return selectedProducts.map((product: Product) => (
-      <Card
-        key={product._id}
-        productId={product._id}
-        price={product.price}
-        ratings={product.ratings}
-        imageSrc={product.image_url}
-        title={product.name}
-        stock={product.stock}
-        addToCart={() => dispatch(addToCart(product))}
-      />
-    ));
+    return (
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {selectedProducts.map((item: Product) => (
+          <Card key={item._id} className="cursor-pointer relative group">
+            <CardContent
+              style={{ backgroundImage: `url(${item.image_url})` }}
+              className="bg-cover bg-center h-48 md:h-64 rounded-lg flex flex-col items-center justify-end p-4 text-white transition-all duration-300 group-hover:brightness-75"
+            >
+              <h3 className="text-sm md:text-lg font-bold">{item.name}</h3>
+              <Button
+                variant={"outline"}
+                className="text-sm md:text-lg text-black"
+              >
+                ₵{item.price}
+              </Button>
+              <Button
+                className="bg-white text-black mt-2 hover:text-white"
+                onClick={() =>
+                  router.push(`${SERVER_URL}/products/${item._id}`)
+                }
+              >
+                View Product
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
+    );
   };
 
   return (
     <main>
       <section className="lg:flex lg:flex-col w-screen">
-        <div className="px-5">
-          <div className="relative p-4 md:p-8 border rounded-md">
-            <div className="flex flex-wrap gap-3">
+        <div>
+          <div className="relative md:p-8 border rounded-md">
+            <div className="flex flex-wrap gap-3 p-2">
               {Object.keys(categories).map((type) => (
                 <Button
                   key={type}
@@ -105,7 +127,7 @@ export default function ProductsPage() {
               ))}
             </div>
             <hr className="my-5" />
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex gap-3 flex-wrap p-2">
               {categories[activeCategory.type].map((category) => (
                 <Button
                   key={category}
@@ -126,9 +148,7 @@ export default function ProductsPage() {
               {isLoading ? (
                 <SkeletonCard />
               ) : isError ? (
-                <section className="flex flex-col items-center justify-center">
-                  {errorMessage}
-                </section>
+                <AlertDestructive message={errorMessage} />
               ) : (
                 renderProducts(activeCategory.category)
               )}
