@@ -4,6 +4,8 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { CheckCircle2 } from "lucide-react";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export default function SearchItemsCard({
   imageSrc,
   // title,
@@ -27,7 +29,7 @@ export default function SearchItemsCard({
   return (
     <div
       style={{ backgroundImage: `url(${imageSrc})` }}
-      className={`relative bg-no-repeat bg-cover bg-center cursor-pointer flex w-72 h-52 flex-shrink-0 items-center justify-center p-6 mb-3 group`}
+      className={`relative bg-no-repeat bg-cover bg-center cursor-pointer flex w-72 h-52 flex-shrink-0 items-center justify-center p-6 mb-3 group rounded-xl`}
     >
       {stock === 0 && (
         <span className="absolute bg-red-500 text-white font-semibold text-sm rounded-md px-2 py-1 top-5 left-5">
@@ -61,9 +63,7 @@ export default function SearchItemsCard({
 
           <Button
             className="bg-black/50 text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors duration-200"
-            onClick={() =>
-              router.push(`http://localhost:3000/products/${productId}`)
-            }
+            onClick={() => router.push(`${SERVER_URL}/products/${productId}`)}
           >
             View Product
           </Button>

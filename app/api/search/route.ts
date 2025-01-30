@@ -28,6 +28,8 @@ export const GET = async (request: Request) => {
       $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
     });
 
+    console.log(products);
+
     if (products) {
       for (const product of products) {
         const command = new GetObjectCommand({
@@ -38,6 +40,8 @@ export const GET = async (request: Request) => {
         product.image_url = src;
       }
     }
+
+    console.log(products);
 
     // If no products found, try to find by category
     if (products.length === 0) {
@@ -64,7 +68,7 @@ export const GET = async (request: Request) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    console.log(`error -- ${error}`);
     return new Response("Failed to fetch products", { status: 500 });
   }
 };

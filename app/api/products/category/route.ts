@@ -55,7 +55,9 @@ export const GET = async (request: Request) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    return new Response("Failed to fetch products", { status: 500 });
+    console.log(`error -- `);
+    return new Response(`Failed to fetch products -- ${error}`, {
+      status: 500,
+    });
   }
 };

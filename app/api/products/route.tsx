@@ -43,7 +43,7 @@ export const GET = async () => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.log(`error -- ${error}`);
     return new Response("Failed to fetch products", { status: 500 });
   }
 };

@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 const ProfileMenu = ({ session }: any) => {
   const { getPermission, isLoading } = useKindeBrowserClient();
   const isAdmin = !isLoading && getPermission("admin")?.isGranted;
@@ -45,14 +47,12 @@ const ProfileMenu = ({ session }: any) => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link
-                href={`http://localhost:3000/profile/${session.preferred_email}`}
-              >
+              <Link href={`${SERVER_URL}/profile/${session.preferred_email}`}>
                 Profile
               </Link>
             </DropdownMenuItem>
             {isAdmin ? (
-              <Link href={"http://localhost:3000/dashboard"}>
+              <Link href={`${SERVER_URL}/dashboard`}>
                 <DropdownMenuItem>Dashboard</DropdownMenuItem>
               </Link>
             ) : null}

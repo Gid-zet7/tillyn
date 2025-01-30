@@ -2,6 +2,8 @@
 import Image from "next/image";
 import React from "react";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 const Footer = () => {
   return (
     <footer className="static bottom-0 left-0 w-full mt-20">
@@ -34,23 +36,17 @@ const Footer = () => {
             </li>
 
             <li className="list_item">
-              <a href={"http://localhost:3000/terms"} className="text-white">
+              <a href={`${SERVER_URL}/terms`} className="text-white">
                 Terms & Conditions
               </a>
             </li>
             <li className="list_item">
-              <a
-                href={"http://localhost:3000/accessibility"}
-                className="text-white"
-              >
+              <a href={`${SERVER_URL}/accessibility`} className="text-white">
                 Accessibility statement
               </a>
             </li>
             <li className="list_item">
-              <a
-                href={"http://localhost:3000/privacy-policy"}
-                className="text-white"
-              >
+              <a href={`${SERVER_URL}/privacy-policy`} className="text-white">
                 Privacy policy
               </a>
             </li>

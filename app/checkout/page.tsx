@@ -126,57 +126,6 @@ export default function Checkout() {
     }
   }, [searchParams, user?.email]);
 
-  // Handle payment
-  // const handlePayment = async () => {
-  //   try {
-  //     setShowSpinner(true);
-  //     if (user?.email) {
-  //       const res = await payStackHandler(user.email, subTotal);
-  //       router.push(res.data.data.authorization_url);
-  //     } else {
-  //       setShowSpinner(false);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // // Place order
-  // const placeOrderAndHandlePayment = useCallback(async () => {
-  //   if (!user?.email && user?.phone_number && user?.address) {
-  //     setErrorMsg("User email is missing");
-  //     return;
-  //   }
-  //   if (selectedOption === "Pay after delivery") toggleModalOrder();
-  //   toggleSpinner();
-
-  //   try {
-  //     const orderDetails = {
-  //       email: user?.email,
-  //       subtotal: subTotal,
-  //       cartItem,
-  //     };
-  //     const orderResult: any = await addNewOrder(orderDetails).unwrap();
-
-  //     if (user)
-  //       // Send email notification
-  //       await sendEmail(
-  //         "tillynclothings@gmail.com",
-  //         `New Order Placed: ${orderResult._id}`,
-  //         generateEmailBody(user, cartItem, subTotal, orderResult._id)
-  //       );
-
-  //     dispatch(clearCart());
-  //     // toggleModalThankyou();
-  //     handlePayment();
-  //   } catch (error) {
-  //     console.error("Error placing order:", error);
-  //     setErrorMsg("Failed to place the order. Please try again.");
-  //   } finally {
-  //     toggleSpinner();
-  //   }
-  // }, [user, subTotal, cartItem, addNewOrder, dispatch, selectedOption]);
-
   const placeOrderAndHandlePayment = useCallback(async () => {
     if (!user?.email || !user?.phone_number || !user?.address) {
       setErrorMsg("User details are missing");
@@ -394,9 +343,7 @@ export default function Checkout() {
                 <CheckoutForm
                   user={user}
                   toggleModalOrder={toggleModalOrder}
-                  toggleModalThankyou={toggleModalThankyou}
                   selectedOption={selectedOption}
-                  setShowSpinner={setShowSpinner}
                   placeOrderAndHandlePayment={placeOrderAndHandlePayment}
                   toggleSpinner={toggleSpinner}
                   handleOptionChange={handleOptionChange}

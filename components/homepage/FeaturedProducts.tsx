@@ -18,6 +18,8 @@ import { addToCart } from "@/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
 import { SkeletonCard } from "../skeleton/Skeleton";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export function FeaturedProducts() {
   const { toast } = useToast();
   const [featuredProducts, setFeaturedProducts] = React.useState<Product[]>([]);
@@ -107,9 +109,7 @@ export function FeaturedProducts() {
                         <Button
                           className="bg-black/50 text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors duration-200"
                           onClick={() =>
-                            router.push(
-                              `http://localhost:3000/products/${item._id}`
-                            )
+                            router.push(`${SERVER_URL}/products/${item._id}`)
                           }
                         >
                           View Product

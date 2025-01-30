@@ -16,9 +16,7 @@ const poppins = localFont({
 type Props = {
   user: User | undefined;
   toggleModalOrder: () => void;
-  toggleModalThankyou: () => void;
   selectedOption: string;
-  setShowSpinner: (value: boolean) => void;
   toggleSpinner: () => void;
   placeOrderAndHandlePayment: () => void;
   setSelectedOption: Dispatch<SetStateAction<string>>;
@@ -28,40 +26,10 @@ type Props = {
 export default function CheckoutForm({
   user,
   toggleModalOrder,
-  toggleModalThankyou,
   selectedOption,
-  setShowSpinner,
   placeOrderAndHandlePayment,
   handleOptionChange,
 }: Props) {
-  // const searchParams = useSearchParams();
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   const handleCallback = async () => {
-  //     const reference = searchParams.get("reference");
-  //     if (reference && user?.email) {
-  //       console.log("Transaction reference:", reference);
-  //       setShowSpinner(true);
-  //       try {
-  //         const result = await verifyPayment(user.email, reference);
-  //         console.log("Payment verification result:", result);
-  //         toggleModalThankyou();
-  //       } catch (error) {
-  //         console.error("Payment verification error:", error);
-  //       } finally {
-  //         setShowSpinner(false);
-  //         router.push("http://localhost:3000/");
-  //       }
-  //     } else {
-  //       console.error("Transaction reference or email is not available.");
-  //     }
-  //   };
-  //   if (searchParams.get("reference") && user?.email) {
-  //     handleCallback();
-  //   }
-  // }, [searchParams, user?.email]);
-
   return (
     <>
       <div className={`flex flex-col gap-2 `}>

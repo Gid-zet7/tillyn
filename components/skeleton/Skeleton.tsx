@@ -12,6 +12,9 @@ export function SkeletonCard() {
       <div className="flex flex-col space-y-3 max-w-7xl">
         <Skeleton className="h-[300px] w-[400px] rounded-xl" />
       </div>
+      <div className="flex flex-col space-y-3 max-w-7xl">
+        <Skeleton className="h-[300px] w-[400px] rounded-xl" />
+      </div>
     </div>
   );
 }

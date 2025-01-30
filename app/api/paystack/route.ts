@@ -2,6 +2,8 @@ import axios from "axios";
 import { connectDB } from "@/db/mongodb";
 import UserModel from "@/db/models/userModel";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export const POST = async (request: Request) => {
   const { email, amount } = await request.json();
 
@@ -23,11 +25,11 @@ export const POST = async (request: Request) => {
         email,
         amount: amount * 100,
         currency: "GHS",
-        callback_url: `http://localhost:3000/checkout`,
+        callback_url: `${SERVER_URL}/checkout`,
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_TEST_KEY}`,
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
           "Content-Type": "application/json",
         },
       }

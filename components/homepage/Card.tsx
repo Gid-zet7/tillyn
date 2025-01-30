@@ -5,6 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { CheckCircle2 } from "lucide-react";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export default function Card({
   imageSrc,
   // title,
@@ -74,9 +76,7 @@ export default function Card({
           )}
           <Button
             className="bg-black/50 text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors duration-200"
-            onClick={() =>
-              router.push(`http://localhost:3000/products/${productId}`)
-            }
+            onClick={() => router.push(`${SERVER_URL}/products/${productId}`)}
           >
             View Product
           </Button>

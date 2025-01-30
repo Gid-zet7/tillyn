@@ -10,6 +10,7 @@ import {
 import CartItemCard from "./CartItemCard";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 type Props = {
   openCart: boolean;
@@ -17,6 +18,8 @@ type Props = {
   toggleCart: () => void;
   subTotal: number;
 };
+
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function Cart({
   openCart,
@@ -85,7 +88,14 @@ export default function Cart({
             />
           ))
         ) : (
-          <div className="flex justify-center items-center">
+          <div className="flex flex-col gap-10 justify-center items-center">
+            <Image
+              src="/shopping.png"
+              width={100}
+              height={100}
+              alt="empty cart"
+              className="opacity-50 mt-56"
+            />
             <h3 className="text-black/50">Cart is empty</h3>
           </div>
         )}
@@ -106,7 +116,7 @@ export default function Cart({
             <Button
               className="my-5 font-semibold"
               onClick={() => {
-                router.push("http://localhost:3000/checkout");
+                router.push(`${SERVER_URL}/checkout`);
                 toggleCart();
               }}
             >

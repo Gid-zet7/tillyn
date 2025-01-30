@@ -18,12 +18,14 @@ const poppins = localFont({
   weight: "100 900",
 });
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export default function Home() {
   useEffect(() => {
     const fetchSession = async () => {
       try {
         const userData = await getUsersession();
-        await fetch("http://localhost:3000/api/users/new", {
+        await fetch(`${SERVER_URL}/api/users/new`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -53,7 +53,7 @@ export default function ProductsPage() {
         );
         setProducts((prev) => ({ ...prev, [activeCategory.type]: data }));
       } catch (error) {
-        console.error(error);
+        console.log(error);
         setIsError(true);
         setErrorMessage("Failed to fetch products.");
       } finally {

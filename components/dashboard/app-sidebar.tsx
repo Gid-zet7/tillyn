@@ -39,16 +39,18 @@ import {
 import { User2 } from "lucide-react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 // Menu items.
 const items = [
   {
     title: "Home",
-    url: "http://localhost:3000/dashboard",
+    url: `${SERVER_URL}/dashboard`,
     icon: Home,
   },
   {
     title: "Products",
-    url: "http://localhost:3000/dashboard/products",
+    url: `${SERVER_URL}/dashboard/products`,
     icon: Package,
   },
   {
@@ -58,7 +60,7 @@ const items = [
   },
   {
     title: "Users",
-    url: "http://localhost:3000/dashboard/users",
+    url: `${SERVER_URL}/dashboard/users`,
     icon: UserCircle2,
   },
   {
@@ -142,11 +144,7 @@ export function AppSidebar() {
                       <SidebarMenu>
                         <SidebarMenuItem>
                           <SidebarMenuButton asChild>
-                            <a
-                              href={
-                                "http://localhost:3000/dashboard/products/new"
-                              }
-                            >
+                            <a href={`${SERVER_URL}/dashboard/products/new`}>
                               <PlusCircle />
                               <span>Add product</span>
                             </a>
