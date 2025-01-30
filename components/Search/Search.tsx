@@ -1,12 +1,6 @@
 import React from "react";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "../ui/button";
-import { ToastAction } from "@/components/ui/toast";
-import { CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Card from "../homepage/Card";
 import SearchItemsCard from "./SearchItemsCard";
 
 type Props = {
@@ -31,10 +25,6 @@ export default function Search({
   handleSearch,
 }: Props) {
   const dispatch = useDispatch();
-  const { toast } = useToast();
-  const router = useRouter();
-
-  console.log(searchItems);
 
   return (
     <>

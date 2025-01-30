@@ -59,8 +59,8 @@ export const GET = async (request: Request) => {
         "Content-Type": "application/json",
       },
     });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    // console.log(error);
     return new Response("Failed to fetch products", { status: 500 });
   }
 };

@@ -23,7 +23,6 @@ export function NewArrivals() {
       try {
         setIsLoading(true);
         const data = await getNewArrivals();
-        console.log(data);
         if (!data) throw new Error("Failed to fetch new arrivals");
         setNewArrivals(data);
       } catch {

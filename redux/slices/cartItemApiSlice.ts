@@ -17,7 +17,6 @@ export const cartItemsApiSlice = apiSlice.injectEndpoints({
           Accept: "application/json",
         },
         validateStatus: (response, result) => {
-          console.log(response);
           return response.status === 200 && !result.isError;
         },
       }),
@@ -43,7 +42,6 @@ export const cartItemsApiSlice = apiSlice.injectEndpoints({
           Accept: "application/json",
         },
         validateStatus: (response, result) => {
-          console.log(response);
           return response.status === 200 && !result.isError;
         },
       }),

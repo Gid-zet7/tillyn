@@ -4,6 +4,7 @@ import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
 
 import ProductCard from "@/components/products/cards/ProductCard";
 import LoaderSimple from "@/components/Loader/Loader-simple/page";
+import { AlertDestructive } from "@/components/Alert/AlertDestructive";
 
 export default function ProductsPage() {
   const {
@@ -23,8 +24,17 @@ export default function ProductsPage() {
   if (isLoading) content = <LoaderSimple />;
 
   if (isError) {
-    console.log(error.data);
-    content = <p>{error.data}</p>;
+    // Check if `error` is a FetchBaseQueryError and access `.data` safely
+    const errorMessage =
+      "data" in error && error.data
+        ? (error.data as { message?: string })?.message || "An error occurred"
+        : "An unknown error occurred";
+
+    content = (
+      <section className="flex flex-col items-center justify-center px-2">
+        <AlertDestructive message={errorMessage} />
+      </section>
+    );
   }
 
   if (isSuccess) {

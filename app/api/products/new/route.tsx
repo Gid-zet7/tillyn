@@ -13,10 +13,8 @@ const s3 = new S3Client({
 });
 
 export const POST = async (request: Request) => {
-  // console.log(request);
   try {
     const formData = await request.formData();
-    console.log(formData);
 
     // Get form fields
     const name = formData.get("name") as string;
@@ -28,7 +26,6 @@ export const POST = async (request: Request) => {
     const stock = parseInt(formData.get("stock") as string);
     const category = formData.get("category") as string;
     const files = formData.getAll("image") as File[];
-    console.log(files);
 
     // Validate required fields
     if (
@@ -46,8 +43,6 @@ export const POST = async (request: Request) => {
       );
     }
 
-    // console.log(name, description, price, ratings, stock, category, files);
-
     const fileMappings: { [key: string]: string } = {
       jpeg: "image/jpeg",
       png: "image/png",
@@ -62,7 +57,6 @@ export const POST = async (request: Request) => {
         const Body = Buffer.from(await file.arrayBuffer()) as Buffer;
         const fileName = file.name;
         const fileExtension = file.name.split(".").pop() as string;
-        console.log(fileExtension);
         const contentType =
           fileMappings[fileExtension] || "application/octet-stream"; // Fallback to binary if unknown
 
@@ -119,8 +113,8 @@ export const POST = async (request: Request) => {
     if (product) {
       return new Response("New product added successfully", { status: 200 });
     }
-  } catch (error) {
-    console.error(error);
+  } catch {
+    // console.error(error);
     return new Response("Internal Server Error", { status: 500 });
   }
 };

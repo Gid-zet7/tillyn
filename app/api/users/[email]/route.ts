@@ -23,8 +23,8 @@ export const GET = async (request: Request, { params }: Params) => {
         "Content-Type": "application/json",
       },
     });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    // console.log(error);
     return new Response("Something went wrong!", { status: 500 });
   }
 };

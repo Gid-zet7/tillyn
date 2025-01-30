@@ -9,7 +9,5 @@ type Params = {
 
 export default async function ProductPage({ params }: Params) {
   const { productId } = await params;
-  // console.log(productId);
-
   return <Product productId={productId} />;
 }

@@ -20,7 +20,6 @@ export function KidProducts() {
       try {
         setIsLoading(true);
         const data = await getKidsProducts();
-        console.log(data);
         if (!data) throw new Error("Failed to fetch kids products");
         setKidProducts(data);
       } catch {

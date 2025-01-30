@@ -17,8 +17,8 @@ export const GET = async () => {
         "Content-Type": "application/json",
       },
     });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    // console.log(error);
     return new Response("Failed to fetch categories", { status: 500 });
   }
 };

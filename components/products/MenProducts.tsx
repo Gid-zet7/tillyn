@@ -23,7 +23,6 @@ export function MenProducts() {
       try {
         setIsLoading(true);
         const data = await getMenProducts();
-        console.log(data);
         if (!data) throw new Error("Failed to fetch men products");
         setMenProducts(data);
       } catch {

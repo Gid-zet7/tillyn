@@ -44,8 +44,8 @@ export const POST = async (request: Request) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-  } catch (error) {
-    console.log(error);
+  } catch {
+    // console.log(error);
     return new Response("Failed!", { status: 500 });
   }
 };

@@ -87,7 +87,6 @@ export default function Checkout() {
         setShowSpinner(true);
         try {
           const result = await verifyPayment(user.email, reference);
-          console.log(result);
 
           if (result?.data?.status === "success") {
             // Step 2: Place the order ONLY after payment is verified
@@ -109,7 +108,6 @@ export default function Checkout() {
             toggleModalThankyou(); // Show Thank You modal
           } else {
             setErrorMsg("Payment verification failed. Order not placed.");
-            console.log("Payment verification failed. Order not placed.");
           }
         } catch (error) {
           console.error("Error verifying payment:", error);

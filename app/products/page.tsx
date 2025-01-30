@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-// import Card from "@/components/homepage/Card";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { addToCart } from "@/redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
 import { getProductByCategory } from "@/lib/actions";
 import { SkeletonCard } from "@/components/skeleton/Skeleton";
@@ -58,8 +56,7 @@ export default function ProductsPage() {
           ])
         );
         setProducts((prev) => ({ ...prev, [activeCategory.type]: data }));
-      } catch (error) {
-        console.log(error);
+      } catch {
         setIsError(true);
         setErrorMessage("Failed to fetch products.");
       } finally {

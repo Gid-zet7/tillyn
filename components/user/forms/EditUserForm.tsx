@@ -61,8 +61,7 @@ export default function EditUserForm({ email }: Props) {
         setUserData(user);
         setPhoneNumber(user.phone_number);
         setAddress(user.address);
-      } catch (error) {
-        console.log(error);
+      } catch {
         setErrorMsg("Failed to fetch user");
       } finally {
         setIsLoading(false);
@@ -99,8 +98,7 @@ export default function EditUserForm({ email }: Props) {
     try {
       const response = await updateUser(updatedUser).unwrap();
       if (response.message === `${userData?.first_name} updated successfully`) {
-        // setSuccess here
-        console.log(response);
+        // setSuccess here later
       }
     } catch (error) {
       console.log(error);

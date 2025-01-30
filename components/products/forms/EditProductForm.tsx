@@ -81,11 +81,10 @@ export default function EditProductForm({ productId }: Props) {
       formData.append("image", file);
     } else {
       console.error("No file selected");
-      console.log("Please select a product image");
+      // console.log("Please select a product image");
     }
     try {
       const response = await updateProduct(formData).unwrap();
-      console.log("Product updated successfully:", response);
 
       // Reset form state
       setName("");

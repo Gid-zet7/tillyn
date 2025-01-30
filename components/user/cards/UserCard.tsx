@@ -10,12 +10,11 @@ type Props = {
 export default function UserCard({ userId }: Props) {
   const { user } = useGetUsersQuery("usersList", {
     selectFromResult: ({ data }) => ({
-      user: data?.entities[userId],
+      user: data?.entities[userId] as User | undefined,
     }),
   });
 
   if (user) {
-    console.log(user);
     return (
       <div>
         <Link href={`users/${user.email}`}>{user.first_name}</Link>

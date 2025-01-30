@@ -30,8 +30,6 @@ export const GET = async (request: Request) => {
     const query = url.searchParams.get("query") || ""; // Ensure query is a string
     const regex = new RegExp(query, "i");
 
-    console.log(`Search query: ${query}`);
-
     // Find products by name or description
     let products = await Product.find({
       $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
@@ -52,8 +50,6 @@ export const GET = async (request: Request) => {
       return new Response("No product found", { status: 404 });
     }
 
-    console.log(`Found ${products.length} products`);
-
     // Generate signed URLs for product images
     await Promise.all(
       products.map(async (product) => {
@@ -73,8 +69,8 @@ export const GET = async (request: Request) => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
-    console.error("Error fetching products:", error);
+  } catch {
+    // console.error("Error fetching products:", error);
     return new Response("Failed to fetch products", { status: 500 });
   }
 };

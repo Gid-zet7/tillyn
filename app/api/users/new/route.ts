@@ -4,7 +4,6 @@ import { connectDB } from "@/db/mongodb";
 export const POST = async (request: Request) => {
   try {
     const userData = await request.json();
-    console.log(userData);
 
     const {
       preferred_email,
@@ -66,8 +65,8 @@ export const POST = async (request: Request) => {
         }
       );
     }
-  } catch (error) {
-    console.error(error);
+  } catch {
+    // console.error(error);
     return new Response("Internal Server Error", { status: 500 });
   }
 };

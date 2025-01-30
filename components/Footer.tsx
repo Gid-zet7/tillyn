@@ -18,6 +18,7 @@ const Footer = () => {
                 src={"tillyn-logo-whyte.svg"}
                 width={70}
                 height={60}
+                className="object-contain"
                 alt="tillyn logo"
               />
               <div>

@@ -31,7 +31,6 @@ export const getUsersession = async () => {
     throw new Error(errorMessage);
   }
   const res = await result.json();
-  // console.log(res);
   return res;
 };
 

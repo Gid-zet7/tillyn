@@ -40,13 +40,13 @@ export const POST = async (request: Request) => {
     });
 
     // Log and return success response
-    console.log("Mail sent:", result);
+    // console.log("Mail sent:", result);
     return NextResponse.json(
       { success: true, message: "Email sent successfully" },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("Error sending email:", error);
+  } catch (error: any) {
+    // console.error("Error sending email:", error);
     return NextResponse.json(
       { error: `Failed to send email: ${error.message || error}` },
       { status: 500 }

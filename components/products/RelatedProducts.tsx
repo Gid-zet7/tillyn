@@ -25,10 +25,8 @@ export default function RelatedProducts({ productId, category }: Props) {
       try {
         setIsLoading(true);
         const relatedProductsData = await getProductByCategory(category);
-        console.log(relatedProductsData);
         setRelatedProducts(relatedProductsData);
-      } catch (error) {
-        console.log(error);
+      } catch {
         setIsError(true);
         setErrorMessage("Failed to fetch");
       } finally {

@@ -6,7 +6,6 @@ import UserModel from "@/db/models/userModel";
 export const POST = async (request: Request) => {
   try {
     const { email, subtotal, cartItem } = await request.json();
-    console.log(email, subtotal, cartItem);
 
     // Validate the input data
     if (!email) {
@@ -16,7 +15,6 @@ export const POST = async (request: Request) => {
     await connectDB();
 
     const findUser = await UserModel.findOne({ email }).exec();
-    console.log(findUser);
 
     if (!findUser)
       return new Response("Login to place an order", { status: 400 });
@@ -29,8 +27,6 @@ export const POST = async (request: Request) => {
     });
     await order.save();
 
-    console.log(order);
-
     // // Create order items based on the cart items
     await Promise.all(
       cartItem.map(async (cartItem: CartItem) => {
@@ -41,15 +37,14 @@ export const POST = async (request: Request) => {
           price: cartItem.price,
           brand: cartItem.brand,
         });
-        console.log(orderItem);
         await orderItem.save();
         return orderItem;
       })
     );
 
     return new Response(JSON.stringify(order), { status: 200 });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    // console.log(error);
     return new Response("Failed to create order", { status: 500 });
   }
 };

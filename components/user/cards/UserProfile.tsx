@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function UserProfile({ user, orders }: Props) {
-  console.log(user?.picture);
   return (
     <>
       <section>

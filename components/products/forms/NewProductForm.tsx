@@ -55,10 +55,10 @@ export default function NewProductForm() {
         formData.append("category", category);
         formData.append("image", file);
 
-        // Debugging FormData
-        for (const pair of formData.entries()) {
-          console.log(pair[0], pair[1]);
-        }
+        // // Debugging FormData
+        // for (const pair of formData.entries()) {
+        //   console.log(pair[0], pair[1]);
+        // }
 
         // Call the mutation
         const response = await addNewProduct(formData).unwrap();
@@ -76,7 +76,7 @@ export default function NewProductForm() {
         setFile(undefined);
       } else {
         console.error("No file selected");
-        console.log("Please select a product image");
+        // console.log("Please select a product image");
       }
     } catch (error) {
       const errorMessage =

@@ -8,7 +8,6 @@ import ProfileMenu from "./ProfileMenu";
 import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { Star } from "lucide-react";
 
 export default function Navbar() {
   const [session, setSession] = useState();
@@ -73,10 +72,9 @@ export default function Navbar() {
     try {
       const response = await search(productName);
       setSearchItems(response);
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unexpected error occurred";
-      console.log(errorMessage);
+    } catch {
+      // const errorMessage =
+      //   error instanceof Error ? error.message : "An unexpected error occurred";
     } finally {
       setLoadSearch(false);
     }

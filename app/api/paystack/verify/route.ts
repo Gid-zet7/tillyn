@@ -4,8 +4,6 @@ import axios from "axios";
 export const POST = async (request: Request) => {
   const { reference } = await request.json();
 
-  console.log("reference:", reference);
-
   try {
     const response = await axios.get(
       `https://api.paystack.co/transaction/verify/${reference}`,
@@ -33,8 +31,7 @@ export const POST = async (request: Request) => {
     } else {
       return new Response("Payment verification failed!", { status: 400 });
     }
-  } catch (error) {
-    console.log(error);
+  } catch {
     return new Response("Internal Server Error", { status: 500 });
   }
 };

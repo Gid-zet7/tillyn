@@ -28,8 +28,6 @@ export const GET = async (request: Request, { params }: Params) => {
       .populate("category")
       .exec();
 
-    // console.log(product);
-
     if (!product) {
       return new Response("Product not found", { status: 404 });
     }
@@ -37,16 +35,14 @@ export const GET = async (request: Request, { params }: Params) => {
     const src = await getSignedUrl(s3, command, { expiresIn: 604800 });
     product.image_url = src;
 
-    console.log(product);
-
     return new Response(JSON.stringify(product), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
       },
     });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    // console.log(error);
     return new Response("Failed to fetch product", { status: 500 });
   }
 };

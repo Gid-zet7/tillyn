@@ -5,8 +5,6 @@ export const PATCH = async (request: Request) => {
   try {
     const { preferred_email, phone_number, address } = await request.json();
 
-    console.log(preferred_email, phone_number, address);
-
     // Validate that the ID is provided
 
     await connectDB();
@@ -39,8 +37,8 @@ export const PATCH = async (request: Request) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-  } catch (error) {
-    console.error(error);
+  } catch {
+    // console.error(error);
     return new Response(JSON.stringify({ message: "Internal Server Error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

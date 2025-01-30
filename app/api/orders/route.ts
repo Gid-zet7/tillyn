@@ -13,8 +13,8 @@ export const GET = async () => {
     if (!orders?.length) return new Response("No order found", { status: 400 });
 
     return new Response(JSON.stringify(orders), { status: 200 });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    // console.log(error);
     return new Response("Failed to fetch order", { status: 500 });
   }
 };
