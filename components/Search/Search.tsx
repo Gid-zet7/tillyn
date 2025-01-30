@@ -6,7 +6,8 @@ import { Button } from "../ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import Card from "../homepage/Card";
+import SearchItemsCard from "./SearchItemsCard";
 
 type Props = {
   productName: string | undefined;
@@ -32,6 +33,8 @@ export default function Search({
   const dispatch = useDispatch();
   const { toast } = useToast();
   const router = useRouter();
+
+  console.log(searchItems);
 
   return (
     <>
@@ -92,7 +95,16 @@ export default function Search({
         <div>
           {searchItems
             ? searchItems.map((item: Product, index: number) => (
-                // sd
+                <SearchItemsCard
+                  key={index}
+                  productId={item._id}
+                  price={item.price}
+                  ratings={item.ratings}
+                  imageSrc={item.image_url}
+                  title={item.name}
+                  stock={item.stock}
+                  addToCart={() => dispatch(addToCart(item))}
+                />
               ))
             : "No products found"}
         </div>

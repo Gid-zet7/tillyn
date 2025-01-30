@@ -27,7 +27,7 @@ export const POST = async (request: Request) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_TEST_KEY}`,
           "Content-Type": "application/json",
         },
       }

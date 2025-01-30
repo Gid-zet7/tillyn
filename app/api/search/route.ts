@@ -1,5 +1,16 @@
 import { connectDB } from "@/db/mongodb";
 import Product from "@/db/models/productModel";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+
+const Bucket = process.env.BUCKET_NAME;
+const s3 = new S3Client({
+  region: process.env.BUCKET_REGION,
+  credentials: {
+    accessKeyId: process.env.USER_ACCESS as string,
+    secretAccessKey: process.env.USER_SECRET as string,
+  },
+});
 
 export const GET = async (request: Request) => {
   try {
@@ -16,6 +27,17 @@ export const GET = async (request: Request) => {
     let products = await Product.find({
       $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
     });
+
+    if (products) {
+      for (const product of products) {
+        const command = new GetObjectCommand({
+          Bucket,
+          Key: product.image_url,
+        });
+        const src = await getSignedUrl(s3, command, { expiresIn: 604800 });
+        product.image_url = src;
+      }
+    }
 
     // If no products found, try to find by category
     if (products.length === 0) {

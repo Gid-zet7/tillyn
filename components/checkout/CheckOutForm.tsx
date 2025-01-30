@@ -34,33 +34,33 @@ export default function CheckoutForm({
   placeOrderAndHandlePayment,
   handleOptionChange,
 }: Props) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  // const searchParams = useSearchParams();
+  // const router = useRouter();
 
-  useEffect(() => {
-    const handleCallback = async () => {
-      const reference = searchParams.get("reference");
-      if (reference && user?.email) {
-        console.log("Transaction reference:", reference);
-        setShowSpinner(true);
-        try {
-          const result = await verifyPayment(user.email, reference);
-          console.log("Payment verification result:", result);
-          toggleModalThankyou();
-        } catch (error) {
-          console.error("Payment verification error:", error);
-        } finally {
-          setShowSpinner(false);
-          router.push("http://localhost:3000/");
-        }
-      } else {
-        console.error("Transaction reference or email is not available.");
-      }
-    };
-    if (searchParams.get("reference") && user?.email) {
-      handleCallback();
-    }
-  }, [searchParams, user?.email]);
+  // useEffect(() => {
+  //   const handleCallback = async () => {
+  //     const reference = searchParams.get("reference");
+  //     if (reference && user?.email) {
+  //       console.log("Transaction reference:", reference);
+  //       setShowSpinner(true);
+  //       try {
+  //         const result = await verifyPayment(user.email, reference);
+  //         console.log("Payment verification result:", result);
+  //         toggleModalThankyou();
+  //       } catch (error) {
+  //         console.error("Payment verification error:", error);
+  //       } finally {
+  //         setShowSpinner(false);
+  //         router.push("http://localhost:3000/");
+  //       }
+  //     } else {
+  //       console.error("Transaction reference or email is not available.");
+  //     }
+  //   };
+  //   if (searchParams.get("reference") && user?.email) {
+  //     handleCallback();
+  //   }
+  // }, [searchParams, user?.email]);
 
   return (
     <>

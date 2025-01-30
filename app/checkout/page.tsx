@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { payStackHandler, verifyPayment } from "@/lib/actions";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -27,6 +27,8 @@ export default function Checkout() {
   // Redux state
   const dispatch = useDispatch();
   const cartItem = useSelector((state: any) => state.cart.items);
+
+  const searchParams = useSearchParams();
 
   const [user, setUser] = useState<User>();
   const [address, setAddress] = useState({});
@@ -77,56 +79,136 @@ export default function Checkout() {
     fetchUserSession();
   }, []);
 
-  // Handle payment
-  const handlePayment = async () => {
-    try {
-      setShowSpinner(true);
-      if (user?.email) {
-        const res = await payStackHandler(user.email, subTotal);
-        router.push(res.data.data.authorization_url);
-      } else {
-        setShowSpinner(false);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    const handleCallback = async () => {
+      const reference = searchParams.get("reference");
 
-  // Place order
+      if (reference && user?.email) {
+        setShowSpinner(true);
+        try {
+          const result = await verifyPayment(user.email, reference);
+          console.log(result);
+
+          if (result?.data?.status === "success") {
+            // Step 2: Place the order ONLY after payment is verified
+            const orderDetails = {
+              email: user.email,
+              subtotal: subTotal,
+              cartItem,
+            };
+            const orderResult: any = await addNewOrder(orderDetails).unwrap();
+
+            // Step 3: Send Email Notification
+            await sendEmail(
+              "tillynclothings@gmail.com",
+              `New Order Placed: ${orderResult._id}`,
+              generateEmailBody(user, cartItem, subTotal, orderResult._id)
+            );
+
+            dispatch(clearCart());
+            toggleModalThankyou(); // Show Thank You modal
+          } else {
+            setErrorMsg("Payment verification failed. Order not placed.");
+            console.log("Payment verification failed. Order not placed.");
+          }
+        } catch (error) {
+          console.error("Error verifying payment:", error);
+          setErrorMsg("Payment verification error. Please contact support.");
+        } finally {
+          setShowSpinner(false);
+          router.push("/"); // Redirect home
+        }
+      }
+    };
+
+    if (searchParams.get("reference") && user?.email) {
+      handleCallback();
+    }
+  }, [searchParams, user?.email]);
+
+  // Handle payment
+  // const handlePayment = async () => {
+  //   try {
+  //     setShowSpinner(true);
+  //     if (user?.email) {
+  //       const res = await payStackHandler(user.email, subTotal);
+  //       router.push(res.data.data.authorization_url);
+  //     } else {
+  //       setShowSpinner(false);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // // Place order
+  // const placeOrderAndHandlePayment = useCallback(async () => {
+  //   if (!user?.email && user?.phone_number && user?.address) {
+  //     setErrorMsg("User email is missing");
+  //     return;
+  //   }
+  //   if (selectedOption === "Pay after delivery") toggleModalOrder();
+  //   toggleSpinner();
+
+  //   try {
+  //     const orderDetails = {
+  //       email: user?.email,
+  //       subtotal: subTotal,
+  //       cartItem,
+  //     };
+  //     const orderResult: any = await addNewOrder(orderDetails).unwrap();
+
+  //     if (user)
+  //       // Send email notification
+  //       await sendEmail(
+  //         "tillynclothings@gmail.com",
+  //         `New Order Placed: ${orderResult._id}`,
+  //         generateEmailBody(user, cartItem, subTotal, orderResult._id)
+  //       );
+
+  //     dispatch(clearCart());
+  //     // toggleModalThankyou();
+  //     handlePayment();
+  //   } catch (error) {
+  //     console.error("Error placing order:", error);
+  //     setErrorMsg("Failed to place the order. Please try again.");
+  //   } finally {
+  //     toggleSpinner();
+  //   }
+  // }, [user, subTotal, cartItem, addNewOrder, dispatch, selectedOption]);
+
   const placeOrderAndHandlePayment = useCallback(async () => {
-    if (!user?.email && user?.phone_number && user?.address) {
-      setErrorMsg("User email is missing");
+    if (!user?.email || !user?.phone_number || !user?.address) {
+      setErrorMsg("User details are missing");
       return;
     }
-    if (selectedOption === "Pay after delivery") toggleModalOrder();
-    toggleSpinner();
+
+    setShowSpinner(true);
 
     try {
-      const orderDetails = {
-        email: user?.email,
-        subtotal: subTotal,
-        cartItem,
-      };
-      const orderResult: any = await addNewOrder(orderDetails).unwrap();
+      if (selectedOption === "Pay after delivery") {
+        toggleModalOrder();
+        return;
+      }
 
-      if (user)
-        // Send email notification
-        await sendEmail(
-          "tillynclothings@gmail.com",
-          `New Order Placed: ${orderResult._id}`,
-          generateEmailBody(user, cartItem, subTotal, orderResult._id)
-        );
+      // Step 1: Initiate Payment & Get Transaction Reference
+      const res = await payStackHandler(user.email, subTotal);
+      if (!res?.data?.data?.authorization_url) {
+        setErrorMsg("Payment initiation failed. Please try again.");
+        setShowSpinner(false);
+        return;
+      }
 
-      dispatch(clearCart());
-      // toggleModalThankyou();
-      handlePayment();
+      router.push(res.data.data.authorization_url); // Redirect user to Paystack
+
+      // Return reference ID for verification after redirection
+      return res.data.data.reference;
     } catch (error) {
-      console.error("Error placing order:", error);
-      setErrorMsg("Failed to place the order. Please try again.");
-    } finally {
-      toggleSpinner();
+      console.error("Error initiating payment:", error);
+      setErrorMsg("Payment initiation failed. Please try again.");
+      setShowSpinner(false);
     }
-  }, [user, subTotal, cartItem, addNewOrder, dispatch, selectedOption]);
+  }, [user, subTotal, selectedOption]);
 
   const placeOrder = useCallback(async () => {
     if (!user?.email) {

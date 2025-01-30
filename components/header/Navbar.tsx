@@ -120,6 +120,7 @@ export default function Navbar() {
               width={50}
               height={50}
               alt="tillyn logo"
+              className="hidden md:block"
             />
           </Link>
 
