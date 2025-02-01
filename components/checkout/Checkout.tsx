@@ -50,8 +50,6 @@ export default function Checkout() {
 
   const toggleSpinner = () => setShowSpinner((prev) => !prev);
 
-  // const router = useRouter();
-
   const subTotal = cartItem.reduce(
     (acc: number, item: CartItem) =>
       acc + (item?.price || 0) * (item?.quantity || 0),
@@ -101,7 +99,7 @@ export default function Checkout() {
             await sendEmail(
               "tillynclothings@gmail.com",
               `New Order Placed: ${orderResult._id}`,
-              generateEmailBody(user, cartItem, subTotal, orderResult._id)
+              generateEmailBody(user, cartItem, subTotal + 50, orderResult._id)
             );
 
             dispatch(clearCart());
@@ -139,7 +137,7 @@ export default function Checkout() {
       }
 
       // Step 1: Initiate Payment & Get Transaction Reference
-      const res = await payStackHandler(user.email, subTotal);
+      const res = await payStackHandler(user.email, subTotal + 50);
       if (!res?.data?.data?.authorization_url) {
         setErrorMsg("Payment initiation failed. Please try again.");
         setShowSpinner(false);
@@ -220,7 +218,7 @@ export default function Checkout() {
         )
         .join("")}
     </ul>
-    <h3>Subtotal: ${subtotal}</h3>
+    <h3>Subtotal: ${subtotal} including delivery</h3>
     <p>Order ID: ${orderId}</p>
       <h3>Address Information:</h3>
         <ul>
@@ -232,7 +230,7 @@ export default function Checkout() {
         <p>Please ensure that the order is processed promptly and the client is notified of the shipping status. If there are any issues or further actions required, kindly coordinate with the relevant departments.</p>
         <p>Thank you for your attention to this order.</p>
         <p>Best regards,</p>
-        <p>Tillyn<br>Your Contact Information</p>
+        <p>Tillyn Clothing</p>
   `;
   // Modal toggles
   const toggleModalOrder = () => setModalOrder((prev) => !prev);
