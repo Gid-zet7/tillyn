@@ -3,7 +3,7 @@ import React from "react";
 import { useGetUsersQuery } from "@/redux/slices/usersApiSlice";
 import UserCard from "@/components/user/cards/UserCard";
 import LoaderSimple from "@/components/Loader/Loader-simple/page";
-import { AlertDestructive } from "@/components/Alert/AlertDestructive";
+import { AlertDestructive } from "@/components/alert/AlertDestructive";
 
 export default function UsersPage() {
   const {

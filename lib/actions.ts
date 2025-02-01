@@ -161,7 +161,7 @@ export const getOrderItems = async (id: string) => {
   }
   return result.json();
 };
-export const getProduct = async (productId: string) => {
+export const getProductById = async (productId: string) => {
   const endpoint = `${SERVER_URL}/api/products/${productId}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {

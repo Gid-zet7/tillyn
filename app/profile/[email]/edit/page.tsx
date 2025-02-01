@@ -22,8 +22,8 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `${user?.first_name} details`,
-    description: `This page displays ${user?.first_name} details`,
+    title: `Edit ${user?.first_name}'s Profile | Tillyn`,
+    description: `Update and manage ${user?.first_name}'s profile details on Tillyn. Edit personal information, preferences, and account settings easily.`,
   };
 };
 

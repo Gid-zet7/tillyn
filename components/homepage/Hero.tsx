@@ -22,7 +22,7 @@ export default function Hero() {
           <div className="border-2 border-orange-800 rounded-full flex w-full p-1">
             <input
               type="text"
-              placeholder="Create an account to get 20% off"
+              placeholder="Sign up now to shop smarter and faster"
               className="px-3 lg:px-4 py-4 lg:py-6 w-[65%] lg:w-3/4 border-none rounded-l-full outline-none text-xs lg:text-xl bg-white"
               aria-label="Create an account"
               disabled

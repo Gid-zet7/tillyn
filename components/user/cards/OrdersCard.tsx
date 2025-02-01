@@ -1,7 +1,7 @@
 "use client";
 import { format } from "date-fns";
 import { useState } from "react";
-import { getOrderItems, getProduct } from "@/lib/actions";
+import { getOrderItems, getProductById } from "@/lib/actions";
 import { Card } from "@/components/ui/card";
 import { Package, Truck, CheckCircle, Hourglass, XCircle } from "lucide-react";
 import SpinnerSmall from "@/components/Loader/Loader-two/page";
@@ -33,12 +33,12 @@ export default function OrdersCard({ orders }: Props) {
       return;
     }
 
-    setLoadingOrderId(orderId); // Set loading for the specific card
+    setLoadingOrderId(orderId);
     try {
       const result: OrderedItem[] = await getOrderItems(orderId);
       const productsWithDetails = await Promise.all(
         result.map(async (item: any) => {
-          const product = await getProduct(item.product);
+          const product = await getProductById(item.product);
           return {
             orderItemQuantity: item.quantity,
             product: product,
@@ -50,7 +50,7 @@ export default function OrdersCard({ orders }: Props) {
     } catch (error) {
       console.error("Failed to fetch order items", error);
     } finally {
-      setLoadingOrderId(null); // Reset loading state for the card
+      setLoadingOrderId(null);
     }
   };
   return (

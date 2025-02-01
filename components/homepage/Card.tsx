@@ -42,7 +42,7 @@ export default function Card({
       {/* Overlay container for hover content */}
       <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-opacity duration-300 rounded-lg">
         {/* Display price */}
-        <p className="text-white text-lg font-semibold mb-2">${price}</p>
+        <p className="text-white text-lg font-semibold mb-2">₵{price}</p>
 
         {/* Add to Cart button */}
         <div className=" flex flex-col gap-2">
