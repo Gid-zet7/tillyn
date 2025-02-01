@@ -57,9 +57,10 @@ const TermsAndConditions = () => {
               we do not guarantee that every detail will be error-free.
             </li>
             <li>
-              <strong>Product Quality</strong>: All items are sold "as is."
-              While we ensure high-quality standards, we cannot guarantee that
-              every product will meet your subjective expectations.
+              <strong>Product Quality</strong>: All items are sold &quot;as
+              is.&quot; While we ensure high-quality standards, we cannot
+              guarantee that every product will meet your subjective
+              expectations.
             </li>
             <li>
               <strong>Quantity Limits</strong>: We reserve the right to limit

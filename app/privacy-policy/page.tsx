@@ -171,8 +171,8 @@ const PrivacyPolicy = () => {
         </h2>
         <p>
           We may update this Privacy Policy periodically. The revised version
-          will be posted on this page with an updated "Effective Date." We
-          encourage you to review this policy regularly.
+          will be posted on this page with an updated &quot;Effective
+          Date.&quot; We encourage you to review this policy regularly.
         </p>
 
         <h2 className="mt-6 mb-2 font-semibold text-xl">10. Contact Us</h2>

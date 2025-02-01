@@ -38,6 +38,7 @@ import {
 } from "@radix-ui/react-collapsible";
 import { User2 } from "lucide-react";
 import { ChevronUp, ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
@@ -55,7 +56,7 @@ const items = [
   },
   {
     title: "Orders",
-    url: "#",
+    url: `${SERVER_URL}/dashboard/orders`,
     icon: ListOrdered,
   },
   {
@@ -109,10 +110,10 @@ export function AppSidebar() {
                       <SidebarMenu>
                         <SidebarMenuItem>
                           <SidebarMenuButton asChild>
-                            <a href={item.url}>
+                            <Link href={item.url}>
                               <LayoutDashboard />
                               <span>Dashboard</span>
-                            </a>
+                            </Link>
                           </SidebarMenuButton>
                         </SidebarMenuItem>
                       </SidebarMenu>
@@ -134,20 +135,20 @@ export function AppSidebar() {
                       <SidebarMenu>
                         <SidebarMenuItem>
                           <SidebarMenuButton asChild>
-                            <a href={item.url}>
+                            <Link href={item.url}>
                               <Package />
                               <span>All products</span>
-                            </a>
+                            </Link>
                           </SidebarMenuButton>
                         </SidebarMenuItem>
                       </SidebarMenu>
                       <SidebarMenu>
                         <SidebarMenuItem>
                           <SidebarMenuButton asChild>
-                            <a href={`${SERVER_URL}/dashboard/products/new`}>
+                            <Link href={`${SERVER_URL}/dashboard/products/new`}>
                               <PlusCircle />
                               <span>Add product</span>
-                            </a>
+                            </Link>
                           </SidebarMenuButton>
                         </SidebarMenuItem>
                       </SidebarMenu>
@@ -156,10 +157,10 @@ export function AppSidebar() {
                 ) : (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <a href={item.url}>
+                      <Link href={item.url}>
                         <item.icon />
                         <span>{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 )
