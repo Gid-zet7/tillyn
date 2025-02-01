@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { getProductByCategory } from "@/lib/actions";
 import { ThriftSkeletonCard } from "./ThriftSkeleton";
-import { AlertDestructive } from "@/components/alert/AlertDestructive";
+import { AlertDestructive } from "@/components/Alert/AlertDestructive";
 
 const poppins = localFont({
   src: "../../../app/fonts/Poppins-Medium.ttf",

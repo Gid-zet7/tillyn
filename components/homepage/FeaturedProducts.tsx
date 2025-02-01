@@ -16,7 +16,7 @@ import { Button } from "../ui/button";
 import { getProductByCategory } from "@/lib/actions";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
-import { AlertDestructive } from "../alert/AlertDestructive";
+import { AlertDestructive } from "../Alert/AlertDestructive";
 import { FeaturedSkeletonCard } from "../skeleton/FeaturedSkeleton";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 // import Card from "../homepage/Card";
 import { Card, CardContent } from "../ui/card";
 import { SkeletonCard } from "../skeleton/Skeleton";
-import { AlertDestructive } from "@/components/alert/AlertDestructive";
+import { AlertDestructive } from "@/components/Alert/AlertDestructive";
 import { getNewArrivals } from "@/lib/actions";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;

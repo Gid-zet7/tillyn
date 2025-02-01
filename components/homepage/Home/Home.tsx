@@ -11,8 +11,8 @@ import Hero from "@/components/homepage/Hero";
 import Count from "@/components/homepage/Count";
 import localFont from "next/font/local";
 import ParallaxText from "@/components/ParallaxText";
-import { AlertHeadsUp } from "@/components/alert/Alert";
-import { AlertHappy } from "@/components/alert/HappyShopping";
+import { AlertHeadsUp } from "@/components/Alert/Alert";
+import { AlertHappy } from "@/components/Alert/HappyShopping";
 import Link from "next/link";
 
 const poppins = localFont({
