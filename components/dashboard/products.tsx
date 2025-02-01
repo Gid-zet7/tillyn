@@ -4,7 +4,7 @@ import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
 
 import ProductCard from "@/components/products/cards/ProductCard";
 import LoaderSimple from "@/components/Loader/Loader-simple/page";
-import { AlertDestructive } from "@/components/alert/AlertDestructive";
+import { AlertDestructive } from "../alert/AlertDestructive";
 
 export default function DashProducts() {
   const {
