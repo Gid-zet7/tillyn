@@ -1,19 +1,17 @@
 import React from "react";
 import SpinnerSmall from "@/components/Loader/Loader-two/page";
-import { Avatar } from "@radix-ui/react-avatar";
 import {
   BaggageClaim,
   Bike,
   Calendar1,
   Edit,
-  Mail,
-  Phone,
   ReceiptCent,
   User2,
   Wallet,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import Image from "next/image";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
@@ -140,7 +138,7 @@ export default function OrderCard({
                       key={item._id}
                       className="flex justify-between md:justify-around mb-3"
                     >
-                      <img
+                      <Image
                         src={item.product.image_url}
                         width={60}
                         height={60}
