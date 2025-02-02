@@ -84,7 +84,7 @@ export default function ThriftSection() {
     content = (
       <section className="flex flex-col items-center justify-center ">
         <div className="max-w-6xl">
-          <AlertDestructive message={errorMessage} />;
+          <AlertDestructive message={errorMessage} />
         </div>
       </section>
     );

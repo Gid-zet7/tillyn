@@ -18,7 +18,7 @@ export default async function DashLayout({
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <main>
+      <main className="w-screen">
         <SidebarTrigger />
         {children}
       </main>

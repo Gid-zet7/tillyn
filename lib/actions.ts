@@ -22,7 +22,6 @@ export const getUserData = async (email: string) => {
   }
   return result.json();
 };
-
 export const getUsersession = async () => {
   const endpoint = `${SERVER_URL}/api/session`;
   const result = await fetch(endpoint, { method: "GET" });
@@ -33,7 +32,16 @@ export const getUsersession = async () => {
   const res = await result.json();
   return res;
 };
-
+export const getProduct = async (productId: string) => {
+  const endpoint = `${SERVER_URL}/api/products/${productId}`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch product. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  const data = await result.json();
+  return data;
+};
 export const getProductByCategory = async (category: string) => {
   const endpoint = `${SERVER_URL}/api/products/category?category=${category}`;
   const result = await fetch(endpoint, {
@@ -122,12 +130,33 @@ export const sendEmail = async (
     return undefined;
   }
 };
+export const getAllOrders = async () => {
+  const endpoint = `${SERVER_URL}/api/orders`;
+  const result = await fetch(endpoint, {
+    method: "GET",
+  });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch users. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  const orders = await result.json();
+  return orders;
+};
+export const getOrder = async (orderId: string) => {
+  const endpoint = `${SERVER_URL}/api/orders/${orderId}`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch user. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
 export const order = async (
   userId: string,
   subtotal: number,
   cartItem: CartItem[]
 ) => {
-  const endpoint = `${SERVER_URL}/api/order/new`;
+  const endpoint = `${SERVER_URL}/api/orders/new`;
   try {
     const res = await fetch(endpoint, {
       method: "POST",
@@ -157,6 +186,51 @@ export const getOrderItems = async (id: string) => {
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
     const errorMessage = `Failed to user order. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const getOrderDelivered = async () => {
+  const endpoint = `${SERVER_URL}/api/orders/delivered`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const getOrderConfirmed = async () => {
+  const endpoint = `${SERVER_URL}/api/orders/confirmed`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const getOrderPending = async () => {
+  const endpoint = `${SERVER_URL}/api/orders/order-pending`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const getOrdersPaid = async () => {
+  const endpoint = `${SERVER_URL}/api/orders/paid`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const getOrderPaymentPending = async () => {
+  const endpoint = `${SERVER_URL}/api/orders/payment-pending`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
     throw new Error(errorMessage);
   }
   return result.json();

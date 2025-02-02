@@ -1,7 +1,5 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Button } from "../ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
-import { verifyPayment } from "@/lib/actions";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";

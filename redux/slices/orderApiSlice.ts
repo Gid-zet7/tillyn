@@ -37,6 +37,31 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
             ]
           : [{ type: "Order", id: "ORDERS-LIST" }],
     }),
+    getOrder: builder.query({
+      query: (orderId: string) => ({
+        url: `/orders/${orderId}`,
+        headers: {
+          Accept: "application/json",
+        },
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+      transformResponse: (responseData: Order[]) => {
+        const loadedOrders = responseData.map((order) => ({
+          ...order,
+          id: order._id, // Map _id to id
+        }));
+        return ordersAdapter.setAll(initialState, loadedOrders);
+      },
+      providesTags: (result) =>
+        result?.ids
+          ? [
+              { type: "Order", id: "ORDERS-LIST" },
+              ...result.ids.map((id) => ({ type: "Order", id })),
+            ]
+          : [{ type: "Order", id: "ORDERS-LIST" }],
+    }),
     getUserOrders: builder.query({
       query: (userId: string) => ({
         url: `/orders/user-order?id=${userId}`,
@@ -71,10 +96,10 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Order", id: "ORDERS-LIST" }],
     }),
     updateOrder: builder.mutation<void, Partial<Order>>({
-      query: (initialOrderData) => ({
-        url: "/orders/update",
+      query: (orderDetails) => ({
+        url: `/orders/update`,
         method: "PATCH",
-        body: JSON.stringify(initialOrderData),
+        body: orderDetails,
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Order", id: arg._id }],
     }),
@@ -92,6 +117,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 // Export hooks for usage in functional components
 export const {
   useGetOrdersQuery,
+  useGetOrderQuery,
   useGetUserOrdersQuery,
   useAddNewOrderMutation,
   useUpdateOrderMutation,

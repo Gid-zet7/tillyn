@@ -68,7 +68,7 @@ export function FeaturedProducts() {
   if (isError)
     content = (
       <section className="flex flex-col items-center justify-center px-2">
-        <AlertDestructive message={errorMessage} />;
+        <AlertDestructive message={errorMessage} />
       </section>
     );
 

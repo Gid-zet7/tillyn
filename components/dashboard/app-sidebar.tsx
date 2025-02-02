@@ -10,6 +10,10 @@ import {
   Settings,
   PlusCircle,
   LayoutDashboard,
+  WalletCards,
+  Hourglass,
+  Bike,
+  Check,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
@@ -148,6 +152,114 @@ export function AppSidebar() {
                             <Link href={`${SERVER_URL}/dashboard/products/new`}>
                               <PlusCircle />
                               <span>Add product</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                    </CollapsibleContent>
+                  </Collapsible>
+                ) : item.title === "Orders" ? (
+                  <Collapsible
+                    key={item.title}
+                    defaultOpen
+                    className="group/collapsible"
+                  >
+                    <SidebarGroupLabel asChild>
+                      <CollapsibleTrigger className="flex w-full items-center justify-between">
+                        {item.title}
+                        <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                      </CollapsibleTrigger>
+                    </SidebarGroupLabel>
+                    <CollapsibleContent>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link href={item.url}>
+                              <ListOrdered />
+                              <span>All Orders</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link href={`${SERVER_URL}/dashboard/orders/paid`}>
+                              <WalletCards />
+                              <span>Paid</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link
+                              href={`${SERVER_URL}/dashboard/orders/payments-pending`}
+                            >
+                              <Hourglass />
+                              <span>Payment pending</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link
+                              href={`${SERVER_URL}/dashboard/orders/delivered`}
+                            >
+                              <Bike />
+                              <span>Delivered</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link
+                              href={`${SERVER_URL}/dashboard/orders/confirmed`}
+                            >
+                              <Check />
+                              <span>Confirmed</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link
+                              href={`${SERVER_URL}/dashboard/orders/order-pending`}
+                            >
+                              <Hourglass />
+                              <span>Order pending</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                    </CollapsibleContent>
+                  </Collapsible>
+                ) : item.title === "Users" ? (
+                  <Collapsible
+                    key={item.title}
+                    defaultOpen
+                    className="group/collapsible"
+                  >
+                    <SidebarGroupLabel asChild>
+                      <CollapsibleTrigger className="flex w-full items-center justify-between">
+                        {item.title}
+                        <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                      </CollapsibleTrigger>
+                    </SidebarGroupLabel>
+                    <CollapsibleContent>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link href={item.url}>
+                              <User2 />
+                              <span>Users</span>
                             </Link>
                           </SidebarMenuButton>
                         </SidebarMenuItem>

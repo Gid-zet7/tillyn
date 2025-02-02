@@ -12,9 +12,9 @@ const orderSchema = new Schema<Order>(
       city: { type: String, required: false },
       postal_code: String,
     },
-    status: { type: String, default: "Pending" },
+    status: { type: String, default: "pending" },
     total_amount: { type: Number, required: true },
-    payment_status: { type: String, default: "Pending" },
+    payment_status: { type: String, default: "pending" },
   },
   { timestamps: true }
 );

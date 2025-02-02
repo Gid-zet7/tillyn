@@ -36,7 +36,7 @@ export default function UserProfile({ user, orders }: Props) {
 
               <div className="my-4"></div>
 
-              <OrdersCard orders={orders} />
+              {orders?.length ? <OrdersCard orders={orders} /> : "No order yet"}
 
               <div className="my-4"></div>
             </div>
