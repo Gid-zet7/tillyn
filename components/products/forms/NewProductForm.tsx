@@ -97,7 +97,11 @@ export default function NewProductForm() {
   // const categories = ["Men", "Women"];
 
   const categoryOption = categories.map((category, i) => {
-    return <SelectItem value={category.name}>{category.name}</SelectItem>;
+    return (
+      <SelectItem value={category.name} key={i}>
+        {category.name}
+      </SelectItem>
+    );
   });
 
   if (isLoading) return <LoaderSimple />;
