@@ -5,8 +5,18 @@ import { useGetProductsQuery } from "@/redux/slices/productsApiSlice";
 import { useUpdateProductMutation } from "@/redux/slices/productsApiSlice";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 import LoaderSimple from "@/components/Loader/Loader-simple/page";
 import { getAllCategories } from "@/lib/actions";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Image from "next/image";
 
 type Props = {
@@ -33,6 +43,8 @@ export default function EditProductForm({ productId }: Props) {
   const [newImageSelected, setNewImageSelected] = useState(false);
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -104,10 +116,12 @@ export default function EditProductForm({ productId }: Props) {
     }
   };
 
-  // const categories = ["Men", "Women"];
-
   const categoryOption = categories.map((category, i) => {
-    return <option key={i}> {category.name} </option>;
+    return (
+      <SelectItem value={category.name} key={i}>
+        {category.name}
+      </SelectItem>
+    );
   });
 
   if (isLoading) return <LoaderSimple />;
@@ -178,33 +192,43 @@ export default function EditProductForm({ productId }: Props) {
                 >
                   Rating <span className="text-red-500">*</span>
                 </label>
-                <select
-                  id="ratings"
-                  className="w-full p-2 border rounded text-black"
-                  onChange={(e) => setRatings(parseFloat(e.target.value))}
-                  value={ratings}
+                <Select
+                  value={ratings?.toString()}
+                  onValueChange={(value) => setRatings(parseFloat(value))}
                 >
-                  <option>Select rating</option>
-                  <option>4</option>
-                  <option>4.5</option>
-                </select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select rating" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select rating</SelectLabel>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="4.5">4.5</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
-              <div>
+              <div className="mb-4">
                 <label
-                  htmlFor="brand"
+                  htmlFor="category"
                   className="block font-semibold mb-2 text-black text-xs"
                 >
-                  Your Brand Label <span className="text-red-500">*</span>
+                  Category <span className="text-red-500">*</span>
                 </label>
-                <select
-                  id="brand"
-                  className="w-full p-2 border rounded text-black"
-                  onChange={(e) => setBrand(e.target.value)}
-                  value={brand}
+                <Select
+                  value={category}
+                  onValueChange={(value) => setCategory(value)}
                 >
-                  <option>Select status</option>
-                  <option>Tillyn</option>
-                </select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select category</SelectLabel>
+                      {categoryOption}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
@@ -243,23 +267,6 @@ export default function EditProductForm({ productId }: Props) {
               </div>
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="category"
-                className="block font-semibold mb-2 text-black text-xs"
-              >
-                Category <span className="text-red-500">*</span>
-              </label>
-              <select
-                id="category"
-                className="w-full p-2 border rounded text-black"
-                onChange={(e) => setCategory(e.target.value)}
-                value={category}
-              >
-                <option>--Select category--</option>
-                {categoryOption}
-              </select>
-            </div>
             <div>
               <div>
                 <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
@@ -303,6 +310,7 @@ export default function EditProductForm({ productId }: Props) {
               <button
                 type="button"
                 className="w-full bg-black/50 py-6 text-white rounded-md"
+                onClick={() => router.back()}
               >
                 Back
               </button>

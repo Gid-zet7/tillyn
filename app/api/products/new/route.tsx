@@ -22,7 +22,6 @@ export const POST = async (request: Request) => {
     const session = await getKindeServerSession().getUser();
     const user = await Users.getUserData({ id: session.id });
 
-    console.log(user);
     if (!user) {
       return new Response("Unauthorized", { status: 401 });
     }

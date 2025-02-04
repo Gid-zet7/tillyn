@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "../ui/button";
 
 import { Label } from "@/components/ui/label";
@@ -28,6 +28,35 @@ export default function CheckoutForm({
   placeOrderAndHandlePayment,
   handleOptionChange,
 }: Props) {
+  const [errors, setErrors] = useState<{
+    phone_number?: string;
+    address_line1?: string;
+    city?: string;
+  }>({});
+
+  const validateForm = () => {
+    const newErrors: typeof errors = {};
+    let isValid = true;
+
+    if (!user?.phone_number?.trim()) {
+      newErrors.phone_number =
+        "Phone number is required, click edit to fill this field";
+      isValid = false;
+    }
+    if (!user?.address?.address_line1?.trim()) {
+      newErrors.address_line1 =
+        "Address is required, click edit to fill this field";
+      isValid = false;
+    }
+    if (!user?.address?.city?.trim()) {
+      newErrors.city = "City is required, click edit to fill this field";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   return (
     <>
       <div className={`flex flex-col gap-2 `}>
@@ -59,21 +88,29 @@ export default function CheckoutForm({
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">Phone Number</h2>
-
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          className={`w-full p-2 border rounded text-black outline-none ${
+            poppins.className
+          } ${errors.phone_number ? "border-red-500" : ""}`}
           defaultValue={user?.phone_number}
         />
+        {errors.phone_number && (
+          <span className="text-red-500 text-sm">{errors.phone_number}</span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">Address line 1</h2>
-
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          className={`w-full p-2 border rounded text-black outline-none ${
+            poppins.className
+          } ${errors.address_line1 ? "border-red-500" : ""}`}
           defaultValue={user?.address?.address_line1}
         />
+        {errors.address_line1 && (
+          <span className="text-red-500 text-sm">{errors.address_line1}</span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">Address line 2</h2>
@@ -94,12 +131,16 @@ export default function CheckoutForm({
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">City</h2>
-
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          className={`w-full p-2 border rounded text-black outline-none ${
+            poppins.className
+          } ${errors.city ? "border-red-500" : ""}`}
           defaultValue={user?.address?.city}
         />
+        {errors.city && (
+          <span className="text-red-500 text-sm">{errors.city}</span>
+        )}
       </div>
       <RadioGroup
         defaultValue={selectedOption}
@@ -136,10 +177,13 @@ export default function CheckoutForm({
         type="button"
         className="px-4 py-4 my-5 w-full bg-black rounded-md text-white"
         onClick={() => {
+          if (!validateForm()) {
+            return;
+          }
+
           if (selectedOption === "Pay after delivery") {
             toggleModalOrder();
           } else {
-            // handlePayment();
             placeOrderAndHandlePayment();
           }
         }}

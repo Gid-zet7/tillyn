@@ -16,7 +16,6 @@ const s3 = new S3Client({
 export const GET = async () => {
   try {
     await connectDB();
-    console.log("connected to database");
 
     // Fetch products and populate the category field
     const category = Category.find().lean();
@@ -47,8 +46,7 @@ export const GET = async () => {
         "Content-Type": "application/json",
       },
     });
-  } catch (error) {
-    console.log(`error -- ${error}`);
+  } catch {
     return new Response("Failed to fetch products", { status: 500 });
   }
 };

@@ -35,7 +35,6 @@ export default function DashProducts() {
 
           return product?.seller?.email === user?.email;
         });
-        console.log(filteredProducts);
         setFilteredIds(filteredProducts);
       } else {
         // For admin, show all products

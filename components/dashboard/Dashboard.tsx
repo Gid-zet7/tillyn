@@ -52,7 +52,8 @@ export default function Dashboard() {
     monthlyGrowth: 0,
   });
 
-  const { getUser } = useKindeBrowserClient();
+  const { getUser, getPermission } = useKindeBrowserClient();
+  const isAdmin = getPermission("admin")?.isGranted;
   const user = getUser();
 
   useEffect(() => {
@@ -71,10 +72,14 @@ export default function Dashboard() {
 
           // Process each item in the order
           for (const item of items) {
-            const product = await getProduct(item.product);
+            try {
+              const product = await getProduct(item.product);
 
-            // Only count products belonging to the current seller
-            if (product.seller?.email === user?.email) {
+              // Skip if product not found or doesn't belong to current seller
+              if (!product || product.seller?.email !== user?.email) {
+                continue;
+              }
+
               const revenue = product.price * item.quantity;
               orderRevenue += revenue;
 
@@ -93,6 +98,10 @@ export default function Dashboard() {
               // Update daily revenue
               const date = new Date(order.order_date).toLocaleDateString();
               dailyRevenue.set(date, (dailyRevenue.get(date) || 0) + revenue);
+            } catch (error) {
+              console.error(`Error fetching product ${item.product}:`, error);
+              // Continue processing other items
+              continue;
             }
           }
 
@@ -212,12 +221,14 @@ export default function Dashboard() {
           icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
           description="Total earnings from all orders"
         />
-        <StatCard
-          title="Total Orders"
-          value={stats.totalOrders}
-          icon={<Package className="h-4 w-4 text-muted-foreground" />}
-          description="Total number of orders received"
-        />
+        {isAdmin && (
+          <StatCard
+            title="Total Orders"
+            value={stats.totalOrders}
+            icon={<Package className="h-4 w-4 text-muted-foreground" />}
+            description="Total number of orders received"
+          />
+        )}
         <StatCard
           title="Average Order Value"
           value={stats.averageOrderValue}

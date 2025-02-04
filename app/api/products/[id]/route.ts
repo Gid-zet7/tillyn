@@ -1,5 +1,5 @@
 import Product from "@/db/models/productModel";
-// import Category from "@/db/models/categoryModel";
+import Category from "@/db/models/categoryModel";
 import { connectDB } from "@/db/mongodb";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
@@ -23,7 +23,7 @@ export const GET = async (request: Request, { params }: Params) => {
   const { id } = await params;
   try {
     await connectDB();
-    // const category = Category.find().lean();
+    const category = Category.find().lean();
     const product: Product | null = await Product.findById(id)
       .populate("category")
       .populate("seller")

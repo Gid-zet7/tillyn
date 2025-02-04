@@ -124,7 +124,7 @@ export default function Checkout() {
 
   const placeOrderAndHandlePayment = useCallback(async () => {
     if (!user?.email || !user?.phone_number || !user?.address) {
-      setErrorMsg("User details are missing");
+      setErrorMsg("Please enter your phone, address and your city");
       return;
     }
 
@@ -156,8 +156,8 @@ export default function Checkout() {
   }, [user, subTotal, selectedOption]);
 
   const placeOrder = useCallback(async () => {
-    if (!user?.email) {
-      setErrorMsg("User email is missing");
+    if (!user?.email || !user?.phone_number || !user?.address) {
+      setErrorMsg("Please enter your phone, address and your city");
       return;
     }
     if (selectedOption === "Pay after delivery") toggleModalOrder();

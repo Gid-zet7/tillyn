@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
 type Props = {
   user: User | undefined;
@@ -20,9 +21,50 @@ export default function CheckoutEditForm({
   address,
   toggleEdit,
 }: Props) {
+  const [errors, setErrors] = useState<{
+    phone_number?: string;
+    address_line1?: string;
+    city?: string;
+  }>({});
+
+  const validateForm = (e: React.FormEvent<HTMLFormElement>): boolean => {
+    const newErrors: typeof errors = {};
+    const form = e.currentTarget;
+    
+    // Phone validation
+    const phoneValue = form.phone_number.value.trim();
+    if (!phoneValue) {
+      newErrors.phone_number = "Phone number is required";
+    } else if (!/^\+?[\d\s-]{10,}$/.test(phoneValue)) {
+      newErrors.phone_number = "Please enter a valid phone number";
+    }
+
+    // Address validation
+    const addressValue = form.address_line1.value.trim();
+    if (!addressValue) {
+      newErrors.address_line1 = "Address is required";
+    }
+
+    // City validation
+    const cityValue = form.city.value.trim();
+    if (!cityValue) {
+      newErrors.city = "City is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validateForm(e)) {
+      await handleSaveSubmit(e);
+    }
+  };
+
   return (
     <>
-      <form className="w-full md:w-1/2 p-5" onSubmit={handleSaveSubmit}>
+      <form className="w-full md:w-1/2 p-5" onSubmit={onSubmit}>
         <h1 className="text-2xl font-bold my-3">Edit details</h1>
         <div className="mb-4">
           <label
@@ -38,7 +80,6 @@ export default function CheckoutEditForm({
             name="first_name"
             placeholder="first name eg. John"
             disabled
-            // onChange={(e) => setFirstName(e.target.value)}
             defaultValue={user?.first_name || ""}
           />
         </div>
@@ -89,12 +130,18 @@ export default function CheckoutEditForm({
           <input
             type="text"
             id="phone_number"
-            className="w-full p-2 border rounded bg-slate-100 text-black"
+            className={cn(
+              "w-full p-2 border rounded bg-slate-100 text-black",
+              errors.phone_number && "border-red-500"
+            )}
             name="phone_number"
-            placeholder="phone number "
+            placeholder="phone number"
             onChange={(e) => setPhoneNumber(e.target.value)}
             value={phone_number || ""}
           />
+          {errors.phone_number && (
+            <p className="text-red-500 text-sm mt-1">{errors.phone_number}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -107,12 +154,18 @@ export default function CheckoutEditForm({
           <input
             type="text"
             id="address_line1"
+            className={cn(
+              "w-full p-2 border rounded bg-slate-100 text-black",
+              errors.address_line1 && "border-red-500"
+            )}
             name="address_line1"
-            className="w-full p-2 border rounded bg-slate-100 text-black"
-            placeholder="address line 1"
+            placeholder="Enter your address"
             onChange={handleAddressChange}
             value={address?.address_line1 || ""}
           />
+          {errors.address_line1 && (
+            <p className="text-red-500 text-sm mt-1">{errors.address_line1}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -125,40 +178,53 @@ export default function CheckoutEditForm({
           <input
             type="text"
             id="address_line2"
-            name="address_line2"
             className="w-full p-2 border rounded bg-slate-100 text-black"
-            placeholder="address line 2"
+            name="address_line2"
+            placeholder="Apartment, suite, etc. (optional)"
             onChange={handleAddressChange}
             value={address?.address_line2 || ""}
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="city" className="block font-semibold mb-2 text-black">
+          <label
+            htmlFor="city"
+            className="block font-semibold mb-2 text-black"
+          >
             City
           </label>
           <input
             type="text"
             id="city"
+            className={cn(
+              "w-full p-2 border rounded bg-slate-100 text-black",
+              errors.city && "border-red-500"
+            )}
             name="city"
-            className="w-full p-2 border rounded bg-slate-100 text-black"
-            placeholder="eg., Accra"
+            placeholder="Enter your city"
             onChange={handleAddressChange}
             value={address?.city || ""}
           />
+          {errors.city && (
+            <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+          )}
         </div>
 
-        <div className="flex gap-3 h-10">
+        <div className="flex gap-2">
+          <Button
+            type="submit"
+            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+          >
+            Save
+          </Button>
           <Button
             type="button"
-            variant={"outline"}
-            // className="px-2 py-1 bg-white border-2"
+            variant="outline"
             onClick={toggleEdit}
+            className="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100"
           >
             Cancel
           </Button>
-
-          <Button type="submit">Save</Button>
         </div>
       </form>
     </>

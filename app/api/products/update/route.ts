@@ -41,7 +41,6 @@ export const PATCH = async (request: Request) => {
         status: 401,
       });
     }
-    console.log(findUser);
 
     const formData = await request.formData();
 
@@ -64,7 +63,6 @@ export const PATCH = async (request: Request) => {
       price <= 0 ||
       ratings < 0 ||
       !size ||
-      !brand ||
       !category
     ) {
       return new Response(
@@ -137,7 +135,6 @@ export const PATCH = async (request: Request) => {
     product.seller = findUser._id;
 
     await product.save();
-    console.log(product);
 
     return new Response(
       JSON.stringify({ message: `${product.name} updated successfully` }),

@@ -136,7 +136,7 @@ export const getAllOrders = async () => {
     method: "GET",
   });
   if (!result.ok) {
-    const errorMessage = `Failed to fetch users. Status: ${result.status}, ${result.statusText}`;
+    const errorMessage = `Failed to fetch orders. Status: ${result.status}, ${result.statusText}`;
     throw new Error(errorMessage);
   }
   const orders = await result.json();
@@ -146,7 +146,7 @@ export const getOrder = async (orderId: string) => {
   const endpoint = `${SERVER_URL}/api/orders/${orderId}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
-    const errorMessage = `Failed to fetch user. Status: ${result.status}, ${result.statusText}`;
+    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
     throw new Error(errorMessage);
   }
   return result.json();
@@ -163,7 +163,7 @@ export const order = async (
       body: JSON.stringify({ userId, subtotal, cartItem }),
     });
     if (!res.ok) {
-      const errorMessage = `Failed to fetch user. Status: ${res.status}, ${res.statusText}`;
+      const errorMessage = `Failed to place order. Status: ${res.status}, ${res.statusText}`;
       throw new Error(errorMessage);
     }
     return res.json();
@@ -185,52 +185,7 @@ export const getOrderItems = async (id: string) => {
   const endpoint = `${SERVER_URL}/api/order-item/get-ordered-items?id=${id}`;
   const result = await fetch(endpoint, { method: "GET" });
   if (!result.ok) {
-    const errorMessage = `Failed to user order. Status: ${result.status}, ${result.statusText}`;
-    throw new Error(errorMessage);
-  }
-  return result.json();
-};
-export const getOrderDelivered = async () => {
-  const endpoint = `${SERVER_URL}/api/orders/delivered`;
-  const result = await fetch(endpoint, { method: "GET" });
-  if (!result.ok) {
-    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
-    throw new Error(errorMessage);
-  }
-  return result.json();
-};
-export const getOrderConfirmed = async () => {
-  const endpoint = `${SERVER_URL}/api/orders/confirmed`;
-  const result = await fetch(endpoint, { method: "GET" });
-  if (!result.ok) {
-    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
-    throw new Error(errorMessage);
-  }
-  return result.json();
-};
-export const getOrderPending = async () => {
-  const endpoint = `${SERVER_URL}/api/orders/order-pending`;
-  const result = await fetch(endpoint, { method: "GET" });
-  if (!result.ok) {
-    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
-    throw new Error(errorMessage);
-  }
-  return result.json();
-};
-export const getOrdersPaid = async () => {
-  const endpoint = `${SERVER_URL}/api/orders/paid`;
-  const result = await fetch(endpoint, { method: "GET" });
-  if (!result.ok) {
-    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
-    throw new Error(errorMessage);
-  }
-  return result.json();
-};
-export const getOrderPaymentPending = async () => {
-  const endpoint = `${SERVER_URL}/api/orders/payment-pending`;
-  const result = await fetch(endpoint, { method: "GET" });
-  if (!result.ok) {
-    const errorMessage = `Failed to fetch order. Status: ${result.status}, ${result.statusText}`;
+    const errorMessage = `Failed to fetch user ordered items. Status: ${result.status}, ${result.statusText}`;
     throw new Error(errorMessage);
   }
   return result.json();

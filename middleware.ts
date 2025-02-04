@@ -21,14 +21,16 @@ export default withAuth(
         pathname.includes("/dashboard/products") &&
         token?.permissions?.includes("retailer")
       ) {
-        const productId = pathname.split("/")[3]; // Get product ID from URL
-        if (productId) {
+        const productId = pathname.split("/")[3];
+
+        if (productId === undefined) return;
+
+        if (productId !== "new") {
           try {
             const response = await fetch(
               `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${productId}`
             );
             const product = await response.json();
-            console.log(product);
 
             if (product?.seller?.email !== user?.email) {
               return new Response(

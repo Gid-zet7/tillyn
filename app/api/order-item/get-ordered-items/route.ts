@@ -1,4 +1,4 @@
-// import Order from "@/db/models/orderModel";
+import Order from "@/db/models/orderModel";
 import { connectDB } from "@/db/mongodb";
 import OrderedItem from "@/db/models/orderedItem";
 
@@ -12,7 +12,7 @@ export const GET = async (request: Request) => {
 
     await connectDB();
 
-    // const order = Order.find().lean();
+    const order = Order.find().lean();
 
     const orderItems = await OrderedItem.find({ order: id }).exec();
 

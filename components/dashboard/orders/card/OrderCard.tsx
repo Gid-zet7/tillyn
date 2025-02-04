@@ -140,7 +140,7 @@ export default function OrderCard({
           </div>
         ) : (
           viewOrderItems && (
-            <div className="pt-2 space-y-3">
+            <div key={"1"} className="pt-2 space-y-3">
               {orderedItems.map((item: any) => (
                 <div key={item._id} className="group">
                   <div className="flex items-center gap-4 p-3 rounded-lg bg-gray-50/50 group-hover:bg-gray-100/80 transition-colors">
