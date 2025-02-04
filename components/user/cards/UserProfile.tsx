@@ -6,9 +6,10 @@ import OrdersCard from "./OrdersCard";
 type Props = {
   user: User | undefined;
   orders?: Order[] | undefined;
+  errorOrder?: string | null;
 };
 
-export default function UserProfile({ user, orders }: Props) {
+export default function UserProfile({ user, orders, errorOrder }: Props) {
   return (
     <>
       <section>
@@ -36,7 +37,13 @@ export default function UserProfile({ user, orders }: Props) {
 
               <div className="my-4"></div>
 
-              {orders?.length ? <OrdersCard orders={orders} /> : "No order yet"}
+              {orders?.length ? (
+                <OrdersCard orders={orders} />
+              ) : (
+                <p className="text-center col-span-full text-gray-500">
+                  {errorOrder}
+                </p>
+              )}
 
               <div className="my-4"></div>
             </div>

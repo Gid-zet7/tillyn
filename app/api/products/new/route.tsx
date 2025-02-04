@@ -2,6 +2,9 @@ import Product from "@/db/models/productModel";
 import Category from "@/db/models/categoryModel";
 import { connectDB } from "@/db/mongodb";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { Users, init } from "@kinde/management-api-js";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import UserModel from "@/db/models/userModel";
 
 const Bucket = process.env.BUCKET_NAME;
 const s3 = new S3Client({
@@ -12,8 +15,22 @@ const s3 = new S3Client({
   },
 });
 
+init();
+
 export const POST = async (request: Request) => {
   try {
+    const session = await getKindeServerSession().getUser();
+    const user = await Users.getUserData({ id: session.id });
+
+    console.log(user);
+    if (!user) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const findUser = await UserModel.findOne({ email: user.preferred_email });
+
+    if (!findUser) return new Response("Unauthorized", { status: 401 });
+
     const formData = await request.formData();
 
     // Get form fields
@@ -106,6 +123,7 @@ export const POST = async (request: Request) => {
       stock,
       category: findCategory,
       image_url: imageUrl[0],
+      seller: findUser._id,
     };
 
     const product = await Product.create(productObj);

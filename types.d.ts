@@ -57,6 +57,7 @@ type Product = {
   brand: string;
   stock: number;
   category: Category;
+  seller: User;
   createdAt: Date;
   updatedAt: Date;
   __v: number;

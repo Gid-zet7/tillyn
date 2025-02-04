@@ -19,6 +19,7 @@ const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const ProfileMenu = ({ session }: any) => {
   const { getPermission, isLoading } = useKindeBrowserClient();
   const isAdmin = !isLoading && getPermission("admin")?.isGranted;
+  const isRetailer = !isLoading && getPermission("retailer")?.isGranted;
   const last_name_initial = session.last_name
     .split(" ")
     .filter((word: string) => word.length > 0)
@@ -51,7 +52,7 @@ const ProfileMenu = ({ session }: any) => {
                 Profile
               </Link>
             </DropdownMenuItem>
-            {isAdmin ? (
+            {isAdmin || isRetailer ? (
               <Link href={`${SERVER_URL}/dashboard`}>
                 <DropdownMenuItem>Dashboard</DropdownMenuItem>
               </Link>

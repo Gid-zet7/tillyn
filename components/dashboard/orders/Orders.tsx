@@ -19,12 +19,21 @@ import {
 import OrderCard from "./card/OrderCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // Import input component
+import { Input } from "@/components/ui/input";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+
+interface OrderWithItems extends Order {
+  items?: {
+    product: any;
+    quantity: number;
+  }[];
+}
 
 export default function Orders() {
+  const { getPermission, getUser } = useKindeBrowserClient();
   const [updateOrder] = useUpdateOrderMutation();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [searchQuery, setSearchQuery] = useState(""); // Search query state
+  const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [refreshOrders, setRefreshOrders] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [orderEditModal, setOrderEditModal] = useState(false);
@@ -34,20 +43,85 @@ export default function Orders() {
   const [isLoading, setIsLoading] = useState(false);
   const [orderedItems, setOrderedItems] = useState<{ product: any }[]>();
   const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+  const [filteredOrders, setFilteredOrders] = useState<OrderWithItems[]>([]);
+
+  const isRetailer = getPermission("retailer")?.isGranted;
+  const user = getUser();
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        setIsLoading(true);
         const data = await getAllOrders();
-        console.log(data);
-        setOrders(data);
+
+        if (isRetailer && user) {
+          // For retailers, fetch all order items and their products
+          const ordersWithItems = await Promise.all(
+            data.map(async (order: Order) => {
+              const items = await getOrderItems(order._id);
+              const itemsWithProducts = await Promise.all(
+                items.map(async (item: any) => {
+                  const product = await getProduct(item.product);
+                  return {
+                    ...item,
+                    product,
+                  };
+                })
+              );
+              return {
+                ...order,
+                items: itemsWithProducts,
+              };
+            })
+          );
+
+          // Filter orders that have at least one product from the current seller
+          const filteredOrders = ordersWithItems.filter((order) => {
+            const sellerItems = order.items?.filter(
+              (item: OrderedItem) => item.product.seller?.email === user.email
+            );
+            return sellerItems && sellerItems.length > 0;
+          });
+
+          // Sort orders by date (newest first)
+          const sortedOrders = filteredOrders.sort(
+            (a, b) =>
+              new Date(b.order_date).getTime() -
+              new Date(a.order_date).getTime()
+          );
+
+          setOrders(sortedOrders);
+        } else {
+          // For admin, show all orders sorted by date
+          const sortedOrders = data.sort(
+            (a: any, b: any) =>
+              new Date(b.order_date).getTime() -
+              new Date(a.order_date).getTime()
+          );
+          setOrders(sortedOrders);
+        }
+        setIsLoading(false);
       } catch (err) {
         setError("Failed to fetch orders");
-        console.log("Error fetching data", err);
+        console.error("Error fetching data:", err);
+        setIsLoading(false);
       }
     };
+
     fetchOrders();
-  }, [refreshOrders]);
+  }, [refreshOrders, isRetailer, user]);
+
+  useEffect(() => {
+    const query = searchQuery.toLowerCase();
+    const filtered = orders.filter(
+      (order) =>
+        order.user.first_name.toLowerCase().includes(query) ||
+        order.user.last_name.toLowerCase().includes(query) ||
+        order.user.email.toLowerCase().includes(query) ||
+        order._id.toLowerCase().includes(query)
+    );
+    setFilteredOrders(filtered);
+  }, [orders, searchQuery]);
 
   const toggleEdit = async (id: string | null) => {
     if (typeof id === "string") {
@@ -56,39 +130,51 @@ export default function Orders() {
         setOrderID(result._id);
         setPaymentStatus(result?.payment_status);
         setOrderStatus(result?.status);
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error fetching order details:", error);
+      }
     }
     setOrderEditModal((prevState) => !prevState);
   };
 
   const toggleViewOrderItems = async (orderId: string | null) => {
-    setIsLoading(true);
     if (typeof orderId === "string") {
       try {
-        const result: OrderedItem[] = await getOrderItems(orderId);
-        const productsWithDetails = await Promise.all(
-          result.map(async (item: any) => {
-            const product = await getProduct(item.product);
-            return {
-              orderItemQuantity: item.quantity,
-              product: product,
-            };
-          })
-        );
-        setOrderedItems(productsWithDetails);
-      } catch (error) {}
+        setIsLoading(true);
+        // If we're a retailer, filter items to only show our products
+        const order = orders.find((o) => o._id === orderId);
+        if (order?.items && isRetailer) {
+          const sellerItems = order.items.filter(
+            (item) => item.product.seller?.email === user?.email
+          );
+          setOrderedItems(sellerItems);
+        } else {
+          // For admin or if items aren't cached, fetch all items
+          const result: OrderedItem[] = await getOrderItems(orderId);
+          const productsWithDetails = await Promise.all(
+            result.map(async (item: any) => {
+              const product = await getProduct(item.product);
+              return {
+                orderItemQuantity: item.quantity,
+                product: product,
+              };
+            })
+          );
+          setOrderedItems(productsWithDetails);
+        }
+        setExpandedCardId(expandedCardId === orderId ? null : orderId);
+      } catch (error) {
+        console.error("Error fetching order items:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-    setExpandedCardId(expandedCardId === orderId ? null : orderId);
-    setIsLoading(false);
   };
 
   const handleUpdateOnClick = async () => {
     try {
       const orderDetails = { id: orderID, status: orderStatus, payment_status };
-      const result = await updateOrder(orderDetails).unwrap();
-      console.log(result);
-      console.log("Order updated successfully");
-
+      await updateOrder(orderDetails).unwrap();
       setRefreshOrders((prev) => !prev);
       toggleEdit(null);
     } catch (error) {
@@ -96,19 +182,30 @@ export default function Orders() {
     }
   };
 
-  // Filter orders based on search query
-  const filteredOrders = orders.filter((order) => {
-    const query = searchQuery.toLowerCase();
+  if (isLoading && orders.length === 0) {
     return (
-      order.user.first_name.toLowerCase().includes(query) ||
-      order.user.last_name.toLowerCase().includes(query) ||
-      order.user.email.toLowerCase().includes(query) ||
-      order._id.toLowerCase().includes(query)
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading orders...</p>
+        </div>
+      </div>
     );
-  });
+  }
 
   return (
-    <>
+    <div className="p-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">
+          {isRetailer ? "Your Orders" : "All Orders"}
+        </h1>
+        <p className="text-gray-600">
+          {isRetailer
+            ? "View and manage orders containing your products"
+            : "Manage all orders in the system"}
+        </p>
+      </div>
+
       {orderEditModal && (
         <div>
           <Card className="flex flex-col justify-between fixed top-1/2 left-1/2 p-10 transform -translate-x-1/2 -translate-y-1/2 z-10">
@@ -161,7 +258,7 @@ export default function Orders() {
       )}
 
       {/* Search Bar */}
-      <div className="flex justify-center mb-4 px-3">
+      <div className="flex justify-center mb-6">
         <Input
           type="text"
           placeholder="Search by name, email, or order ID..."
@@ -171,31 +268,32 @@ export default function Orders() {
         />
       </div>
 
-      {/* Order Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-3">
-        {filteredOrders.length > 0 ? (
-          filteredOrders.map((item) => (
-            <OrderCard
-              key={item._id}
-              id={item._id}
-              user={item.user}
-              totalAmount={item.total_amount}
-              paymentStatus={item.payment_status}
-              orderStatus={item.status}
-              orderDate={item.order_date}
-              toggleEdit={() => toggleEdit(item._id)}
-              orderedItems={orderedItems}
-              viewOrderItems={expandedCardId === item._id}
-              toggleViewOrderItems={() => toggleViewOrderItems(item._id)}
-              isLoading={isLoading}
-            />
-          ))
-        ) : (
-          <p className="text-center col-span-full text-gray-500">
-            No matching orders found.
-          </p>
-        )}
-      </div>
-    </>
+      {error ? (
+        <div className="text-red-500 text-center">{error}</div>
+      ) : (
+        /* Order Cards Grid */
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order) => (
+              <OrderCard
+                key={order._id}
+                id={order._id}
+                user={order.user}
+                order={order}
+                toggleEdit={() => toggleEdit(order._id)}
+                viewOrderItems={expandedCardId === order._id}
+                toggleViewOrderItems={() => toggleViewOrderItems(order._id)}
+                orderedItems={orderedItems}
+                isLoading={isLoading}
+              />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">
+              No matching orders found.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

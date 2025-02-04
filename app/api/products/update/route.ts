@@ -2,6 +2,9 @@ import Product from "@/db/models/productModel";
 import Category from "@/db/models/categoryModel";
 import { connectDB } from "@/db/mongodb";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { Users, init } from "@kinde/management-api-js";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import UserModel from "@/db/models/userModel";
 
 const Bucket = process.env.BUCKET_NAME;
 const s3 = new S3Client({
@@ -12,119 +15,138 @@ const s3 = new S3Client({
   },
 });
 
+init();
+
 export const PATCH = async (request: Request) => {
   try {
+    await connectDB();
+
+    const session = await getKindeServerSession().getUser();
+    if (!session) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+      });
+    }
+
+    const user = await Users.getUserData({ id: session.id });
+    if (!user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+      });
+    }
+
+    const findUser = await UserModel.findOne({ email: user.preferred_email });
+    if (!findUser) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+      });
+    }
+    console.log(findUser);
+
     const formData = await request.formData();
 
-    // Get form fields
-    const id = formData.get("id") as string;
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const price = parseFloat(formData.get("price") as string);
-    const ratings = parseFloat(formData.get("ratings") as string);
-    const size = formData.get("size") as string;
-    const brand = formData.get("brand") as string;
-    const stock = parseInt(formData.get("stock") as string);
-    const category = formData.get("category") as string;
+    // Validate form fields
+    const id = formData.get("id")?.toString() || "";
+    const name = formData.get("name")?.toString() || "";
+    const description = formData.get("description")?.toString() || "";
+    const price = parseFloat(formData.get("price")?.toString() || "0");
+    const ratings = parseFloat(formData.get("ratings")?.toString() || "0");
+    const size = formData.get("size")?.toString() || "";
+    const brand = formData.get("brand")?.toString() || "";
+    const stock = parseInt(formData.get("stock")?.toString() || "0");
+    const category = formData.get("category")?.toString() || "";
     const files = formData.getAll("image") as File[];
 
-    // Validate that the ID is provided
-    if (!id) return new Response("Id is required", { status: 400 });
-
     if (
+      !id ||
       !name ||
       !description ||
-      !price ||
-      !ratings ||
-      // !stock ||
+      price <= 0 ||
+      ratings < 0 ||
       !size ||
       !brand ||
-      !category ||
-      files.length === 0
+      !category
     ) {
       return new Response(
-        "All fields are required, including at least one image",
+        JSON.stringify({ error: "some fields are missing" }),
         { status: 400 }
       );
     }
 
-    const fileMappings: { [key: string]: string } = {
-      jpeg: "image/jpeg",
-      png: "image/png",
-      jpg: "image/jpg",
-      svg: "image/svg",
-      gif: "image/gif",
-      pdf: "application/pdf",
-    };
-
-    await Promise.all(
-      files?.map(async (file) => {
-        const Body = Buffer.from(await file.arrayBuffer()) as Buffer;
-        const fileName = file.name;
-        const fileExtension = file.name.split(".").pop() as string;
-        const contentType =
-          fileMappings[fileExtension] || "application/octet-stream";
-
-        const putObjectParams = {
-          Bucket,
-          Key: fileName,
-          Body,
-          ContentType: contentType,
-        };
-
-        await s3.send(new PutObjectCommand(putObjectParams));
-      })
-    );
-
-    await connectDB();
-
-    // Find the product  by ID
-    const product = await Product.findById(id).exec();
-    if (!product) return new Response("Product not found", { status: 404 });
-
-    // Check if the product name already exists
-    if (product) {
-      const duplicate: Product = await Product.findOne({ name })
-        .collation({ locale: "en", strength: 2 })
-        .exec();
-
-      if (duplicate && duplicate._id.toString() !== id) {
-        return new Response("Product already exists", { status: 409 });
-      }
+    // Check if product exists
+    const product = await Product.findById(id);
+    if (!product) {
+      return new Response(JSON.stringify({ error: "Product not found" }), {
+        status: 404,
+      });
     }
 
-    const findCategory = await Category.findOne({ name: category })
-      .lean()
-      .exec();
+    // Check for duplicate product name
+    const duplicate = await Product.findOne({ name }).collation({
+      locale: "en",
+      strength: 2,
+    });
+    if (duplicate && duplicate._id.toString() !== id) {
+      return new Response(JSON.stringify({ error: "Product already exists" }), {
+        status: 409,
+      });
+    }
 
+    // Find the category
+    const findCategory = await Category.findOne({ name: category }).lean();
     if (!findCategory) {
-      return new Response("Invalid category", { status: 400 });
+      return new Response(JSON.stringify({ error: "Invalid category" }), {
+        status: 400,
+      });
     }
 
-    const imageUrl = files?.map((file) => {
-      return file.name;
+    // Upload images to S3 only if new image is provided
+    let imageUrl = product.image_url;
+    if (files && files.length > 0) {
+      const imageUrls: string[] = [];
+      await Promise.all(
+        files.map(async (file) => {
+          const Body = Buffer.from(await file.arrayBuffer());
+          const fileName = `${Date.now()}-${file.name}`;
+
+          await s3.send(
+            new PutObjectCommand({
+              Bucket,
+              Key: fileName,
+              Body,
+              ContentType: file.type || "application/octet-stream",
+            })
+          );
+
+          imageUrls.push(fileName);
+        })
+      );
+      imageUrl = imageUrls[0]; // Update image URL only if new image was uploaded
+    }
+
+    // Update the product
+    product.name = name;
+    product.description = description;
+    product.price = price;
+    product.ratings = ratings;
+    product.size = size;
+    product.brand = brand;
+    product.stock = stock;
+    product.category = findCategory;
+    product.image_url = imageUrl;
+    product.seller = findUser._id;
+
+    await product.save();
+    console.log(product);
+
+    return new Response(
+      JSON.stringify({ message: `${product.name} updated successfully` }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
     });
-
-    // Update the product fields only if they are provided
-    if (name) product.name = name;
-    if (description) product.description = description;
-    if (price) product.price = price;
-    if (ratings) product.ratings = ratings;
-    if (size) product.size = size;
-    if (brand) product.brand = brand;
-    if (stock === 0) product.stock = 0;
-    if (stock) product.stock = stock;
-    if (category) product.category = findCategory;
-    if (imageUrl) product.image_url = imageUrl[0];
-
-    // Save the updated product
-    const updatedProduct = await product.save();
-
-    return new Response(`${updatedProduct.name} updated successfully`, {
-      status: 200,
-    });
-  } catch {
-    // console.error(error);
-    return new Response("Internal Server Error", { status: 500 });
   }
 };

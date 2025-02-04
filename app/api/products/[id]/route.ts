@@ -26,6 +26,7 @@ export const GET = async (request: Request, { params }: Params) => {
     // const category = Category.find().lean();
     const product: Product | null = await Product.findById(id)
       .populate("category")
+      .populate("seller")
       .exec();
 
     if (!product) {

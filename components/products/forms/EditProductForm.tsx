@@ -29,7 +29,8 @@ export default function EditProductForm({ productId }: Props) {
   const [size, setSize] = useState("");
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState(0);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | string | null>(null);
+  const [newImageSelected, setNewImageSelected] = useState(false);
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -40,7 +41,6 @@ export default function EditProductForm({ productId }: Props) {
         setCategories(categoriesData);
       } catch (err) {
         console.error("Error loading product page:", err);
-        //  setError("Failed to load product data.");
       }
     };
 
@@ -52,7 +52,8 @@ export default function EditProductForm({ productId }: Props) {
       setSize(product?.size);
       setBrand(product?.brand);
       setStock(product?.stock);
-      setFile(product?.image_url);
+      setFile(product?.image_url || null);
+      setNewImageSelected(false);
       setCategory(product?.category?.name);
     }
     fetchCategories();
@@ -60,32 +61,33 @@ export default function EditProductForm({ productId }: Props) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
-    setFile(selectedFile);
+    if (selectedFile) {
+      setFile(selectedFile);
+      setNewImageSelected(true);
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const formData = new FormData();
+    formData.append("id", productId);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price.toString());
+    formData.append("ratings", ratings.toString());
+    formData.append("size", size);
+    formData.append("brand", brand);
+    formData.append("stock", stock.toString());
+    formData.append("category", category);
 
-    if (file) {
-      formData.append("id", productId);
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("price", price.toString());
-      formData.append("ratings", ratings.toString());
-      formData.append("size", size);
-      formData.append("brand", brand);
-      formData.append("stock", stock.toString());
-      formData.append("category", category);
+    // Only append new image if one was selected
+    if (newImageSelected && file instanceof File) {
       formData.append("image", file);
-    } else {
-      console.error("No file selected");
-      // console.log("Please select a product image");
     }
+
     try {
       const response = await updateProduct(formData).unwrap();
-
       // Reset form state
       setName("");
       setDescription("");
@@ -96,6 +98,7 @@ export default function EditProductForm({ productId }: Props) {
       setStock(0);
       setCategory("");
       setFile(null);
+      setNewImageSelected(false);
     } catch (error) {
       console.error("Error updating product:", error);
     }

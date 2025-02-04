@@ -6,17 +6,13 @@ import {
   Home,
   ListOrdered,
   Package,
-  // Search,
-  Settings,
   PlusCircle,
   LayoutDashboard,
-  WalletCards,
-  Hourglass,
-  Bike,
-  Check,
+  UserCircleIcon,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import {
   Sidebar,
@@ -67,16 +63,20 @@ const items = [
     title: "Users",
     url: `${SERVER_URL}/dashboard/users`,
     icon: UserCircle2,
+    adminOnly: true, // Add a flag to indicate admin-only items
   },
   {
-    title: "Settings",
+    title: "Profile",
     url: "#",
-    icon: Settings,
+    icon: UserCircleIcon,
   },
 ];
 
 export function AppSidebar() {
+  const { getPermission, isLoading } = useKindeBrowserClient();
+  const isAdmin = !isLoading && getPermission("admin")?.isGranted;
   const [session, setSession] = useState<User>();
+
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -94,11 +94,16 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Tillyn</SidebarGroupLabel>
+          <Link href={"/"}>
+            <SidebarGroupLabel>Tillyn</SidebarGroupLabel>
+          </Link>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) =>
-                item.title === "Home" ? (
+              {items.map((item) => {
+                // Skip rendering admin-only items if the user is not an admin
+                if (item.adminOnly && !isAdmin) return null;
+
+                return item.title === "Home" ? (
                   <Collapsible
                     key={item.title}
                     defaultOpen
@@ -181,64 +186,6 @@ export function AppSidebar() {
                           </SidebarMenuButton>
                         </SidebarMenuItem>
                       </SidebarMenu>
-                      <SidebarMenu>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton asChild>
-                            <Link href={`${SERVER_URL}/dashboard/orders/paid`}>
-                              <WalletCards />
-                              <span>Paid</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </SidebarMenu>
-                      <SidebarMenu>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton asChild>
-                            <Link
-                              href={`${SERVER_URL}/dashboard/orders/payments-pending`}
-                            >
-                              <Hourglass />
-                              <span>Payment pending</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </SidebarMenu>
-                      <SidebarMenu>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton asChild>
-                            <Link
-                              href={`${SERVER_URL}/dashboard/orders/delivered`}
-                            >
-                              <Bike />
-                              <span>Delivered</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </SidebarMenu>
-                      <SidebarMenu>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton asChild>
-                            <Link
-                              href={`${SERVER_URL}/dashboard/orders/confirmed`}
-                            >
-                              <Check />
-                              <span>Confirmed</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </SidebarMenu>
-                      <SidebarMenu>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton asChild>
-                            <Link
-                              href={`${SERVER_URL}/dashboard/orders/order-pending`}
-                            >
-                              <Hourglass />
-                              <span>Order pending</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </SidebarMenu>
                     </CollapsibleContent>
                   </Collapsible>
                 ) : item.title === "Users" ? (
@@ -269,14 +216,16 @@ export function AppSidebar() {
                 ) : (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.url}>
+                      <Link
+                        href={`${SERVER_URL}/profile/${session?.preferred_email}`}
+                      >
                         <item.icon />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
-              )}
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -302,12 +251,6 @@ export function AppSidebar() {
                   side="top"
                   className="w-[--radix-popper-anchor-width] p-4 hover:bg-slate-100 rounded-2xl"
                 >
-                  {/* <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem> */}
                   <DropdownMenuItem>
                     <span className="p-4 text-red-400"> Sign out</span>
                   </DropdownMenuItem>

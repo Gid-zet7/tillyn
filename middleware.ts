@@ -7,11 +7,40 @@ export default withAuth(
 
     const { pathname } = req.nextUrl;
 
-    // Protect the /dashboard route: Only accessible if the user has the 'admin' permission
+    // Protect the /dashboard route: Only accessible if the user has the 'admin' or 'seller' permission
     if (pathname.startsWith("/dashboard")) {
-      if (!token?.permissions?.includes("admin")) {
-        // console.log("User is not authorized to access /dashboard");
+      if (
+        !token?.permissions?.includes("admin") &&
+        !token?.permissions?.includes("retailer")
+      ) {
         return new Response("Forbidden", { status: 403 });
+      }
+
+      // For product management, sellers can only access their own products
+      if (
+        pathname.includes("/dashboard/products") &&
+        token?.permissions?.includes("retailer")
+      ) {
+        const productId = pathname.split("/")[3]; // Get product ID from URL
+        if (productId) {
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${productId}`
+            );
+            const product = await response.json();
+            console.log(product);
+
+            if (product?.seller?.email !== user?.email) {
+              return new Response(
+                "Forbidden: You can only manage your own products",
+                { status: 403 }
+              );
+            }
+          } catch (error) {
+            console.error("Error checking product ownership:", error);
+            return new Response("Internal Server Error", { status: 500 });
+          }
+        }
       }
     }
 

@@ -370,3 +370,39 @@ body {
     transform: rotate(0.5turn);
   }
 }
+
+/* Skeleton Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-shine {
+  animation: shimmer 2s infinite;
+}
+
+/* Improved Skeleton Base */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 0%,
+    var(--muted-foreground) 50%,
+    var(--muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Skeleton Variants */
+.skeleton-text {
+  height: 1em;
+  border-radius: 3px;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}

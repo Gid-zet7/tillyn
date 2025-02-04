@@ -7,7 +7,7 @@ export const GET = async () => {
 
     const orders = await Order.find()
       .populate("user")
-      .sort({ orderDate: -1 })
+      .sort({ createdAt: -1 })
       .lean();
 
     if (!orders?.length) return new Response("No order found", { status: 400 });

@@ -6,6 +6,15 @@ import { getAllCategories } from "@/lib/actions";
 import { useAddNewProductMutation } from "@/redux/slices/productsApiSlice";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import LoaderSimple from "@/components/Loader/Loader-simple/page";
 
 export default function NewProductForm() {
@@ -88,7 +97,7 @@ export default function NewProductForm() {
   // const categories = ["Men", "Women"];
 
   const categoryOption = categories.map((category, i) => {
-    return <option key={i}> {category.name} </option>;
+    return <SelectItem value={category.name}>{category.name}</SelectItem>;
   });
 
   if (isLoading) return <LoaderSimple />;
@@ -165,7 +174,23 @@ export default function NewProductForm() {
                 >
                   Rating <span className="text-red-500">*</span>
                 </label>
-                <select
+                <Select
+                  value={ratings?.toString()}
+                  onValueChange={(value) => setRatings(parseFloat(value))}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select rating" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select rating</SelectLabel>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="4.5">4.5</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                {/* <select
                   id="ratings"
                   className="w-full p-2 border rounded text-black"
                   onChange={(e) => setRatings(parseFloat(e.target.value))}
@@ -174,7 +199,7 @@ export default function NewProductForm() {
                   <option>Select rating</option>
                   <option>4</option>
                   <option>4.5</option>
-                </select>
+                </select> */}
               </div>
               <div>
                 <label
@@ -237,7 +262,21 @@ export default function NewProductForm() {
               >
                 Category <span className="text-red-500">*</span>
               </label>
-              <select
+              <Select
+                value={category}
+                onValueChange={(value) => setCategory(value)}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select rating" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Select rating</SelectLabel>
+                    {categoryOption}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {/* <select
                 id="category"
                 className="w-full p-2 border rounded text-black"
                 onChange={(e) => setCategory(e.target.value)}
@@ -245,7 +284,7 @@ export default function NewProductForm() {
               >
                 <option>--Select category--</option>
                 {categoryOption}
-              </select>
+              </select> */}
             </div>
             <div>
               <div>

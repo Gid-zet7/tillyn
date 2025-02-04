@@ -12,6 +12,7 @@ const productSchema = new Schema<Product>(
     size: { type: String, require: true },
     brand: { type: String },
     stock: { type: Number, required: true },
+    seller: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "category" },
   },
   { timestamps: true }
