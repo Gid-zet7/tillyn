@@ -31,6 +31,8 @@ export default function Product({ productId }: Props) {
     }),
   });
 
+  // Parse sizes string into array
+  const availableSizes = product?.size?.split(",").map((s) => s.trim()) || [];
   const dispatch = useDispatch();
 
   if (!product) {
@@ -81,7 +83,7 @@ export default function Product({ productId }: Props) {
             <div className=" flex flex-col gap-2">
               <h1 className={`${poppins.className}`}>Product size</h1>
               <div className="flex gap-3">
-                {["Medium", "Large", "Extra Large"].map((size) => (
+                {availableSizes.map((size) => (
                   <Button key={size} className="rounded-full">
                     {size}
                   </Button>

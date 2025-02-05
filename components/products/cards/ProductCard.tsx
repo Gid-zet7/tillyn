@@ -29,7 +29,8 @@ export default function ProductCard({ productId }: Props) {
         imageSrc={product.image_url}
         title={product.name}
         stock={product.stock}
-        addToCart={() => dispatch(addToCart(product))}
+        sizes={product.size}
+        addToCart={(selectedSize) => dispatch(addToCart({ ...product, selectedSize }))}
       />
     );
   }

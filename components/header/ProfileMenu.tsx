@@ -38,7 +38,7 @@ const ProfileMenu = ({ session }: any) => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="w-8 h-8">
-              <AvatarImage src={`${session?.picture}`} alt="profile" />
+              {/* <AvatarImage src={`${session?.picture}`} alt="profile" /> */}
               <AvatarFallback>
                 {first_name_initial} {last_name_initial}
               </AvatarFallback>

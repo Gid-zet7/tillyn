@@ -1,4 +1,3 @@
-import CartItem from "@/db/models/cartItem";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // type CartState = any[];
@@ -14,7 +13,9 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<any>) => {
       const itemExists: any = state.items.find(
-        (item: CartItem) => item._id === action.payload._id
+        (item: CartItem) =>
+          item._id === action.payload._id &&
+          item.selectedSize === action.payload.selectedSize
       );
 
       if (itemExists) {
@@ -25,7 +26,9 @@ const cartSlice = createSlice({
     },
     incrementQuantity: (state, action: PayloadAction<any>) => {
       const item: any = state.items.find(
-        (item: CartItem) => item._id === action.payload._id
+        (item: CartItem) =>
+          item._id === action.payload._id &&
+          item.selectedSize === action.payload.selectedSize
       );
       if (item) {
         item.quantity++;
@@ -33,13 +36,19 @@ const cartSlice = createSlice({
     },
     decrementQuantity: (state, action: PayloadAction<any>) => {
       const item: any = state.items.find(
-        (item: Product) => item._id === action.payload._id
+        (item: Product) =>
+          item._id === action.payload._id &&
+          item.selectedSize === action.payload.selectedSize
       );
 
       if (item) {
         if (item.quantity === 1) {
           state.items = state.items.filter(
-            (item: Product) => item._id !== action.payload._id
+            (item: Product) =>
+              !(
+                item._id === action.payload._id &&
+                item.selectedSize === action.payload.selectedSize
+              )
           );
         } else {
           item.quantity--;
@@ -48,8 +57,45 @@ const cartSlice = createSlice({
     },
     removeFromCart: (state, action: PayloadAction<any>) => {
       state.items = state.items.filter(
-        (item: Product) => item._id !== action.payload._id
+        (item: Product) =>
+          !(
+            item._id === action.payload._id &&
+            item.selectedSize === action.payload.selectedSize
+          )
       );
+    },
+    changeSize: (
+      state,
+      action: PayloadAction<{
+        itemId: string;
+        oldSize: string;
+        newSize: string;
+      }>
+    ) => {
+      const { itemId, oldSize, newSize } = action.payload;
+      const item = state.items.find(
+        (item: CartItem) => item._id === itemId && item.selectedSize === oldSize
+      );
+
+      if (item) {
+        // Check if the new size already exists
+        const existingItemWithNewSize = state.items.find(
+          (item: CartItem) =>
+            item._id === itemId && item.selectedSize === newSize
+        );
+
+        if (existingItemWithNewSize) {
+          // If new size exists, add quantities and remove old item
+          existingItemWithNewSize.quantity += item.quantity;
+          state.items = state.items.filter(
+            (item: CartItem) =>
+              !(item._id === itemId && item.selectedSize === oldSize)
+          );
+        } else {
+          // If new size doesn't exist, just update the size
+          item.selectedSize = newSize;
+        }
+      }
     },
     clearCart: (state) => {
       state.items = [];
@@ -65,4 +111,5 @@ export const {
   decrementQuantity,
   removeFromCart,
   clearCart,
+  changeSize,
 } = cartSlice.actions;

@@ -31,7 +31,7 @@ export default function ProfileCard({
   return (
     <Card className="p-3 flex flex-col items-center">
       <Avatar className="w-20 h-20 mb-4">
-        <AvatarImage src={picture} alt={`${firstname} ${lastname}`} />
+        {/* <AvatarImage src={picture} alt={`${firstname} ${lastname}`} /> */}
         <AvatarFallback>
           {firstInitial} {lastInitial}
         </AvatarFallback>

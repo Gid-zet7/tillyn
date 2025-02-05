@@ -74,6 +74,7 @@ export default function RelatedProducts({ productId, category }: Props) {
                     ratings={relatedProduct.ratings}
                     imageSrc={relatedProduct.image_url}
                     title={relatedProduct.name}
+                    sizes={relatedProduct.size}
                     addToCart={() => dispatch(addToCart(relatedProduct))}
                   />
                 )

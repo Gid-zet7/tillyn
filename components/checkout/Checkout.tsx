@@ -213,12 +213,13 @@ export default function Checkout() {
           }" style="width:100px; height:100px;" onerror="this.style.display='none';"/>
             Product: ${item.name}<br>
             Quantity: ${item.quantity}<br>
+            Size: ${item.selectedSize}<br>
             Total Price: ${item.price * item.quantity}
           </li>`
         )
         .join("")}
     </ul>
-    <h3>Subtotal: ${subtotal} including delivery</h3>
+    <h3>Subtotal: ${subtotal} excluding delivery</h3>
     <p>Order ID: ${orderId}</p>
       <h3>Address Information:</h3>
         <ul>

@@ -37,6 +37,7 @@ export default function EditProductForm({ productId }: Props) {
   const [price, setPrice] = useState(0);
   const [ratings, setRatings] = useState(0);
   const [size, setSize] = useState("");
+  const [sizeError, setSizeError] = useState("");
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState(0);
   const [file, setFile] = useState<File | string | null>(null);
@@ -71,6 +72,32 @@ export default function EditProductForm({ productId }: Props) {
     fetchCategories();
   }, [product]);
 
+  const validateSizeFormat = (value: string) => {
+    // Empty is valid as it will be caught by required field validation
+    if (!value.trim()) {
+      setSizeError("");
+      return true;
+    }
+
+    // Check if the string follows the format: "S, M, L" or "S,M,L"
+    const sizePattern = /^[A-Za-z0-9]+(?:\s*,\s*[A-Za-z0-9]+)*$/;
+    const isValid = sizePattern.test(value.trim());
+
+    if (!isValid) {
+      setSizeError("Please enter sizes in the correct format (e.g., S, M, L)");
+      return false;
+    }
+
+    setSizeError("");
+    return true;
+  };
+
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSize(value);
+    validateSizeFormat(value);
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
     if (selectedFile) {
@@ -81,6 +108,11 @@ export default function EditProductForm({ productId }: Props) {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    // Validate size format before submission
+    if (!validateSizeFormat(size)) {
+      return;
+    }
 
     const formData = new FormData();
     formData.append("id", productId);
@@ -128,12 +160,12 @@ export default function EditProductForm({ productId }: Props) {
 
   return (
     <>
-      <div className="flex flex-col-reverse md:w-[60rem]">
-        <div className="px-4 flex-1 flex flex-col justify-center items-center">
+      <div className="flex flex-col-reverse w-full md:w-[60rem] px-4 md:px-0">
+        <div className="flex-1 flex flex-col justify-center items-center">
           <h1 className="text-xl font-bold my-4 grid place-content-center mt-6">
             Edit product
           </h1>
-          <form onSubmit={handleSubmit} className="w-full">
+          <form onSubmit={handleSubmit} className="w-full max-w-2xl">
             <div className="mb-4 flex gap-10">
               <div>
                 <label
@@ -150,7 +182,7 @@ export default function EditProductForm({ productId }: Props) {
                   value={name}
                 />
               </div>
-              <div>
+              <div className="flex-1">
                 <label
                   htmlFor="price"
                   className="block font-semibold text-xs mb-2 text-black"
@@ -177,14 +209,14 @@ export default function EditProductForm({ productId }: Props) {
               </label>
               <textarea
                 id="description"
-                className="w-full p-2 border rounded text-black"
+                className="w-full p-2 border rounded text-black min-h-[100px]"
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
                 required
               />
             </div>
 
-            <div className="flex gap-10 mb-4">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4">
               <div>
                 <label
                   htmlFor="ratings"
@@ -196,7 +228,7 @@ export default function EditProductForm({ productId }: Props) {
                   value={ratings?.toString()}
                   onValueChange={(value) => setRatings(parseFloat(value))}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-full md:w-[180px]">
                     <SelectValue placeholder="Select rating" />
                   </SelectTrigger>
                   <SelectContent>
@@ -208,7 +240,7 @@ export default function EditProductForm({ productId }: Props) {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="mb-4">
+              <div className="flex-1">
                 <label
                   htmlFor="category"
                   className="block font-semibold mb-2 text-black text-xs"
@@ -219,7 +251,7 @@ export default function EditProductForm({ productId }: Props) {
                   value={category}
                   onValueChange={(value) => setCategory(value)}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-full md:w-[180px]">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -232,7 +264,7 @@ export default function EditProductForm({ productId }: Props) {
               </div>
             </div>
 
-            <div className="flex gap-10 mb-4">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4">
               <div>
                 <label
                   htmlFor="size"
@@ -240,15 +272,27 @@ export default function EditProductForm({ productId }: Props) {
                 >
                   Available size(s) <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="size"
-                  className="w-full p-2 border rounded text-black"
-                  onChange={(e) => setSize(e.target.value)}
-                  value={size}
-                />
+                <div className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    id="size"
+                    className={`w-full p-2 border rounded text-black ${
+                      sizeError ? "border-red-500" : ""
+                    }`}
+                    onChange={handleSizeChange}
+                    value={size}
+                    placeholder="Enter sizes separated by commas (e.g. S, M, L, XL)"
+                  />
+                  {sizeError ? (
+                    <p className="text-xs text-red-500">{sizeError}</p>
+                  ) : (
+                    <p className="text-xs text-gray-500">
+                      Enter sizes separated by commas (e.g. S, M, L, XL)
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="mb-4">
+              <div className="flex-1">
                 <label
                   htmlFor="stock"
                   className="block font-semibold text-xs mb-2 text-black"

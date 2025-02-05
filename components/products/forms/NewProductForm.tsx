@@ -24,6 +24,7 @@ export default function NewProductForm() {
   const [price, setPrice] = useState(0);
   const [ratings, setRatings] = useState(0);
   const [size, setSize] = useState("");
+  const [sizeError, setSizeError] = useState("");
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState(0);
   const [file, setFile] = useState();
@@ -51,8 +52,39 @@ export default function NewProductForm() {
     setFile(file);
   };
 
+  const validateSizeFormat = (value: string) => {
+    // Empty is valid as it will be caught by required field validation
+    if (!value.trim()) {
+      setSizeError("");
+      return true;
+    }
+
+    // Check if the string follows the format: "S, M, L" or "S,M,L"
+    const sizePattern = /^[A-Za-z0-9]+(?:\s*,\s*[A-Za-z0-9]+)*$/;
+    const isValid = sizePattern.test(value.trim());
+    
+    if (!isValid) {
+      setSizeError("Please enter sizes in the correct format (e.g., S, M, L)");
+      return false;
+    }
+    
+    setSizeError("");
+    return true;
+  };
+
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSize(value);
+    validateSizeFormat(value);
+  };
+
   const handleSubmit = async () => {
     try {
+      // Validate size format before submission
+      if (!validateSizeFormat(size)) {
+        return;
+      }
+
       const formData = new FormData();
 
       if (file) {
@@ -114,14 +146,15 @@ export default function NewProductForm() {
 
   return (
     <>
-      <div className="flex flex-col-reverse md:w-[60rem]">
-        <div className="px-4 flex-1 flex flex-col justify-center items-center">
+      <div className="flex flex-col-reverse w-full md:w-[60rem] px-4 md:px-0">
+        <div className="flex-1 flex flex-col justify-center items-center">
           <h1 className="text-xl font-bold my-4 grid place-content-center mt-6">
             Add a new product
           </h1>
-          <form onSubmit={handleSubmit} className="w-full">
-            <div className="mb-4 flex gap-10">
-              <div>
+          <form onSubmit={handleSubmit} className="w-full max-w-2xl">
+            {/* Name and Price */}
+            <div className="mb-4 flex flex-col md:flex-row md:gap-10 gap-4">
+              <div className="flex-1">
                 <label
                   htmlFor="name"
                   className="block font-semibold mb-2 text-black text-xs"
@@ -136,7 +169,7 @@ export default function NewProductForm() {
                   value={name}
                 />
               </div>
-              <div>
+              <div className="flex-1">
                 <label
                   htmlFor="price"
                   className="block font-semibold text-xs mb-2 text-black"
@@ -147,13 +180,14 @@ export default function NewProductForm() {
                   type="number"
                   id="price"
                   className="w-full p-2 border rounded text-black"
-                  // placeholder="enter your last name..."
                   onChange={(e) => setPrice(parseFloat(e.target.value))}
                   value={price}
                   required
                 />
               </div>
             </div>
+
+            {/* Description */}
             <div className="mb-4">
               <label
                 htmlFor="description"
@@ -163,15 +197,16 @@ export default function NewProductForm() {
               </label>
               <textarea
                 id="description"
-                className="w-full p-2 border rounded text-black"
+                className="w-full p-2 border rounded text-black min-h-[100px]"
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
                 required
               />
             </div>
 
-            <div className="flex gap-10 mb-4">
-              <div>
+            {/* Rating and Category */}
+            <div className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4">
+              <div className="flex-1">
                 <label
                   htmlFor="ratings"
                   className="block font-semibold mb-2 text-black text-xs"
@@ -182,7 +217,7 @@ export default function NewProductForm() {
                   value={ratings?.toString()}
                   onValueChange={(value) => setRatings(parseFloat(value))}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-full md:w-[180px]">
                     <SelectValue placeholder="Select rating" />
                   </SelectTrigger>
                   <SelectContent>
@@ -194,7 +229,7 @@ export default function NewProductForm() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="mb-4">
+              <div className="flex-1">
                 <label
                   htmlFor="category"
                   className="block font-semibold mb-2 text-black text-xs"
@@ -205,7 +240,7 @@ export default function NewProductForm() {
                   value={category}
                   onValueChange={(value) => setCategory(value)}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-full md:w-[180px]">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -218,23 +253,36 @@ export default function NewProductForm() {
               </div>
             </div>
 
-            <div className="flex gap-10 mb-4">
-              <div>
+            {/* Size and Stock */}
+            <div className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4">
+              <div className="flex-1">
                 <label
                   htmlFor="size"
                   className="block font-semibold mb-2 text-black text-xs"
                 >
                   Available size(s) <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="size"
-                  className="w-full p-2 border rounded text-black"
-                  onChange={(e) => setSize(e.target.value)}
-                  value={size}
-                />
+                <div className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    id="size"
+                    className={`w-full p-2 border rounded text-black ${
+                      sizeError ? "border-red-500" : ""
+                    }`}
+                    onChange={handleSizeChange}
+                    value={size}
+                    placeholder="Enter sizes separated by commas (e.g. S, M, L, XL)"
+                  />
+                  {sizeError ? (
+                    <p className="text-xs text-red-500">{sizeError}</p>
+                  ) : (
+                    <p className="text-xs text-gray-500">
+                      Enter sizes separated by commas (e.g. S, M, L, XL)
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="mb-4">
+              <div className="flex-1">
                 <label
                   htmlFor="stock"
                   className="block font-semibold text-xs mb-2 text-black"
@@ -245,7 +293,6 @@ export default function NewProductForm() {
                   type="number"
                   id="stock"
                   className="w-full p-2 border rounded text-black"
-                  // placeholder="enter your last name..."
                   onChange={(e) => setStock(parseInt(e.target.value, 10))}
                   value={stock}
                   required
@@ -253,31 +300,32 @@ export default function NewProductForm() {
               </div>
             </div>
 
-            <div>
-              <div>
-                <div className="grid w-full max-w-sm items-center gap-1.5 mb-6">
-                  <Label htmlFor="picture">Picture</Label>
-                  <Input
-                    id="picture"
-                    type="file"
-                    onChange={fileSelected}
-                    accept="image/*"
-                  />
-                </div>
+            {/* Image Upload */}
+            <div className="mb-6">
+              <div className="w-full">
+                <Label htmlFor="picture" className="mb-2 block">Picture</Label>
+                <Input
+                  id="picture"
+                  type="file"
+                  onChange={fileSelected}
+                  accept="image/*"
+                  className="w-full"
+                />
               </div>
             </div>
 
+            {/* Action Buttons */}
             <div className="flex flex-col gap-4">
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full bg-black py-6 text-white rounded-md"
+                className="w-full bg-black py-4 md:py-6 text-white rounded-md text-sm md:text-base"
               >
                 Add Product
               </button>
               <button
                 type="button"
-                className="w-full bg-black/50 py-6 text-white rounded-md"
+                className="w-full bg-black/50 py-4 md:py-6 text-white rounded-md text-sm md:text-base"
                 onClick={() => router.back()}
               >
                 Back

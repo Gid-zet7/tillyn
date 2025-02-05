@@ -5,6 +5,7 @@ import {
   decrementQuantity,
   incrementQuantity,
   removeFromCart,
+  changeSize,
 } from "@/redux/slices/cartSlice";
 import CartItemCard from "./CartItemCard";
 import { Card } from "../ui/card";
@@ -75,15 +76,19 @@ export default function Cart({
         {cart.length > 0 ? (
           cart.map((item: CartItem) => (
             <CartItemCard
-              key={item?._id}
+              key={`${item?._id}-${item?.selectedSize}`}
               imageSrc={item?.image_url}
               name={item?.name}
               price={item?.price}
               quantity={item?.quantity}
-              // isLoading={isLoading}
+              size={item?.selectedSize}
+              sizes={item?.size}
               incrementQuantity={() => dispatch(incrementQuantity(item))}
               decrementQuantity={() => dispatch(decrementQuantity(item))}
               removeItemFromCart={() => dispatch(removeFromCart(item))}
+              onSizeChange={(newSize) =>
+                dispatch(changeSize({ itemId: item._id, oldSize: item.selectedSize, newSize }))
+              }
             />
           ))
         ) : (

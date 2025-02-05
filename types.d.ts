@@ -58,6 +58,7 @@ type Product = {
   stock: number;
   category: Category;
   seller: User;
+  selectedSize: string;
   createdAt: Date;
   updatedAt: Date;
   __v: number;
@@ -118,6 +119,8 @@ type CartItem = {
   product: Product;
   quantity: number;
   brand: string;
+  size: string;
+  selectedSize: string;
   createdAt: Date;
   updatedAt: Date;
   __v: number;
