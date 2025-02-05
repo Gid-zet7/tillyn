@@ -81,7 +81,7 @@ export default function Product({ productId }: Props) {
             </div>
             <p>{product.description || "No description available."}</p>
             <div className=" flex flex-col gap-2">
-              <h1 className={`${poppins.className}`}>Product size</h1>
+              <h1 className={`${poppins.className}`}>Available sizes</h1>
               <div className="flex gap-3">
                 {availableSizes.map((size) => (
                   <Button key={size} className="rounded-full">
