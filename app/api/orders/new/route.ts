@@ -42,7 +42,9 @@ export const POST = async (request: Request) => {
       })
     );
 
-    return new Response(JSON.stringify(order), { status: 200 });
+    return new Response(JSON.stringify({ order, user: findUser }), {
+      status: 200,
+    });
   } catch {
     // console.log(error);
     return new Response("Failed to create order", { status: 500 });

@@ -15,6 +15,11 @@ const userShema = new Schema<User>(
       address_line2: String,
       city: { type: String, required: false },
       postal_code: String,
+      // coordinates: {
+      //   latitude: Number,
+      //   longitude: Number,
+
+      // },
     },
   },
   { timestamps: true }

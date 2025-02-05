@@ -1,9 +1,10 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "../ui/button";
-
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import localFont from "next/font/local";
+import { useUpdateUserMutation } from "@/redux/slices/usersApiSlice";
+// import LocationPicker from "../map/LocationPicker";
 
 const poppins = localFont({
   src: "../../app/fonts/Poppins-Medium.ttf",
@@ -28,28 +29,55 @@ export default function CheckoutForm({
   placeOrderAndHandlePayment,
   handleOptionChange,
 }: Props) {
+  const [updateUser] = useUpdateUserMutation();
+  const [email, setEmail] = useState(user?.email || "");
+  const [phoneNumber, setPhoneNumber] = useState(user?.phone_number || "");
+  const [addressLine1, setAddressLine1] = useState(
+    user?.address?.address_line1 || ""
+  );
+  const [addressLine2, setAddressLine2] = useState(
+    user?.address?.address_line2 || ""
+  );
+  const [city, setCity] = useState(user?.address?.city || "");
+  // const [location, setLocation] = useState<{
+  //   lat: number;
+  //   lng: number;
+  // } | null>(null);
+
   const [errors, setErrors] = useState<{
     phone_number?: string;
     address_line1?: string;
     city?: string;
   }>({});
 
+  // const handleLocationSelect = (selectedLocation: {
+  //   lat: number;
+  //   lng: number;
+  //   address: string;
+  // }) => {
+  //   setLocation({ lat: selectedLocation.lat, lng: selectedLocation.lng });
+  //   setAddressLine1(selectedLocation.address);
+  //   // Extract city from address if possible
+  //   const addressParts = selectedLocation.address.split(",");
+  //   if (addressParts.length >= 2) {
+  //     setCity(addressParts[addressParts.length - 2].trim());
+  //   }
+  // };
+
   const validateForm = () => {
     const newErrors: typeof errors = {};
     let isValid = true;
 
-    if (!user?.phone_number?.trim()) {
-      newErrors.phone_number =
-        "Phone number is required, click edit to fill this field";
+    if (!phoneNumber?.trim()) {
+      newErrors.phone_number = "Phone number is required";
       isValid = false;
     }
-    if (!user?.address?.address_line1?.trim()) {
-      newErrors.address_line1 =
-        "Address is required, click edit to fill this field";
+    if (!addressLine1?.trim()) {
+      newErrors.address_line1 = "Address is required";
       isValid = false;
     }
-    if (!user?.address?.city?.trim()) {
-      newErrors.city = "City is required, click edit to fill this field";
+    if (!city?.trim()) {
+      newErrors.city = "City is required";
       isValid = false;
     }
 
@@ -57,33 +85,69 @@ export default function CheckoutForm({
     return isValid;
   };
 
+  const handlePlaceOrder = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      // Update user information
+      if (user?._id) {
+        await updateUser({
+          preferred_email: email,
+          phone_number: phoneNumber,
+          address: {
+            address_line1: addressLine1,
+            address_line2: addressLine2,
+            city,
+            // coordinates: location
+            //   ? {
+            //       latitude: location.lat,
+            //       longitude: location.lng,
+            //     }
+            //   : undefined,
+          },
+        }).unwrap();
+      }
+
+      // Proceed with order placement
+      if (selectedOption === "Pay after delivery") {
+        toggleModalOrder();
+      } else {
+        placeOrderAndHandlePayment();
+      }
+    } catch (error) {
+      console.error("Error updating user information:", error);
+    }
+  };
+
   return (
     <>
       <div className={`flex flex-col gap-2 `}>
         <h2 className="font-semibold">First Name</h2>
-
         <input
           type="text"
           className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
-          defaultValue={user?.first_name}
+          value={user?.first_name || ""}
+          disabled
         />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">Last Name</h2>
-
         <input
           type="text"
           className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
-          defaultValue={user?.last_name}
+          value={user?.last_name || ""}
+          disabled
         />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">Email</h2>
-
         <input
-          type="text"
+          type="email"
           className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
-          defaultValue={user?.email}
+          value={email}
+          disabled
         />
       </div>
       <div className="flex flex-col gap-2">
@@ -93,20 +157,28 @@ export default function CheckoutForm({
           className={`w-full p-2 border rounded text-black outline-none ${
             poppins.className
           } ${errors.phone_number ? "border-red-500" : ""}`}
-          defaultValue={user?.phone_number}
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
         {errors.phone_number && (
           <span className="text-red-500 text-sm">{errors.phone_number}</span>
         )}
       </div>
-      <div className="flex flex-col gap-2">
+
+      {/* <div className="flex flex-col gap-4 mt-4">
+        <h2 className="font-semibold">Select Location on Map</h2>
+        <LocationPicker onLocationSelect={handleLocationSelect} />
+      </div> */}
+
+      <div className="flex flex-col gap-2 mt-4">
         <h2 className="font-semibold">Address line 1</h2>
         <input
           type="text"
           className={`w-full p-2 border rounded text-black outline-none ${
             poppins.className
           } ${errors.address_line1 ? "border-red-500" : ""}`}
-          defaultValue={user?.address?.address_line1}
+          value={addressLine1}
+          onChange={(e) => setAddressLine1(e.target.value)}
         />
         {errors.address_line1 && (
           <span className="text-red-500 text-sm">{errors.address_line1}</span>
@@ -114,20 +186,13 @@ export default function CheckoutForm({
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">Address line 2</h2>
-
-        {user?.address?.address_line2 ? (
-          <input
-            type="text"
-            className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
-            defaultValue={user?.address.address_line2}
-          />
-        ) : (
-          <input
-            type="text"
-            className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
-            defaultValue="N/A"
-          />
-        )}
+        <input
+          type="text"
+          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          value={addressLine2}
+          onChange={(e) => setAddressLine2(e.target.value)}
+          placeholder="Optional"
+        />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-semibold">City</h2>
@@ -136,12 +201,14 @@ export default function CheckoutForm({
           className={`w-full p-2 border rounded text-black outline-none ${
             poppins.className
           } ${errors.city ? "border-red-500" : ""}`}
-          defaultValue={user?.address?.city}
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
         />
         {errors.city && (
           <span className="text-red-500 text-sm">{errors.city}</span>
         )}
       </div>
+
       <RadioGroup
         defaultValue={selectedOption}
         onValueChange={handleOptionChange}
@@ -176,17 +243,7 @@ export default function CheckoutForm({
       <Button
         type="button"
         className="px-4 py-4 my-5 w-full bg-black rounded-md text-white"
-        onClick={() => {
-          if (!validateForm()) {
-            return;
-          }
-
-          if (selectedOption === "Pay after delivery") {
-            toggleModalOrder();
-          } else {
-            placeOrderAndHandlePayment();
-          }
-        }}
+        onClick={handlePlaceOrder}
       >
         Place Order
       </Button>

@@ -5,8 +5,6 @@ export const PATCH = async (request: Request) => {
   try {
     const { preferred_email, phone_number, address } = await request.json();
 
-    // Validate that the ID is provided
-
     await connectDB();
 
     // Find the user by ID
