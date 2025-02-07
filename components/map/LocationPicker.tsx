@@ -35,7 +35,6 @@ export default function LocationPicker({
 
   const handleMapClick = useCallback(
     async (e: google.maps.MapMouseEvent) => {
-      console.log("map clicked!");
       if (!e.latLng) return;
 
       const lat = e.latLng.lat();
@@ -61,7 +60,6 @@ export default function LocationPicker({
   );
 
   const getCurrentLocation = useCallback(() => {
-    console.log("getting current location...");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -69,14 +67,11 @@ export default function LocationPicker({
           const lng = position.coords.longitude;
           setMarker({ lat, lng });
 
-          console.log(marker);
-
           try {
             const geocoder = new google.maps.Geocoder();
             const response = await geocoder.geocode({ location: { lat, lng } });
 
             if (response.results[0]) {
-              console.log("response");
               onLocationSelect({
                 lat,
                 lng,

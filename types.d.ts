@@ -13,8 +13,8 @@ type User = {
     city: string;
     postal_code: string;
   };
-  // createdAt: Date;
-  // updatedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   __v: number;
 };
 
@@ -124,6 +124,14 @@ type CartItem = {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
+};
+
+type SellerReview = {
+  seller: User;
+  user: User;
+  rating: number;
+  comment: string;
+  createdAt: Date;
 };
 
 type Address = {

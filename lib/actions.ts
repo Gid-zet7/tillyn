@@ -248,3 +248,29 @@ export const verifyPayment = async (email: string, reference: string) => {
   }
   return result.json();
 };
+export const getSellerReviews = async (sellerId: string) => {
+  const endpoint = `${SERVER_URL}/api/sellers/reviews?sellerId=${sellerId}`;
+  const result = await fetch(endpoint, { method: "GET" });
+  if (!result.ok) {
+    const errorMessage = `Failed to get reviews. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+export const createReview = async (
+  sellerId: string,
+  email: string | null,
+  rating: number,
+  comment: string
+) => {
+  const endpoint = `${SERVER_URL}/api/sellers/reviews/new`;
+  const result = await fetch(endpoint, {
+    method: "POST",
+    body: JSON.stringify({ sellerId, email, rating, comment }),
+  });
+  if (!result.ok) {
+    const errorMessage = `Failed to create review: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
