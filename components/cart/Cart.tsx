@@ -34,7 +34,7 @@ export default function Cart({
   return (
     <>
       <Card
-        className={`h-screen fixed w-full md:w-[30rem] border z-50 right-0 transform ${
+        className={`h-screen fixed w-full md:w-[40rem] border z-50 right-0 transform ${
           openCart ? "translate-x-0" : "translate-x-full"
         } bg-white flex ${
           cartItem?.length === 0 ? "items-center" : ""
@@ -87,7 +87,13 @@ export default function Cart({
               decrementQuantity={() => dispatch(decrementQuantity(item))}
               removeItemFromCart={() => dispatch(removeFromCart(item))}
               onSizeChange={(newSize) =>
-                dispatch(changeSize({ itemId: item._id, oldSize: item.selectedSize, newSize }))
+                dispatch(
+                  changeSize({
+                    itemId: item._id,
+                    oldSize: item.selectedSize,
+                    newSize,
+                  })
+                )
               }
             />
           ))

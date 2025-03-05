@@ -4,9 +4,15 @@ import { useEffect, useState } from "react";
 import localFont from "next/font/local";
 import CurvedText from "../CurvedText";
 
-const poppins = localFont({
-  src: "../../app/fonts/Poppins-Medium.ttf",
-  variable: "--font-poppins",
+// const zapfHumnst = localFont({
+//   src: "../../app/fonts/Poppins-Medium.ttf",
+//   variable: "--font-zapfHumnst",
+//   weight: "100 900",
+// });
+
+const zapfHumnst = localFont({
+  src: "../../app/fonts/bodoni.ttf",
+  // variable: "--font-zapfHumnst",
   weight: "100 900",
 });
 
@@ -52,7 +58,7 @@ export default function Count() {
   return (
     <section className="flex justify-around md:grid md:grid-cols-10 border-b border-black/50 rounded-b-2xl pb-[1.8rem]">
       <div
-        className={`${poppins.className} flex gap-5 md:gap-10 px-10 mt-8 md:mt-16 lg:mt-32 justify-start items-center md:ml-24`}
+        className={`${zapfHumnst.className} flex gap-5 md:gap-10 px-10 mt-8 md:mt-16 lg:mt-32 justify-start items-center md:ml-24`}
       >
         <div>
           <span
@@ -62,7 +68,9 @@ export default function Count() {
             0
           </span>
           <span className="clamp-text_count font-bold ml-0">k+</span>{" "}
-          <span className="text-black text-2xl font-bold mb-4">products</span>
+          <span className="text-black dark:text-white  text-2xl font-bold mb-4">
+            products
+          </span>
         </div>
         <div>
           <span
@@ -72,7 +80,7 @@ export default function Count() {
             0
           </span>
           <span className="clamp-text_count font-bold ml-0">+</span>{" "}
-          <span className="text-black text-2xl font-bold mb-4">
+          <span className="text-black dark:text-white text-2xl font-bold mb-4">
             collections
           </span>
         </div>

@@ -13,11 +13,19 @@ import localFont from "next/font/local";
 import ParallaxText from "@/components/ParallaxText";
 import { AlertHeadsUp } from "@/components/Alert/Alert";
 import { AlertHappy } from "@/components/Alert/HappyShopping";
-import Link from "next/link";
+import { motion } from "framer-motion";
+import Perfumes from "../Perfumes";
+import Mission from "../Mission";
 
 const poppins = localFont({
   src: "../../../app/fonts/Poppins-Medium.ttf",
   variable: "--font-poppins",
+  weight: "100 900",
+});
+
+const zapfHumnst = localFont({
+  src: "../../../app/fonts/bodoni.ttf",
+  // variable: "--font-zapfHumnst",
   weight: "100 900",
 });
 
@@ -80,24 +88,40 @@ export default function Home() {
       {showSuccessAlert && <AlertHappy message={isSuccess} />}
       <Hero />
       <Count />
-      <div className={`${poppins.className} mt-20 md:mt-40 bg-slate-50`}>
+      <Mission />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          type: "spring",
+          duration: 0.5,
+          mass: 1,
+          delay: 0.3,
+        }}
+        className={`${zapfHumnst.className} mt-20 md:mt-40 `}
+      >
         <ParallaxText baseVelocity={-3}>Categories</ParallaxText>
         <ParallaxText baseVelocity={3}>Categories</ParallaxText>
-      </div>
+      </motion.div>
       <Categories />
-      <div className={`${poppins.className} mt-20 md:mt-40`}>
+      <div className={`${zapfHumnst.className} mt-20 md:mt-40`}>
         <ParallaxText baseVelocity={-3}>Featured Products</ParallaxText>
         <ParallaxText baseVelocity={3}>Featured Products</ParallaxText>
       </div>
       <div className=" flex justify-center items-center mt-32">
         <FeaturedProducts />
       </div>
-      <ThriftSection />
-      <section className="mt-32 lg:mt-[10rem] flex items-center justify-center">
+      {/* <ThriftSection /> */}
+      {/* <section className="mt-32 lg:mt-[8rem] flex items-center justify-center">
         <Button>
           <Link href={`${SERVER_URL}/products`}>Shop Now</Link>{" "}
         </Button>
+      </section> */}
+
+      <section className="flex justify-center items-center mt-[10rem]">
+        <Perfumes />
       </section>
+
       <Footer />
     </main>
   );

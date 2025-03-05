@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Navbar from "@/components/header/Navbar";
 import Providers from "@/redux/Provider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 import { Toaster } from "@/components/ui/toaster";
 import { useState, useEffect } from "react";
@@ -42,11 +43,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
-        <Providers>
-          {showHeader ? <Navbar /> : null}
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <Providers>
+            {showHeader ? <Navbar /> : null}
 
-          {children}
-        </Providers>
+            {children}
+          </Providers>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

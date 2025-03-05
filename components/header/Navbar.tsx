@@ -8,6 +8,8 @@ import ProfileMenu from "./ProfileMenu";
 import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { ModeToggle } from "./mode-toggle";
+import { SearchIcon, ShoppingBagIcon, UserCircle2 } from "lucide-react";
 
 export default function Navbar() {
   const [session, setSession] = useState();
@@ -82,18 +84,18 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="py-5 px-4 md:px-8 border-b gap-4 sticky top-0 z-50 blur-nav">
+      <header className="py-5 px-4 md:px-8 border-b gap-4 sticky top-0 z-50 bg-white/80 backdrop-blur-[300px] dark:bg-black/80">
         <section
           className={`mx-auto flex md:px-20 items-center justify-between relative navbarContent`}
         >
           <div>
             <button
               id="hamburger-button"
-              className="relative flex flex-col h-8 w-8 cursor-pointer md:hidden hamburger"
+              className="relative flex flex-col h-8 w-8 cursor-pointer md:hidden hamburger "
             >
-              <div></div>
-              <div></div>
-              <div></div>
+              <div className="dark:bg-white  bg-black/80"></div>
+              <div className="dark:bg-white  bg-black/80"></div>
+              <div className="dark:bg-white  bg-black/80"></div>
             </button>
 
             <nav
@@ -124,7 +126,9 @@ export default function Navbar() {
           </Link>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <svg
+            <ModeToggle />
+            <SearchIcon className="cursor-pointer" onClick={toggleSearchForm} />
+            {/* <svg
               width="28px"
               height="28px"
               viewBox="0 0 24 24"
@@ -152,13 +156,17 @@ export default function Navbar() {
                   <rect width="24" height="24" fill="white" />
                 </clipPath>
               </defs>
-            </svg>
+            </svg> */}
 
             <div
               className={`relative cartIconWrapper `}
               data-count={totalCartItems > 0 ? totalCartItems : "0"}
             >
-              <svg
+              <ShoppingBagIcon
+                className="cursor-pointer"
+                onClick={toggleCart}
+              />
+              {/* <svg
                 fill="#000000"
                 width="28px"
                 height="28px"
@@ -169,13 +177,14 @@ export default function Navbar() {
                 onClick={toggleCart}
               >
                 <path d="M216,44H40A12.01343,12.01343,0,0,0,28,56V200a12.01312,12.01312,0,0,0,12,12H216a12.01312,12.01312,0,0,0,12-12V56A12.01343,12.01343,0,0,0,216,44Zm4,156a4.00427,4.00427,0,0,1-4,4H40a4.00427,4.00427,0,0,1-4-4V56a4.00427,4.00427,0,0,1,4-4H216a4.00427,4.00427,0,0,1,4,4ZM172,88a44,44,0,0,1-88,0,4,4,0,0,1,8,0,36,36,0,0,0,72,0,4,4,0,0,1,8,0Z" />
-              </svg>
+              </svg> */}
             </div>
             {session ? (
               <ProfileMenu session={session} />
             ) : (
               <LoginLink>
-                <svg
+                <UserCircle2 className="cursor-pointer" />
+                {/* <svg
                   width="28px"
                   height="28px"
                   viewBox="0 0 24 24"
@@ -206,7 +215,7 @@ export default function Navbar() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                </svg>
+                </svg> */}
               </LoginLink>
             )}
           </div>

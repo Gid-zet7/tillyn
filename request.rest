@@ -79,7 +79,7 @@ Content-Type: application/json
 GET http://localhost:3000/api/products
 
 ###
-GET http://localhost:3000/api/products/66fd5ea575e495a9bbc278d5
+GET http://localhost:3000/api/products/67a15a34d2f39ccffae798ce
 
 
 ###
@@ -170,38 +170,10 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/order
 
-###
-POST http://localhost:3000/api/meeting/new
-Content-Type: application/json
-
-{
-    "title": "Meeting_02",
-    "date": "1-1-2024",
-    "startTime": "1pm",
-    "endTime": "2pm",
-    "participants": ["Demo_user"],
-    "agenda": "Improving performance"
-
-}
 
 ###
-PATCH http://localhost:3000/api/meeting/update
-Content-Type: application/json
+ GET http://localhost:3000/api/order-item/get-ordered-items?id=67a15a34d2f39ccffae798ce
 
-{
-    "id": "65912f7c63eea24b065d88a4",
-    "title": "Meeting_01",
-    "date": "1-1-2024",
-    "startTime": "1pm",
-    "endTime": "3pm",
-    "participants": ["Demo_user"],
-    "agenda": "Failed to hit target"
-
-}
-
-###
-GET http://localhost:3000/api/order
-Authorization: Bearer 
 
 
 ###

@@ -47,7 +47,7 @@ export default function CurvedText() {
       100,
       -170,
       -100,
-      "font-size: 28px; color:#000;",
+      "font-size: 28px; color:#fff;",
       "transform : scaleY(-1) scaleX(-1); position:absolute"
     );
 
@@ -58,7 +58,7 @@ export default function CurvedText() {
       100,
       -170,
       -100,
-      "font-size: 28px; color:#000;",
+      "font-size: 28px; color:#fff;",
       "transform : scaleY(-1) scaleX(-1); position:absolute"
     );
     circularText(
@@ -67,7 +67,7 @@ export default function CurvedText() {
       100,
       170,
       -85,
-      "font-size: 28px; color:#000;",
+      "font-size: 28px; color:#fff;",
       ""
     );
     circularText(
@@ -76,7 +76,7 @@ export default function CurvedText() {
       70,
       175,
       -85,
-      "font-size: 12px; color:#000;",
+      "font-size: 12px; color:#fff;",
       ""
     );
     circularText(
@@ -85,7 +85,7 @@ export default function CurvedText() {
       70,
       -95,
       -135,
-      "font-size: 12px; color:#000;",
+      "font-size: 12px; color:#fff;",
       "transform : scaleY(-1) scaleX(-1); position:absolute"
     );
   });
