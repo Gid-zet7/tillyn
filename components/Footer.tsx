@@ -1,16 +1,19 @@
 "use client";
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { Facebook } from "lucide-react";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const Footer = () => {
+  const { theme } = useTheme();
   return (
-    <footer className="static bottom-0 left-0 w-full mt-20">
-      <div className="pt-20 md:pt-40 md:pb-20 px-5 rounded-b-none w-full bg-black">
+    <footer className="static bottom-0 left-0 w-full mt-20 bg-[#1A1A1A]">
+      <div className="pt-20 md:pt-40 md:pb-20 px-5 rounded-b-none w-full bg-[#1A1A1A]">
         <ul
           role="menu"
-          className="flex flex-col md:flex-row justify-around gap-10 md:gap-0 bg-black list-none m-auto w-full"
+          className="flex flex-col md:flex-row justify-around gap-10 md:gap-0 bg-[#1A1A1A] list-none m-auto w-full"
         >
           <li className="list_item">
             <div className="flex gap-2 md:justify-center items-center">
@@ -56,11 +59,13 @@ const Footer = () => {
           <div className="block md:hidden">
             <div className="flex flex-wrap flex-row md:gap-4 space-x-8 items-center">
               <a>
+                <Facebook />
                 <svg
                   width="6"
                   height="12"
                   viewBox="0 0 6 12"
                   fill="none"
+                  id="f"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path

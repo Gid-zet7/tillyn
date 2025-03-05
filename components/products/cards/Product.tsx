@@ -98,7 +98,7 @@ export default function Product({ productId }: Props) {
               <span className="text-sm">Delivery excluded</span>
             </div>
             <p>{product.description || "No description available."}</p>
-            <div className="flex flex-col gap-2 bg-gray-50 p-4 rounded-lg">
+            <div className="flex flex-col gap-2 bg-gray-50 dark:bg-slate-950 p-4 rounded-lg">
               <h2 className={`${poppins.className} text-lg font-semibold`}>
                 Seller Information
               </h2>

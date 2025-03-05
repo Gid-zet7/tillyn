@@ -78,12 +78,12 @@ export default function ProductsPage() {
               <h3 className="text-sm md:text-lg font-bold">{item.name}</h3>
               <Button
                 variant={"outline"}
-                className="text-sm md:text-lg text-black"
+                className="text-sm md:text-lg text-black dark:text-white"
               >
                 ₵{item.price}
               </Button>
               <Button
-                className="bg-white text-black mt-2 hover:text-white"
+                className="mt-2 "
                 onClick={() =>
                   router.push(`${SERVER_URL}/products/${item._id}`)
                 }
@@ -108,7 +108,9 @@ export default function ProductsPage() {
                   key={type}
                   variant={"outline"}
                   className={`mb-6 ${
-                    activeCategory.type === type ? "active" : ""
+                    activeCategory.type === type
+                      ? "bg-black text-white dark:bg-white dark:text-black"
+                      : ""
                   }`}
                   onClick={() =>
                     setActiveCategory({
@@ -128,7 +130,9 @@ export default function ProductsPage() {
                   key={category}
                   variant={"outline"}
                   className={`mb-6 ${
-                    activeCategory.category === category ? "active" : ""
+                    activeCategory.category === category
+                      ? "bg-black text-white dark:bg-white dark:text-black"
+                      : ""
                   }`}
                   onClick={() =>
                     setActiveCategory((prev) => ({ ...prev, category }))

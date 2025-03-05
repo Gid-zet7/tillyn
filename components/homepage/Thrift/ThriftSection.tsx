@@ -2,6 +2,7 @@ import React from "react";
 import Card from "../Card";
 import { Button } from "../../ui/button";
 import localFont from "next/font/local";
+import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { getProductByCategory } from "@/lib/actions";
@@ -91,12 +92,23 @@ export default function ThriftSection() {
 
   if (isSuccess)
     content = (
-      <section className=" mt-32 lg:mt-[10rem] lg:flex lg:flex-col lg:justify-center lg:items-center">
-        <div className="flex justify-center items-center mb-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          type: "spring", // Use spring animation for bounce effect
+          // stiffness: 100, // Controls the "tightness" of the spring
+          damping: 10, // Controls the bounciness (lower = more bouncy)
+          mass: 1, // Controls the weight of the object
+          delay: 0.3, // Delay before the animation starts
+        }}
+        className="mt-10 lg:flex lg:flex-col lg:justify-center lg:items-center"
+      >
+        {/* <div className="flex justify-center items-center mb-4">
           <h1 className={`text-xl md:text-5xl text-black ${poppins.className}`}>
             Style Without the Spend
           </h1>
-        </div>
+        </div> */}
         <div className="px-5 lg:max-w-7xl">
           <div className="relative p-4 md:p-8 border rounded-md">
             <div className=" flex gap-3">
@@ -157,7 +169,7 @@ export default function ThriftSection() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.div>
     );
   return <>{content} </>;
 }

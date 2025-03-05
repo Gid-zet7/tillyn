@@ -1,5 +1,6 @@
 import React from "react";
 import localFont from "next/font/local";
+import { Button } from "../ui/button";
 
 const poppins = localFont({
   src: "../../app/fonts/Poppins-Medium.ttf",
@@ -13,24 +14,19 @@ type Prop = {
 
 export default function OrderSummary({ subTotal }: Prop) {
   return (
-    <div
-      className={`${poppins.className} text-black mt-10 flex flex-col gap-5`}
-    >
+    <div className={`${poppins.className}mt-10 flex flex-col gap-5`}>
       <div className="flex ">
         <h1 className="font-bold">Order Summary</h1>
       </div>
       <div className="flex gap-4 items-center">
         <input
           type="text"
-          className="p-2 border-black border rounded text-black w-3/5"
+          className="p-2 border-black border rounded w-3/5"
           placeholder="apply discount code"
         />
-        <button
-          type="button"
-          className="px-4 py-2 my-5 bg-black text-white rounded-md"
-        >
+        <Button type="button" className="px-4 py-2 my-5 rounded-md">
           Apply
-        </button>
+        </Button>
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex justify-between text-sm w-full">

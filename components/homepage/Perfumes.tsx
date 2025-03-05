@@ -20,9 +20,12 @@ export default function Perfumes() {
           duration: 0.5,
           delay: 0.2 + 0.1,
         }}
-        className="flex flex-col-reverse justify-center items-center w-screen h-[60vh] md:h-[80vh]"
+        className="flex flex-col-reverse justify-center items-center w-screen h-[60vh] md:h-[80vh] px-3"
       >
-        <h1 className="text-3xl lg:text-6xl">Perfumes</h1>{" "}
+        <span className="text-3xl lg:text-6xl">
+          Bottled <span className="text-gray-500">Emotions,</span> Worn
+          <span className="text-gray-500"> Daily</span>{" "}
+        </span>{" "}
         <Canvas>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={0.5} />

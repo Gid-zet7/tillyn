@@ -1,8 +1,10 @@
 "use client";
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useTheme } from "next-themes";
 
 export default function CurvedText() {
+  const { theme } = useTheme(); // Get the current theme
+
   useEffect(() => {
     function circularText(
       className: string,
@@ -40,16 +42,14 @@ export default function CurvedText() {
       container.appendChild(newElement);
     }
 
-    // Example usage
-    circularText(
-      "text circTxt1",
-      "Clothing arena",
-      100,
-      -170,
-      -100,
-      "font-size: 28px; color:#fff;",
-      "transform : scaleY(-1) scaleX(-1); position:absolute"
-    );
+    // Clear previous content
+    const container = document.querySelector<HTMLDivElement>(".container");
+    if (container) container.innerHTML = "";
+
+    // Apply theme-specific styles
+    const textColor = theme === "dark" ? "#fff" : "#000";
+    const fontSizeLarge = "28px";
+    const fontSizeSmall = "12px";
 
     // Example usage
     circularText(
@@ -58,37 +58,40 @@ export default function CurvedText() {
       100,
       -170,
       -100,
-      "font-size: 28px; color:#fff;",
+      `font-size: ${fontSizeLarge}; color: ${textColor};`,
       "transform : scaleY(-1) scaleX(-1); position:absolute"
     );
+
     circularText(
       "text circTxt2",
       "The Best",
       100,
       170,
       -85,
-      "font-size: 28px; color:#fff;",
+      `font-size: ${fontSizeLarge}; color: ${textColor};`,
       ""
     );
+
     circularText(
       "text circTxt1",
       "This is Ghana's number one",
       70,
       175,
       -85,
-      "font-size: 12px; color:#fff;",
+      `font-size: ${fontSizeSmall}; color: ${textColor};`,
       ""
     );
+
     circularText(
       "text circTxt2",
       "clothing store",
       70,
       -95,
       -135,
-      "font-size: 12px; color:#fff;",
+      `font-size: ${fontSizeSmall}; color: ${textColor};`,
       "transform : scaleY(-1) scaleX(-1); position:absolute"
     );
-  });
+  }, [theme]); // Re-run effect when theme changes
 
-  return <div className="container"> </div>;
+  return <div className="container"></div>;
 }

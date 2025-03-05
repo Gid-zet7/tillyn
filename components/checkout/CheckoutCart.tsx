@@ -23,9 +23,9 @@ type Prop = {
 
 export default function CheckoutCart({ item }: Prop) {
   const dispatch = useDispatch();
-  
+
   // Parse sizes string into array
-  const availableSizes = item?.size?.split(",").map(s => s.trim()) || [];
+  const availableSizes = item?.size?.split(",").map((s) => s.trim()) || [];
 
   return (
     <>
@@ -49,7 +49,9 @@ export default function CheckoutCart({ item }: Prop) {
                 >
                   -
                 </button>
-                <p className="text-black/50 px-3 py-1">{item.quantity}</p>
+                <p className="text-black/50 dark:text-white/50 px-3 py-1">
+                  {item.quantity}
+                </p>
                 <button
                   onClick={() => dispatch(incrementQuantity(item))}
                   className="px-3 py-1"
@@ -92,7 +94,7 @@ export default function CheckoutCart({ item }: Prop) {
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <h4 className="text-black text-sm md:text-lg">
+          <h4 className="text-black dark:text-white text-sm md:text-lg">
             GHS {item.price} x {item.quantity}
           </h4>
           <p className="text-sm text-gray-500">Size: {item.selectedSize}</p>

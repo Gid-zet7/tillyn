@@ -127,7 +127,7 @@ export default function CheckoutForm({
         <h2 className="font-semibold">First Name</h2>
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          className={`w-full p-2 border rounded outline-none ${poppins.className}`}
           value={user?.first_name || ""}
           disabled
         />
@@ -136,7 +136,7 @@ export default function CheckoutForm({
         <h2 className="font-semibold">Last Name</h2>
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          className={`w-full p-2 border rounded outline-none ${poppins.className}`}
           value={user?.last_name || ""}
           disabled
         />
@@ -145,7 +145,7 @@ export default function CheckoutForm({
         <h2 className="font-semibold">Email</h2>
         <input
           type="email"
-          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          className={`w-full p-2 border rounded outline-none ${poppins.className}`}
           value={email}
           disabled
         />
@@ -154,7 +154,7 @@ export default function CheckoutForm({
         <h2 className="font-semibold">Phone Number</h2>
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${
+          className={`w-full p-2 border rounded outline-none ${
             poppins.className
           } ${errors.phone_number ? "border-red-500" : ""}`}
           value={phoneNumber}
@@ -174,7 +174,7 @@ export default function CheckoutForm({
         <h2 className="font-semibold">Address line 1</h2>
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${
+          className={`w-full p-2 border rounded outline-none ${
             poppins.className
           } ${errors.address_line1 ? "border-red-500" : ""}`}
           value={addressLine1}
@@ -188,7 +188,7 @@ export default function CheckoutForm({
         <h2 className="font-semibold">Address line 2</h2>
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${poppins.className}`}
+          className={`w-full p-2 border rounded outline-none ${poppins.className}`}
           value={addressLine2}
           onChange={(e) => setAddressLine2(e.target.value)}
           placeholder="Optional"
@@ -198,7 +198,7 @@ export default function CheckoutForm({
         <h2 className="font-semibold">City</h2>
         <input
           type="text"
-          className={`w-full p-2 border rounded text-black outline-none ${
+          className={`w-full p-2 border rounded outline-none ${
             poppins.className
           } ${errors.city ? "border-red-500" : ""}`}
           value={city}
@@ -242,7 +242,7 @@ export default function CheckoutForm({
 
       <Button
         type="button"
-        className="px-4 py-4 my-5 w-full bg-black rounded-md text-white"
+        className="px-4 py-4 my-5 w-full rounded-md"
         onClick={handlePlaceOrder}
       >
         Place Order

@@ -33,9 +33,9 @@ export default function Card({
   const [selectedSize, setSelectedSize] = useState<string>("");
 
   const isDashboard = pathname.includes("dashboard");
-  
+
   // Parse sizes string into array
-  const availableSizes = sizes?.split(",").map(size => size.trim()) || [];
+  const availableSizes = sizes?.split(",").map((size) => size.trim()) || [];
 
   return (
     <div

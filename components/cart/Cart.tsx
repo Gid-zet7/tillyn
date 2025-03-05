@@ -11,7 +11,7 @@ import CartItemCard from "./CartItemCard";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { ShoppingBasket, X } from "lucide-react";
 
 type Props = {
   openCart: boolean;
@@ -101,14 +101,8 @@ export default function Cart({
           ))
         ) : (
           <div className="flex flex-col gap-10 justify-center items-center">
-            <Image
-              src="/shopping.png"
-              width={100}
-              height={100}
-              alt="empty cart"
-              className="opacity-50 mt-56"
-            />
-            <h3 className="text-black/50">Cart is empty</h3>
+            <ShoppingBasket className="opacity-50 mt-56 h-16 w-16" />
+            <h3 className="text-black/50 dark:text-white">Cart is empty</h3>
           </div>
         )}
         {subTotal > 0 && (

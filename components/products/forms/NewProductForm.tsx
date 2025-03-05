@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { getAllCategories } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { useAddNewProductMutation } from "@/redux/slices/productsApiSlice";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -17,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import LoaderSimple from "@/components/Loader/Loader-simple/page";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function NewProductForm() {
   const [addNewProduct, { isLoading, isSuccess }] = useAddNewProductMutation();
@@ -162,10 +162,10 @@ export default function NewProductForm() {
                 >
                   Product name <span className="text-red-500">*</span>
                 </label>
-                <input
+                <Input
                   type="text"
                   id="name"
-                  className="w-full p-2 border rounded text-black"
+                  className="w-full p-2 border rounded "
                   onChange={(e) => setName(e.target.value)}
                   value={name}
                 />
@@ -177,7 +177,7 @@ export default function NewProductForm() {
                 >
                   Price <span className="text-red-500">*</span>
                 </label>
-                <input
+                <Input
                   type="number"
                   id="price"
                   className="w-full p-2 border rounded "
@@ -264,10 +264,10 @@ export default function NewProductForm() {
                   Available size(s) <span className="text-red-500">*</span>
                 </label>
                 <div className="flex flex-col gap-2">
-                  <input
+                  <Input
                     type="text"
                     id="size"
-                    className={`w-full p-2 border rounded text-black ${
+                    className={`w-full p-2 border rounded  ${
                       sizeError ? "border-red-500" : ""
                     }`}
                     onChange={handleSizeChange}
@@ -290,10 +290,10 @@ export default function NewProductForm() {
                 >
                   Stock <span className="text-red-500">*</span>
                 </label>
-                <input
+                <Input
                   type="number"
                   id="stock"
-                  className="w-full p-2 border rounded text-black"
+                  className="w-full p-2 border rounded "
                   onChange={(e) => setStock(parseInt(e.target.value, 10))}
                   value={stock}
                   required

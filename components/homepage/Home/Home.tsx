@@ -16,12 +16,14 @@ import { AlertHappy } from "@/components/Alert/HappyShopping";
 import { motion } from "framer-motion";
 import Perfumes from "../Perfumes";
 import Mission from "../Mission";
+import Link from "next/link";
+import { PerfumeCarousel } from "../PerfumeCarousel";
 
-const poppins = localFont({
-  src: "../../../app/fonts/Poppins-Medium.ttf",
-  variable: "--font-poppins",
-  weight: "100 900",
-});
+// const poppins = localFont({
+//   src: "../../../app/fonts/Poppins-Medium.ttf",
+//   variable: "--font-poppins",
+//   weight: "100 900",
+// });
 
 const zapfHumnst = localFont({
   src: "../../../app/fonts/bodoni.ttf",
@@ -118,18 +120,49 @@ export default function Home() {
         <ParallaxText baseVelocity={-3}>Featured Products</ParallaxText>
         <ParallaxText baseVelocity={3}>Featured Products</ParallaxText>
       </motion.div>
-      <div className=" flex justify-center items-center mt-32">
+      <div className="flex justify-center items-center mt-32">
         <FeaturedProducts />
       </div>
-      {/* <ThriftSection /> */}
-      {/* <section className="mt-32 lg:mt-[8rem] flex items-center justify-center">
-        <Button>
-          <Link href={`${SERVER_URL}/products`}>Shop Now</Link>{" "}
-        </Button>
-      </section> */}
 
       <section className="flex justify-center items-center mt-[10rem]">
         <Perfumes />
+      </section>
+      <section className="flex justify-center items-center mt-10">
+        <PerfumeCarousel />
+      </section>
+
+      <div className="mt-40 md:mt-[40rem] flex flex-col justify-center items-center px-3">
+        <motion.div
+          className=" flex flex-col justify-center items-center "
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            type: "spring", // Use spring animation for bounce effect
+            // stiffness: 100, // Controls the "tightness" of the spring
+            damping: 10, // Controls the bounciness (lower = more bouncy)
+            mass: 1, // Controls the weight of the object
+            delay: 0.3, // Delay before the animation starts
+          }}
+        >
+          <div className="max-w-7xl text-4xl md:text-6xl">
+            <span>
+              Stlye without the <span className="text-gray-500">spend...</span>
+            </span>
+            {/* <span>
+              {" "}
+              sustainable, and <span className="text-gray-500">empowering</span>
+              .
+            </span> */}
+          </div>
+        </motion.div>
+      </div>
+
+      <ThriftSection />
+
+      <section className="mt-32 lg:mt-[8rem] flex items-center justify-center">
+        <Button>
+          <Link href={`${SERVER_URL}/products`}>Shop Now</Link>{" "}
+        </Button>
       </section>
 
       <Footer />
