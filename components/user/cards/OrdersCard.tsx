@@ -70,8 +70,8 @@ export default function OrdersCard({ orders }: Props) {
   };
 
   return (
-    <Card className="bg-white shadow-sm rounded-lg overflow-hidden">
-      <CardHeader className="border-b bg-gray-50/50 p-4">
+    <Card className="bg-white dark:bg-black shadow-sm rounded-lg overflow-hidden">
+      <CardHeader className="border-b bg-gray-50/50 dark:bg-black/50 p-4">
         <div className="flex items-center gap-2">
           <Package className="h-5 w-5 text-gray-500" />
           <h2 className="font-semibold">Order History</h2>
@@ -84,7 +84,7 @@ export default function OrdersCard({ orders }: Props) {
               key={order._id}
               className="overflow-hidden transition-all duration-200 hover:shadow-md"
             >
-              <CardHeader className="p-4 bg-gray-50/50">
+              <CardHeader className="p-4 bg-gray-50/50 dark:bg-black/50">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <PackageCheck className="w-5 h-5 text-gray-500" />
@@ -118,7 +118,7 @@ export default function OrdersCard({ orders }: Props) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="w-full flex items-center justify-center gap-2 hover:bg-gray-100"
+                    className="w-full flex items-center justify-center gap-2 "
                     onClick={() => toggleViewOrderItems(order._id)}
                     disabled={loadingOrderId === order._id}
                   >
@@ -144,7 +144,7 @@ export default function OrdersCard({ orders }: Props) {
                     <div className="pt-2 space-y-3">
                       {orderedItems.map((item: any) => (
                         <div key={item.product._id} className="group">
-                          <div className="flex items-center gap-4 p-3 rounded-lg bg-gray-50/50 group-hover:bg-gray-100/80 transition-colors">
+                          <div className="flex items-center gap-4 p-3 rounded-lg bg-gray-50/50 dark:bg-black/20 group-hover:bg-gray-100/80 dark:group-hover:bg-black/50 transition-colors">
                             <div className="relative w-16 h-16 rounded-md overflow-hidden bg-white">
                               <Image
                                 src={item.product.image_url}

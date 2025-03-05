@@ -262,7 +262,7 @@ export default function Orders() {
         <Input
           type="text"
           placeholder="Search by name, email, or order ID..."
-          className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 p-2 border rounded text-black"
+          className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 p-2 border rounded "
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />

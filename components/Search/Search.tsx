@@ -2,6 +2,9 @@ import React from "react";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
 import SearchItemsCard from "./SearchItemsCard";
+import { X } from "lucide-react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 type Props = {
   productName: string | undefined;
@@ -30,13 +33,14 @@ export default function Search({
     <>
       {/* Start of login form */}
       <div
-        className={`h-screen fixed w-full md:w-[30rem] border z-50 right-0 transform ${
+        className={`h-screen fixed w-full md:w-[40rem] border z-50 right-0 transform ${
           openSearchForm ? "translate-x-0" : "translate-x-full"
-        } bg-white flex flex-col items-center transition-transform duration-300 ease-in-out top-0 pt-6 overflow-y-auto overflow-x-hidden`}
+        } bg-white dark:bg-black flex flex-col items-center transition-transform duration-300 ease-in-out top-0 pt-6 overflow-y-auto overflow-x-hidden`}
       >
         <div className="flex justify-between w-11/12 ">
-          <h2 className="text-black font-bold">Search</h2>
-          <svg
+          <h2 className="text-black dark:text-white font-bold">Search</h2>
+          <X className="cursor-pointer" onClick={toggleSearchForm} />
+          {/* <svg
             width="30px"
             height="30px"
             viewBox="0 0 24 24"
@@ -58,29 +62,26 @@ export default function Search({
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-          </svg>
+          </svg> */}
         </div>
 
         <hr className="bg-slate-700 w-[20rem] md:w-[30rem] my-2" />
 
         <form onSubmit={handleSearch} className="w-11/12">
           <div className="mb-4">
-            <input
+            <Input
               type="text"
               id="name"
-              className="w-full p-2 border rounded bg-slate-100 text-black"
+              className="w-full p-2 border rounded "
               placeholder="search..."
               onChange={(e) => setProductName(e.target.value)}
               value={productName}
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-black/50 py-6 mb-4 rounded-md"
-          >
+          <Button type="submit" className="w-full py-6 mb-4 rounded-md">
             {loadSearch ? <span className="loader"></span> : "Search"}
-          </button>
+          </Button>
         </form>
         <div>
           {searchItems

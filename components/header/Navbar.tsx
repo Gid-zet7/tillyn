@@ -222,7 +222,7 @@ export default function Navbar() {
         </section>
         <section
           id="mobile-menu"
-          className="top-20 justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white text-5xl"
+          className="top-20 justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white  dark:bg-black text-5xl"
         >
           {/* <button className="text-8xl self-end px-6">
                 &times;
@@ -246,6 +246,7 @@ export default function Navbar() {
             >
               New arrivals
             </Link>
+
             {/* <a href="#contact" className="w-full py-6 text-center hover:opacity-90"
             >Contact Us</a
           >

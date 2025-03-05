@@ -104,10 +104,20 @@ export default function Home() {
         <ParallaxText baseVelocity={3}>Categories</ParallaxText>
       </motion.div>
       <Categories />
-      <div className={`${zapfHumnst.className} mt-20 md:mt-40`}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          type: "spring",
+          duration: 0.5,
+          mass: 1,
+          delay: 0.3,
+        }}
+        className={`${zapfHumnst.className} mt-20 md:mt-40`}
+      >
         <ParallaxText baseVelocity={-3}>Featured Products</ParallaxText>
         <ParallaxText baseVelocity={3}>Featured Products</ParallaxText>
-      </div>
+      </motion.div>
       <div className=" flex justify-center items-center mt-32">
         <FeaturedProducts />
       </div>

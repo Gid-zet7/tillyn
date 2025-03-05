@@ -51,7 +51,7 @@ export default function ProfileCard({
       <ul className="text-gray-500 py-2 px-3 mt-3 divide-y rounded shadow-sm w-full">
         <li className="flex items-center justify-between py-3">
           <span>Status</span>
-          <span className="bg-black py-1 px-2 rounded text-white text-sm">
+          <span className="bg-black dark:bg-white py-1 px-2 rounded text-white dark:text-black text-sm">
             Active
           </span>
         </li>

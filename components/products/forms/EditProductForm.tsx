@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   productId: string;
@@ -170,14 +171,14 @@ export default function EditProductForm({ productId }: Props) {
               <div>
                 <label
                   htmlFor="name"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2 text-xs"
                 >
                   Product name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   id="name"
-                  className="w-full p-2 border rounded text-black"
+                  className="w-full p-2 border rounded"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
                 />
@@ -185,14 +186,14 @@ export default function EditProductForm({ productId }: Props) {
               <div className="flex-1">
                 <label
                   htmlFor="price"
-                  className="block font-semibold text-xs mb-2 text-black"
+                  className="block font-semibold text-xs mb-2"
                 >
                   Price <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
                   id="price"
-                  className="w-full p-2 border rounded text-black"
+                  className="w-full p-2 border rounded"
                   // placeholder="enter your last name..."
                   onChange={(e) => setPrice(parseFloat(e.target.value))}
                   value={price}
@@ -203,13 +204,13 @@ export default function EditProductForm({ productId }: Props) {
             <div className="mb-4">
               <label
                 htmlFor="description"
-                className="block font-semibold text-xs mb-2 text-black"
+                className="block font-semibold text-xs mb-2"
               >
                 Product description <span className="text-red-500">*</span>
               </label>
               <textarea
                 id="description"
-                className="w-full p-2 border rounded text-black min-h-[100px]"
+                className="w-full p-2 border rounded min-h-[100px]"
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
                 required
@@ -220,7 +221,7 @@ export default function EditProductForm({ productId }: Props) {
               <div>
                 <label
                   htmlFor="ratings"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2 text-xs"
                 >
                   Rating <span className="text-red-500">*</span>
                 </label>
@@ -243,7 +244,7 @@ export default function EditProductForm({ productId }: Props) {
               <div className="flex-1">
                 <label
                   htmlFor="category"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2 text-xs"
                 >
                   Category <span className="text-red-500">*</span>
                 </label>
@@ -268,7 +269,7 @@ export default function EditProductForm({ productId }: Props) {
               <div>
                 <label
                   htmlFor="size"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2 text-xs"
                 >
                   Available size(s) <span className="text-red-500">*</span>
                 </label>
@@ -276,7 +277,7 @@ export default function EditProductForm({ productId }: Props) {
                   <input
                     type="text"
                     id="size"
-                    className={`w-full p-2 border rounded text-black ${
+                    className={`w-full p-2 border rounded ${
                       sizeError ? "border-red-500" : ""
                     }`}
                     onChange={handleSizeChange}
@@ -295,14 +296,14 @@ export default function EditProductForm({ productId }: Props) {
               <div className="flex-1">
                 <label
                   htmlFor="stock"
-                  className="block font-semibold text-xs mb-2 text-black"
+                  className="block font-semibold text-xs mb-2"
                 >
                   Stock <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
                   id="stock"
-                  className="w-full p-2 border rounded text-black"
+                  className="w-full p-2 border rounded"
                   // placeholder="enter your last name..."
                   onChange={(e) => setStock(parseInt(e.target.value, 10))}
                   value={stock}
@@ -344,20 +345,21 @@ export default function EditProductForm({ productId }: Props) {
             </div>
 
             <div className="flex flex-col gap-4">
-              <button
+              <Button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full bg-black py-6 text-white rounded-md"
+                className="w-full py-6 rounded-md"
               >
                 Save
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="w-full bg-black/50 py-6 text-white rounded-md"
+                variant={"outline"}
+                className="w-full bg-black/50 py-6 rounded-md"
                 onClick={() => router.back()}
               >
                 Back
-              </button>
+              </Button>
             </div>
           </form>
         </div>

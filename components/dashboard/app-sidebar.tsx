@@ -9,7 +9,9 @@ import {
   PlusCircle,
   LayoutDashboard,
   UserCircleIcon,
+  LogOut,
 } from "lucide-react";
+import { ModeToggle } from "../header/mode-toggle";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -226,6 +228,7 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
+              <ModeToggle />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -249,10 +252,11 @@ export function AppSidebar() {
               <LogoutLink>
                 <DropdownMenuContent
                   side="top"
-                  className="w-[--radix-popper-anchor-width] p-4 hover:bg-slate-100 rounded-2xl"
+                  className="w-[--radix-popper-anchor-width] p-4 rounded-2xl "
                 >
-                  <DropdownMenuItem>
-                    <span className="p-4 text-red-400"> Sign out</span>
+                  <DropdownMenuItem className="flex gap-2 justify-center items-center hover:bg-slate-100 dark:hover:bg-slate-900  rounded-2xl">
+                    <LogOut className="h-5 w-5" />
+                    <span className="p-4"> Sign out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </LogoutLink>

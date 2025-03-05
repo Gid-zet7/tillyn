@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import LoaderSimple from "@/components/Loader/Loader-simple/page";
+import { Button } from "@/components/ui/button";
 
 export default function NewProductForm() {
   const [addNewProduct, { isLoading, isSuccess }] = useAddNewProductMutation();
@@ -62,12 +63,12 @@ export default function NewProductForm() {
     // Check if the string follows the format: "S, M, L" or "S,M,L"
     const sizePattern = /^[A-Za-z0-9]+(?:\s*,\s*[A-Za-z0-9]+)*$/;
     const isValid = sizePattern.test(value.trim());
-    
+
     if (!isValid) {
       setSizeError("Please enter sizes in the correct format (e.g., S, M, L)");
       return false;
     }
-    
+
     setSizeError("");
     return true;
   };
@@ -157,7 +158,7 @@ export default function NewProductForm() {
               <div className="flex-1">
                 <label
                   htmlFor="name"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2  text-xs"
                 >
                   Product name <span className="text-red-500">*</span>
                 </label>
@@ -172,14 +173,14 @@ export default function NewProductForm() {
               <div className="flex-1">
                 <label
                   htmlFor="price"
-                  className="block font-semibold text-xs mb-2 text-black"
+                  className="block font-semibold text-xs mb-2 "
                 >
                   Price <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
                   id="price"
-                  className="w-full p-2 border rounded text-black"
+                  className="w-full p-2 border rounded "
                   onChange={(e) => setPrice(parseFloat(e.target.value))}
                   value={price}
                   required
@@ -191,13 +192,13 @@ export default function NewProductForm() {
             <div className="mb-4">
               <label
                 htmlFor="description"
-                className="block font-semibold text-xs mb-2 text-black"
+                className="block font-semibold text-xs mb-2 "
               >
                 Product description <span className="text-red-500">*</span>
               </label>
               <textarea
                 id="description"
-                className="w-full p-2 border rounded text-black min-h-[100px]"
+                className="w-full p-2 border rounded  min-h-[100px]"
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
                 required
@@ -209,7 +210,7 @@ export default function NewProductForm() {
               <div className="flex-1">
                 <label
                   htmlFor="ratings"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2 text-xs"
                 >
                   Rating <span className="text-red-500">*</span>
                 </label>
@@ -232,7 +233,7 @@ export default function NewProductForm() {
               <div className="flex-1">
                 <label
                   htmlFor="category"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2  text-xs"
                 >
                   Category <span className="text-red-500">*</span>
                 </label>
@@ -258,7 +259,7 @@ export default function NewProductForm() {
               <div className="flex-1">
                 <label
                   htmlFor="size"
-                  className="block font-semibold mb-2 text-black text-xs"
+                  className="block font-semibold mb-2  text-xs"
                 >
                   Available size(s) <span className="text-red-500">*</span>
                 </label>
@@ -285,7 +286,7 @@ export default function NewProductForm() {
               <div className="flex-1">
                 <label
                   htmlFor="stock"
-                  className="block font-semibold text-xs mb-2 text-black"
+                  className="block font-semibold text-xs mb-2"
                 >
                   Stock <span className="text-red-500">*</span>
                 </label>
@@ -303,7 +304,9 @@ export default function NewProductForm() {
             {/* Image Upload */}
             <div className="mb-6">
               <div className="w-full">
-                <Label htmlFor="picture" className="mb-2 block">Picture</Label>
+                <Label htmlFor="picture" className="mb-2 block">
+                  Picture
+                </Label>
                 <Input
                   id="picture"
                   type="file"
@@ -316,20 +319,21 @@ export default function NewProductForm() {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-4">
-              <button
+              <Button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full bg-black py-4 md:py-6 text-white rounded-md text-sm md:text-base"
+                className="w-full py-4 md:py-6 rounded-md text-sm md:text-base"
               >
                 Add Product
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="w-full bg-black/50 py-4 md:py-6 text-white rounded-md text-sm md:text-base"
+                variant={"outline"}
+                className="w-full bg-black py-4 md:py-6 rounded-md text-sm md:text-base"
                 onClick={() => router.back()}
               >
                 Back
-              </button>
+              </Button>
             </div>
           </form>
         </div>

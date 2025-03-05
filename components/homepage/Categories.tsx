@@ -12,7 +12,7 @@ export default function Categories() {
           whileInView={{ opacity: 1, y: 0 }} // Slide up to the final position
           transition={{
             type: "spring", // Use spring animation for bounce effect
-            stiffness: 100, // Controls the "tightness" of the spring
+            // stiffness: 100, // Controls the "tightness" of the spring
             damping: 10, // Controls the bounciness (lower = more bouncy)
             mass: 1, // Controls the weight of the object
             delay: 0.3, // Delay before the animation starts
@@ -62,7 +62,7 @@ export default function Categories() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
             type: "spring", // Use spring animation for bounce effect
-            stiffness: 100, // Controls the "tightness" of the spring
+            // stiffness: 100, // Controls the "tightness" of the spring
             damping: 10, // Controls the bounciness (lower = more bouncy)
             mass: 1, // Controls the weight of the object
             delay: 0.3, // Delay before the animation starts
@@ -70,8 +70,8 @@ export default function Categories() {
         >
           <div className="max-w-7xl text-4xl md:text-6xl">
             <span>
-              Curated for every{" "}
-              <span className="text-gray-500">Personality...</span>
+              Perfectly matched for every{" "}
+              <span className="text-gray-500">personality...</span>
             </span>
             {/* <span>
               {" "}

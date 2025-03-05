@@ -34,7 +34,7 @@ export default function CartItemCard({
   onSizeChange?: (newSize: string) => void;
 }) {
   // Parse sizes string into array
-  const availableSizes = sizes?.split(",").map(s => s.trim()) || [];
+  const availableSizes = sizes?.split(",").map((s) => s.trim()) || [];
 
   return (
     <>
@@ -47,10 +47,12 @@ export default function CartItemCard({
           className="h-36 w-28 object-cover"
         />
 
-        <div className="text-black flex flex-col justify-center gap-4 items-center">
+        <div className="text-black dark:text-white flex flex-col justify-center gap-4 items-center">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between mt-4 items-center text-black">
-              <h3 className="text-sm font-semibold">{name}</h3>
+              <h3 className="text-sm font-semibold text-black dark:text-white">
+                {name}
+              </h3>
             </div>
             <h2>
               GHS {price} x {quantity}
@@ -58,10 +60,7 @@ export default function CartItemCard({
             <div className="flex flex-col gap-2">
               {/* Size selector */}
               {availableSizes.length > 0 && (
-                <Select
-                  value={size}
-                  onValueChange={onSizeChange}
-                >
+                <Select value={size} onValueChange={onSizeChange}>
                   <SelectTrigger className="w-[100px]">
                     <SelectValue placeholder="Size" />
                   </SelectTrigger>
@@ -76,7 +75,7 @@ export default function CartItemCard({
                   </SelectContent>
                 </Select>
               )}
-              
+
               <div className="flex gap-2">
                 <div className="flex">
                   <button
@@ -85,7 +84,9 @@ export default function CartItemCard({
                   >
                     -
                   </button>
-                  <p className="text-black/50 border px-3 py-1">{quantity}</p>
+                  <p className="text-black/50 dark:text-white border px-3 py-1">
+                    {quantity}
+                  </p>
                   <button
                     onClick={incrementQuantity}
                     className="px-3 py-1 border"

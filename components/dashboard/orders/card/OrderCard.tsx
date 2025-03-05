@@ -12,8 +12,8 @@ import {
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+// import { cn } from "@/lib/utils";
+// import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -61,7 +61,7 @@ export default function OrderCard({
 
   return (
     <Card className="overflow-hidden transition-all duration-200 hover:shadow-md">
-      <CardHeader className="p-4 bg-gray-50/50">
+      <CardHeader className="p-4 bg-gray-50/50 dark:bg-black/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <PackageCheck className="w-5 h-5 text-gray-500" />
@@ -122,7 +122,7 @@ export default function OrderCard({
           <Button
             variant="ghost"
             size="sm"
-            className="w-full flex items-center justify-center gap-2 hover:bg-gray-100"
+            className="w-full flex items-center justify-center gap-2"
             onClick={toggleViewOrderItems}
           >
             <span className="text-sm">View order items</span>
@@ -143,7 +143,7 @@ export default function OrderCard({
             <div key={"1"} className="pt-2 space-y-3">
               {orderedItems.map((item: any) => (
                 <div key={item._id} className="group">
-                  <div className="flex items-center gap-4 p-3 rounded-lg bg-gray-50/50 group-hover:bg-gray-100/80 transition-colors">
+                  <div className="flex items-center gap-4 p-3 rounded-lg bg-gray-50/50 dark:bg-black/20 group-hover:bg-gray-100/80 dark:group-hover:bg-black/50 transition-colors">
                     <div className="relative w-16 h-16 rounded-md overflow-hidden bg-white">
                       <Image
                         src={item.product.image_url}
