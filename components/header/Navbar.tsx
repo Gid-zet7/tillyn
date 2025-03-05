@@ -128,35 +128,6 @@ export default function Navbar() {
           <div className="flex items-center gap-2 md:gap-4">
             <ModeToggle />
             <SearchIcon className="cursor-pointer" onClick={toggleSearchForm} />
-            {/* <svg
-              width="28px"
-              height="28px"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="cursor-pointer"
-              onClick={toggleSearchForm}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clipPath="url(#clip0_15_152)">
-                <rect width="24" height="24" fill="none" />
-                <circle
-                  cx="10.5"
-                  cy="10.5"
-                  r="6.5"
-                  stroke="#000000"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19.6464 20.3536C19.8417 20.5488 20.1583 20.5488 20.3536 20.3536C20.5488 20.1583 20.5488 19.8417 20.3536 19.6464L19.6464 20.3536ZM20.3536 19.6464L15.3536 14.6464L14.6464 15.3536L19.6464 20.3536L20.3536 19.6464Z"
-                  fill="#000000"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_15_152">
-                  <rect width="24" height="24" fill="white" />
-                </clipPath>
-              </defs>
-            </svg> */}
 
             <div
               className={`relative cartIconWrapper `}
@@ -166,63 +137,19 @@ export default function Navbar() {
                 className="cursor-pointer"
                 onClick={toggleCart}
               />
-              {/* <svg
-                fill="#000000"
-                width="28px"
-                height="28px"
-                viewBox="0 0 256 256"
-                id="Flat"
-                className="relative cursor-pointer "
-                xmlns="http://www.w3.org/2000/svg"
-                onClick={toggleCart}
-              >
-                <path d="M216,44H40A12.01343,12.01343,0,0,0,28,56V200a12.01312,12.01312,0,0,0,12,12H216a12.01312,12.01312,0,0,0,12-12V56A12.01343,12.01343,0,0,0,216,44Zm4,156a4.00427,4.00427,0,0,1-4,4H40a4.00427,4.00427,0,0,1-4-4V56a4.00427,4.00427,0,0,1,4-4H216a4.00427,4.00427,0,0,1,4,4ZM172,88a44,44,0,0,1-88,0,4,4,0,0,1,8,0,36,36,0,0,0,72,0,4,4,0,0,1,8,0Z" />
-              </svg> */}
             </div>
             {session ? (
               <ProfileMenu session={session} />
             ) : (
               <LoginLink>
                 <UserCircle2 className="cursor-pointer" />
-                {/* <svg
-                  width="28px"
-                  height="28px"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="cursor-pointer"
-                >
-                  <path
-                    opacity="0.4"
-                    d="M12.1207 12.78C12.0507 12.77 11.9607 12.77 11.8807 12.78C10.1207 12.72 8.7207 11.28 8.7207 9.50998C8.7207 7.69998 10.1807 6.22998 12.0007 6.22998C13.8107 6.22998 15.2807 7.69998 15.2807 9.50998C15.2707 11.28 13.8807 12.72 12.1207 12.78Z"
-                    stroke="#292D32"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    opacity="0.34"
-                    d="M18.7398 19.3801C16.9598 21.0101 14.5998 22.0001 11.9998 22.0001C9.39977 22.0001 7.03977 21.0101 5.25977 19.3801C5.35977 18.4401 5.95977 17.5201 7.02977 16.8001C9.76977 14.9801 14.2498 14.9801 16.9698 16.8001C18.0398 17.5201 18.6398 18.4401 18.7398 19.3801Z"
-                    stroke="#292D32"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                    stroke="#292D32"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg> */}
               </LoginLink>
             )}
           </div>
         </section>
         <section
           id="mobile-menu"
-          className="top-20 justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white  dark:bg-black text-5xl"
+          className="top-[4.5rem] justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white  dark:bg-black text-5xl"
         >
           {/* <button className="text-8xl self-end px-6">
                 &times;
