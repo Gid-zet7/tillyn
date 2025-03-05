@@ -8,14 +8,13 @@ export default function Categories() {
       <section className="my-40 md:my-[10rem] flex flex-col justify-center items-center">
         <motion.div
           className="flex flex-col md:flex-row h-screen w-screen"
-          initial={{ opacity: 0, y: 100 }} // Start 50px below the final position
-          whileInView={{ opacity: 1, y: 0 }} // Slide up to the final position
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{
-            type: "spring", // Use spring animation for bounce effect
-            // stiffness: 100, // Controls the "tightness" of the spring
-            damping: 10, // Controls the bounciness (lower = more bouncy)
-            mass: 1, // Controls the weight of the object
-            delay: 0.3, // Delay before the animation starts
+            type: "spring",
+            damping: 10,
+            mass: 1,
+            delay: 0.3,
           }}
           // viewport={{ once: true }}
         >
@@ -31,14 +30,14 @@ export default function Categories() {
         </motion.div>
         <motion.div
           className="flex flex-col md:flex-row h-screen w-screen"
-          initial={{ opacity: 0, y: 100 }} // Start 50px below the final position
-          whileInView={{ opacity: 1, y: 0 }} // Slide up to the final position
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{
-            type: "spring", // Use spring animation for bounce effect
+            type: "spring",
             stiffness: 30, // Controls the "tightness" of the spring
-            damping: 10, // Controls the bounciness (lower = more bouncy)
-            mass: 0.7, // Controls the weight of the object
-            delay: 0.3, // Delay before the animation starts
+            damping: 10,
+            mass: 0.7,
+            delay: 0.3,
           }}
           // viewport={{ once: true }}
         >
@@ -61,11 +60,11 @@ export default function Categories() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
-            type: "spring", // Use spring animation for bounce effect
+            type: "spring",
             // stiffness: 100, // Controls the "tightness" of the spring
-            damping: 10, // Controls the bounciness (lower = more bouncy)
-            mass: 1, // Controls the weight of the object
-            delay: 0.3, // Delay before the animation starts
+            damping: 10,
+            mass: 1,
+            delay: 0.3,
           }}
         >
           <div className="max-w-7xl text-4xl md:text-6xl">

@@ -8,11 +8,11 @@ export default function Mission() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
-        type: "spring", // Use spring animation for bounce effect
-        stiffness: 100, // Controls the "tightness" of the spring
-        damping: 10, // Controls the bounciness (lower = more bouncy)
-        mass: 1, // Controls the weight of the object
-        delay: 0.3, // Delay before the animation starts
+        type: "spring",
+        stiffness: 100,
+        damping: 10,
+        mass: 1,
+        delay: 0.3,
       }}
     >
       <div className="max-w-7xl text-4xl md:text-6xl">

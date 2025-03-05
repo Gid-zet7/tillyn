@@ -96,11 +96,11 @@ export default function ThriftSection() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{
-          type: "spring", // Use spring animation for bounce effect
+          type: "spring",
           // stiffness: 100, // Controls the "tightness" of the spring
-          damping: 10, // Controls the bounciness (lower = more bouncy)
-          mass: 1, // Controls the weight of the object
-          delay: 0.3, // Delay before the animation starts
+          damping: 10,
+          mass: 1,
+          delay: 0.3,
         }}
         className="mt-10 lg:flex lg:flex-col lg:justify-center lg:items-center"
       >

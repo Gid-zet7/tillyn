@@ -44,29 +44,6 @@ export default function Cart({
         <div className="flex justify-between w-full px-5 py-4 sticky top-0 bg-white/80 backdrop-blur-[300px] dark:bg-black/80 pt-12 border-b border-black/10">
           <h2 className="text-black dark:text-white font-bold">Shopping Bag</h2>
           <X className="cursor-pointer" onClick={toggleCart} />
-          {/* <svg
-            width="30px"
-            height="30px"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer"
-            onClick={toggleCart}
-          >
-            <rect width="24" height="24" fill="white" />
-            <path
-              d="M7 17L16.8995 7.10051"
-              stroke="#000000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M7 7.00001L16.8995 16.8995"
-              stroke="#000000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg> */}
         </div>
         {/* <hr className="bg-slate-700 w-full mt-2" /> */}
         {/* {isLoading && (
