@@ -5,11 +5,57 @@ import Cart from "../cart/Cart";
 import Search from "../Search/Search";
 import Image from "next/image";
 import ProfileMenu from "./ProfileMenu";
+// import { Image } from "next/image";
+
+import { cn } from "@/lib/utils";
+// import { Icons } from "@/components/icons";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { ModeToggle } from "./mode-toggle";
 import { SearchIcon, ShoppingBagIcon, UserCircle2 } from "lucide-react";
+
+const components: { title: string; href: string; description: string }[] = [
+  {
+    title: "All",
+    href: "/products",
+    description: "Shop the latest collection ",
+  },
+  {
+    title: "Men",
+    href: "/products/men",
+    description: "Shop the latest men's collection ",
+  },
+  {
+    title: "Women",
+    href: "/products/women",
+    description: "Explore our stylish women's collection",
+  },
+  {
+    title: "Kids",
+    href: "/products/kids",
+    description: "Discover our adorable kids' collection ",
+  },
+  {
+    title: "Perfumes",
+    href: "/products/perfumes",
+    description: "Explore our luxurious perfume collection ",
+  },
+  // {
+  //   title: "New Arrivals",
+  //   href: "/products/new-arrivals",
+  //   description: "Products - Explore Our Latest Collection",
+  // },
+];
 
 export default function Navbar() {
   const [session, setSession] = useState();
@@ -86,7 +132,7 @@ export default function Navbar() {
     <>
       <header className="py-5 px-4 md:px-8 border-b gap-4 sticky top-0 z-50 bg-white/80 backdrop-blur-[300px] dark:bg-black/80">
         <section
-          className={`mx-auto flex md:px-20 items-center justify-between relative navbarContent`}
+          className={`flex lg:px-20 items-center justify-between relative navbarContent`}
         >
           <div>
             <button
@@ -97,8 +143,60 @@ export default function Navbar() {
               <div className="dark:bg-white  bg-black/80"></div>
               <div className="dark:bg-white  bg-black/80"></div>
             </button>
+            <NavigationMenu
+              className="hidden space-x-8 text-xl md:block"
+              aria-label="main"
+            >
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <Link href="/" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Home
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                      <li className="row-span-3">
+                        <NavigationMenuLink asChild>
+                          <Image
+                            src={"/oladimeji-odunsi-W.jpg"}
+                            width={300}
+                            height={300}
+                            alt="woman in sleek spectacles"
+                            className="rounded-lg"
+                          />
+                        </NavigationMenuLink>
+                      </li>
+                      {components.map((component) => (
+                        <ListItem
+                          key={component.title}
+                          title={component.title}
+                          href={component.href}
+                        >
+                          {component.description}
+                        </ListItem>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/products/new-arrivals" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      New Arrivals
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
 
-            <nav
+            {/* <nav
               className="hidden space-x-8 text-xl md:block"
               aria-label="main"
             >
@@ -113,7 +211,7 @@ export default function Navbar() {
                   <Link href={"/products/new-arrivals"}>New Arrivals</Link>
                 </li>
               </ul>
-            </nav>
+            </nav> */}
           </div>
           <Link href="/">
             <Image
@@ -199,3 +297,29 @@ export default function Navbar() {
     </>
   );
 }
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";

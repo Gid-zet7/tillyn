@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-// import Card from "../homepage/Card";
 import { Card, CardContent } from "../ui/card";
 import { SkeletonCard } from "../skeleton/Skeleton";
 import { AlertDestructive } from "@/components/Alert/AlertDestructive";
@@ -44,17 +43,13 @@ export function MenProducts() {
         <Card key={item._id} className="cursor-pointer relative group">
           <CardContent
             style={{ backgroundImage: `url(${item.image_url})` }}
-            className="bg-cover bg-center h-48 md:h-64 rounded-lg flex flex-col items-center justify-end p-4 text-white transition-all duration-300 group-hover:brightness-75"
+            className="bg-cover bg-center h-48 md:h-64 rounded-lg flex flex-col items-center justify-end p-4  transition-all duration-300 group-hover:brightness-75"
           >
-            {/* <h3 className="text-sm md:text-lg font-bold">{item.name}</h3> */}
-            <Button
-              variant={"outline"}
-              className="text-sm md:text-lg text-black"
-            >
+            <Button variant={"outline"} className="text-sm md:text-lg ">
               ₵{item.price}
             </Button>
             <Button
-              className="bg-white text-black mt-2 hover:bg-gray-700 hover:text-white transition-colors duration-300"
+              className="mt-2 transition-colors duration-300"
               onClick={() => router.push(`${SERVER_URL}/products/${item._id}`)}
             >
               View Product

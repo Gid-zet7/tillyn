@@ -5,45 +5,46 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "../ui/card";
 import { SkeletonCard } from "../skeleton/Skeleton";
 import { AlertDestructive } from "@/components/Alert/AlertDestructive";
-import { getKidsProducts } from "@/lib/actions";
+import { getPerfumes } from "@/lib/actions";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
-export function KidProducts() {
-  const [kidProducts, setKidProducts] = useState<Product[]>([]);
+export function Perfumes() {
+  const [perfumes, setPerfumes] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  //   const dispatch = useDispatch();
   const router = useRouter();
 
   useEffect(() => {
-    const fetchKidProducts = async () => {
+    const fetchPerfumes = async () => {
       try {
         setIsLoading(true);
-        const data = await getKidsProducts();
-        if (!data) throw new Error("Failed to fetch kids products");
-        setKidProducts(data);
+        const data = await getPerfumes();
+        console.log(data);
+        if (!data) throw new Error("Failed to fetch perfumes");
+        setPerfumes(data);
       } catch {
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchKidProducts();
+    fetchPerfumes();
   }, []);
 
   if (isLoading) return <SkeletonCard />;
-  if (isError)
-    return <AlertDestructive message="Failed to load kids products" />;
+  if (isError) return <AlertDestructive message="Failed to load perfumes" />;
 
   return (
     <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {kidProducts.map((item) => (
+      {perfumes.map((item) => (
         <Card key={item._id} className="cursor-pointer relative group">
           <CardContent
             style={{ backgroundImage: `url(${item.image_url})` }}
-            className="bg-cover bg-center h-48 md:h-64 rounded-lg flex flex-col items-center justify-end p-4 transition-all duration-300 group-hover:brightness-75"
+            className="bg-cover bg-center h-48 md:h-64 rounded-lg flex flex-col items-center justify-end p-4  transition-all duration-300 group-hover:brightness-75"
           >
-            {/* <h3 className="text-sm md:text-lg font-bold">{item.name}</h3> */}
             <Button variant={"outline"} className="text-sm md:text-lg ">
               ₵{item.price}
             </Button>

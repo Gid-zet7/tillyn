@@ -102,6 +102,18 @@ export const getKidsProducts = async () => {
   return result.json();
 };
 
+export const getPerfumes = async () => {
+  const endpoint = `${SERVER_URL}/api/products/perfumes`;
+  const result = await fetch(endpoint, {
+    method: "GET",
+  });
+  if (!result.ok) {
+    const errorMessage = `Failed to fetch perfumes. Status: ${result.status}, ${result.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return result.json();
+};
+
 export const sendEmail = async (
   emailTo: string | undefined,
   subject: string | undefined,

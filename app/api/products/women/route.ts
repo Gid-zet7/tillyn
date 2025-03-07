@@ -27,7 +27,9 @@ export const GET = async (request: Request) => {
     const regex = new RegExp("women", "i");
     await connectDB();
 
-    let products = await Product.find({ name: { $regex: regex } }).lean(); // Use `.lean()` to get plain objects
+    let products = await Product.find({
+      $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
+    }).lean(); // Use `.lean()` to get plain objects
 
     // If no products found by name, search by category
     if (products.length === 0) {

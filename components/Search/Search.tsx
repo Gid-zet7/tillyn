@@ -40,35 +40,12 @@ export default function Search({
         <div className="flex justify-between w-11/12 ">
           <h2 className="text-black dark:text-white font-bold">Search</h2>
           <X className="cursor-pointer" onClick={toggleSearchForm} />
-          {/* <svg
-            width="30px"
-            height="30px"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer"
-            onClick={toggleSearchForm}
-          >
-            <rect width="24" height="24" fill="white" />
-            <path
-              d="M7 17L16.8995 7.10051"
-              stroke="#000000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M7 7.00001L16.8995 16.8995"
-              stroke="#000000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg> */}
         </div>
 
-        <hr className="bg-slate-700 w-[20rem] md:w-[30rem] my-2" />
+        <hr className="bg-slate-700 w-full my-2" />
 
         <form onSubmit={handleSearch} className="w-11/12">
-          <div className="mb-4">
+          <div className="my-4">
             <Input
               type="text"
               id="name"

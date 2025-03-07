@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { getProductByCategory } from "@/lib/actions";
+import { getPerfumes, getProductByCategory } from "@/lib/actions";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
 import { AlertDestructive } from "../Alert/AlertDestructive";
@@ -39,7 +39,7 @@ export function PerfumeCarousel() {
         setIsError(false);
         setIsSuccess(false);
 
-        const PerfumesData = await getProductByCategory("Unisex Perfumes");
+        const PerfumesData = await getPerfumes();
 
         if (!PerfumesData || PerfumesData.length === 0) {
           throw new Error("No perfume products found");

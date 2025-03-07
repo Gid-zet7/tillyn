@@ -24,8 +24,8 @@ interface ActiveCategory {
 
 // Define the categories structure
 const categories = {
-  Men: ["Tops", "Shorts", "Pants", "Outerwear", "Top and Down set"],
-  Women: ["Tops", "Bottoms", "Dresses", "Outerwear"],
+  Men: ["Tops", "Shorts", "Pants", "Outerwear", "Top and Down set", "Perfumes"],
+  Women: ["Tops", "Bottoms", "Dresses", "Outerwear", "Perfumes"],
 } as const;
 
 export default function ProductsPage() {
@@ -69,30 +69,32 @@ export default function ProductsPage() {
     const selectedProducts = products[activeCategory.type]?.[category] || [];
     return (
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {selectedProducts.map((item: Product) => (
-          <Card key={item._id} className="cursor-pointer relative group">
-            <CardContent
-              style={{ backgroundImage: `url(${item.image_url})` }}
-              className="bg-cover bg-center h-48 md:h-64 rounded-lg flex flex-col items-center justify-end p-4 text-white transition-all duration-300 group-hover:brightness-75"
-            >
-              <h3 className="text-sm md:text-lg font-bold">{item.name}</h3>
-              <Button
-                variant={"outline"}
-                className="text-sm md:text-lg text-black dark:text-white"
-              >
-                ₵{item.price}
-              </Button>
-              <Button
-                className="mt-2 "
-                onClick={() =>
-                  router.push(`${SERVER_URL}/products/${item._id}`)
-                }
-              >
-                View Product
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+        {selectedProducts.length
+          ? selectedProducts.map((item: Product) => (
+              <Card key={item._id} className="cursor-pointer relative group">
+                <CardContent
+                  style={{ backgroundImage: `url(${item.image_url})` }}
+                  className="bg-cover bg-center h-48 md:h-64 rounded-lg flex flex-col items-center justify-end p-4 text-white transition-all duration-300 group-hover:brightness-75"
+                >
+                  <h3 className="text-sm md:text-lg font-bold">{item.name}</h3>
+                  <Button
+                    variant={"outline"}
+                    className="text-sm md:text-lg text-black dark:text-white"
+                  >
+                    ₵{item.price}
+                  </Button>
+                  <Button
+                    className="mt-2 "
+                    onClick={() =>
+                      router.push(`${SERVER_URL}/products/${item._id}`)
+                    }
+                  >
+                    View Product
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          : "No products yet"}
       </section>
     );
   };

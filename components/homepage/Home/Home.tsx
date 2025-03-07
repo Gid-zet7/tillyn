@@ -124,7 +124,7 @@ export default function Home() {
         <FeaturedProducts />
       </div>
 
-      <section className="flex justify-center items-center mt-[10rem]">
+      <section className="flex justify-center items-center my-[10rem] ">
         <Perfumes />
       </section>
       <section className="flex justify-center items-center mt-10">
@@ -133,7 +133,7 @@ export default function Home() {
 
       <div className="mt-40 md:mt-[40rem] flex flex-col justify-center items-center px-3">
         <motion.div
-          className=" flex flex-col justify-center items-center "
+          className=" flex flex-col justify-center items-center my-[10rem]"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
@@ -145,13 +145,8 @@ export default function Home() {
         >
           <div className="max-w-7xl text-4xl md:text-6xl">
             <span>
-              Stlye without the <span className="text-gray-500">spend...</span>
+              Style without the <span className="text-gray-500">spend...</span>
             </span>
-            {/* <span>
-              {" "}
-              sustainable, and <span className="text-gray-500">empowering</span>
-              .
-            </span> */}
           </div>
         </motion.div>
       </div>

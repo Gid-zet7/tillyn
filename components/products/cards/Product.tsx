@@ -64,19 +64,23 @@ export default function Product({ productId }: Props) {
   return (
     <>
       <section>
-        <div className="flex flex-col md:flex-row justify-around p-5 md:p-10 lg:px-20 gap-8">
+        <div className="flex flex-col md:flex-row justify-around p-5 md:p-5 lg:px-20 gap-8 relative">
           {product.image_url && (
-            <Image
-              src={product.image_url}
-              width={600}
-              height={600}
-              alt="product image"
-              className="rounded-2xl"
-            />
+            <div
+              style={{ backgroundImage: `url(${product.image_url})` }}
+              className="bg-cover bg-center h-[60vh] md:h-screen rounded-lg md:flex-1 "
+            ></div>
+            // <Image
+            //   src={product.image_url}
+            //   width={600}
+            //   height={600}
+            //   alt="product image"
+            //   className="rounded-2xl"
+            // />
           )}
-          <div className="flex flex-col gap-3">
+          <div className="flex-1 flex flex-col gap-3">
             <h3>{product.category.name || "Category Unavailable"}</h3>
-            <h1 className={`${poppins.className} text-5xl`}>
+            <h1 className={`${poppins.className} text-3xl md:text-5xl`}>
               {product.name || "No Name"}
             </h1>
             <div className="flex gap-1">
@@ -145,8 +149,8 @@ export default function Product({ productId }: Props) {
               </div>
             </div>
             <div className="mt-10">
-              <button
-                className="w-full bg-black text-white py-6 font-bold rounded-full"
+              <Button
+                className="w-full py-6 font-bold rounded-full"
                 disabled={product.stock === 0}
                 onClick={() => {
                   dispatch(addToCart(product));
@@ -161,7 +165,7 @@ export default function Product({ productId }: Props) {
                 }}
               >
                 {product.stock === 0 ? "OUT OF STOCK" : "ADD TO CART"}
-              </button>
+              </Button>
             </div>
             <div className={`${poppins.className} flex flex-col gap-4 mt-4`}>
               <div className="flex gap-2">

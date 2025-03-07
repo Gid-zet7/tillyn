@@ -24,12 +24,15 @@ const s3 = new S3Client({
 
 export const GET = async (request: Request) => {
   try {
-    const regex = new RegExp("men", "i");
+    const regex = new RegExp("perfumes", "i");
     await connectDB();
+    console.log(regex);
 
     let products = await Product.find({
       $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
-    }).lean(); // Use `.lean()` to get plain objects
+    }).lean();
+
+    console.log(products);
 
     // If no products found by name, search by category
     if (products.length === 0) {
@@ -64,6 +67,6 @@ export const GET = async (request: Request) => {
     });
   } catch (error) {
     console.error("Error fetching products:", error);
-    return new Response("Failed to fetch products", { status: 500 });
+    return new Response("Failed to fetch productssss", { status: 500 });
   }
 };
