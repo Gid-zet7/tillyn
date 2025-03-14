@@ -13,6 +13,7 @@ type User = {
     city: string;
     postal_code: string;
   };
+  subscription: Subscription;
   createdAt: Date;
   updatedAt: Date;
   __v: number;
@@ -32,6 +33,7 @@ type Users = {
     city: string;
     postal_code: string;
   };
+
   createdAt: Date;
   updatedAt: Date;
   __v: number;

@@ -21,6 +21,17 @@ const userShema = new Schema<User>(
 
       // },
     },
+    // subscription: {
+    //   plan: { type: String, required: false },
+    //   status: {
+    //     type: String,
+    //     enum: ["active", "inactive", "canceled", "trial"],
+    //   },
+    //   startDate: { type: Date, default: Date.now() },
+    //   endDate: { type: Date },
+    //   paymentId: { type: String },
+    //   isTrial: { type: Boolean, default: false },
+    // },
   },
   { timestamps: true }
 );
