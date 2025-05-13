@@ -119,7 +119,7 @@ export default function FlySection() {
               className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className}`}
             >
               <ParallaxText baseVelocity={1}>
-                They follow trends, We set 'em.
+                They follow trends, We set &apos;em.
               </ParallaxText>
               <ParallaxText baseVelocity={-1}>We are not the same</ParallaxText>
             </div>
