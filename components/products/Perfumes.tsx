@@ -22,7 +22,6 @@ export function Perfumes() {
       try {
         setIsLoading(true);
         const data = await getPerfumes();
-        console.log(data);
         if (!data) throw new Error("Failed to fetch perfumes");
         setPerfumes(data);
       } catch {

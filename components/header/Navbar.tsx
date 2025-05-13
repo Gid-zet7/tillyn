@@ -5,10 +5,7 @@ import Cart from "../cart/Cart";
 import Search from "../Search/Search";
 import Image from "next/image";
 import ProfileMenu from "./ProfileMenu";
-// import { Image } from "next/image";
-
 import { cn } from "@/lib/utils";
-// import { Icons } from "@/components/icons";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -130,7 +127,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="py-5 px-4 md:px-8 border-b gap-4 sticky top-0 z-50 bg-white/80 backdrop-blur-[300px] dark:bg-black/80">
+      <header className="py-5 px-4 md:px-8 gap-4 top-0 z-[99] bg-white/80 backdrop-blur-[300px] dark:bg-black/80">
         <section
           className={`flex lg:px-20 items-center justify-between relative navbarContent`}
         >
@@ -143,6 +140,7 @@ export default function Navbar() {
               <div className="dark:bg-white  bg-black/80"></div>
               <div className="dark:bg-white  bg-black/80"></div>
             </button>
+
             <NavigationMenu
               className="hidden space-x-8 text-xl md:block"
               aria-label="main"
@@ -213,12 +211,13 @@ export default function Navbar() {
               </ul>
             </nav> */}
           </div>
+
           <Link href="/">
             <Image
-              src={"/tillyn-logo.svg"}
+              src={"/logo.png"}
               width={50}
               height={50}
-              alt="tillyn logo"
+              alt="aura logo"
               className="hidden md:block"
             />
           </Link>
@@ -247,7 +246,7 @@ export default function Navbar() {
         </section>
         <section
           id="mobile-menu"
-          className="top-[4.5rem] justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white  dark:bg-black text-5xl"
+          className="top-[4.5rem] justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white  dark:bg-black text-5xl z-[98]"
         >
           {/* <button className="text-8xl self-end px-6">
                 &times;

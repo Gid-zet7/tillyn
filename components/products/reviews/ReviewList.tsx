@@ -35,7 +35,6 @@ export default function ReviewList({
     const fetchReviews = async () => {
       try {
         const data = await getSellerReviews(sellerId);
-        console.log(data);
         setReviews(data);
       } catch (error) {
         console.error("Error fetching reviews:", error);

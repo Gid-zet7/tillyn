@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { getProductByCategory } from "@/lib/actions";
 import { ThriftSkeletonCard } from "./ThriftSkeleton";
+import ParallaxText from "@/components/ParallaxText";
 import { AlertDestructive } from "@/components/Alert/AlertDestructive";
 
-const poppins = localFont({
-  src: "../../../app/fonts/Poppins-Medium.ttf",
-  variable: "--font-poppins",
-  weight: "100 900",
+const minera = localFont({
+  src: "../../../app/fonts/Minera-Extrabold.otf",
+  // weight: "100 900",
 });
 
 export default function ThriftSection() {
@@ -29,7 +29,6 @@ export default function ThriftSection() {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const dispatch = useDispatch();
-  // const router = useRouter();
 
   const toggleAllThrift = () => {
     setShowAllThrift((prevState) => !prevState);
@@ -76,14 +75,14 @@ export default function ThriftSection() {
   let content;
   if (isLoading)
     content = (
-      <section className="flex flex-col items-center justify-center mt-20 md:mt-40">
+      <section className="h-screen snap-start flex flex-col items-center justify-center">
         <ThriftSkeletonCard />
       </section>
     );
 
   if (isError)
     content = (
-      <section className="flex flex-col items-center justify-center ">
+      <section className="h-screen snap-start flex flex-col items-center justify-center">
         <div className="max-w-6xl">
           <AlertDestructive message={errorMessage} />
         </div>
@@ -97,21 +96,31 @@ export default function ThriftSection() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{
           type: "spring",
-          // stiffness: 100, // Controls the "tightness" of the spring
           damping: 10,
           mass: 1,
           delay: 0.3,
         }}
-        className="mt-10 lg:flex lg:flex-col lg:justify-center lg:items-center"
+        className="h-screen snap-start flex flex-col justify-center items-center bg-black overflow-hidden"
       >
-        {/* <div className="flex justify-center items-center mb-4">
-          <h1 className={`text-xl md:text-5xl text-black ${poppins.className}`}>
-            Style Without the Spend
-          </h1>
-        </div> */}
-        <div className="px-5 lg:max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            type: "spring",
+            duration: 0.5,
+            mass: 1,
+            delay: 0.3,
+          }}
+          className={`${minera.className} h-screen snap-start flex flex-col justify-center items-center bg-black text-white`}
+        >
+          <ParallaxText baseVelocity={-1}>
+            FASHION STANS AND FLY KINGS ? *
+          </ParallaxText>
+          <ParallaxText baseVelocity={1}>NOT THE SAME BLUEPRINT *</ParallaxText>
+        </motion.div>
+        <div className="px-5 lg:max-w-7xl w-full">
           <div className="relative p-4 md:p-8 border rounded-md">
-            <div className=" flex gap-3">
+            <div className="flex gap-3">
               <Button className="mb-6">Thrift</Button>
               <Button className="mb-6" onClick={toggleAllThrift}>
                 All
@@ -171,5 +180,9 @@ export default function ThriftSection() {
         </div>
       </motion.div>
     );
-  return <>{content} </>;
+  return (
+    <div className="snap-y snap-mandatory h-screen overflow-y-scroll">
+      {content}
+    </div>
+  );
 }

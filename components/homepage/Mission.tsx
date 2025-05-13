@@ -15,16 +15,22 @@ export default function Mission() {
         delay: 0.3,
       }}
     >
-      <div className="max-w-7xl text-4xl md:text-6xl">
-        <span>
+      <blockquote className="max-w-5xl text-center text-3xl md:text-5xl lg:text-6xl font-semibold italic text-gray-800 dark:text-gray-200 relative">
+        <span className="absolute -top-10 left-0 text-8xl text-gray-300 dark:text-gray-600">
+          “
+        </span>
+        <p>
           We believe <span className="text-gray-500">fashion</span> should be{" "}
-          <span className="text-gray-500">accessible,</span>
+          <span className="text-gray-500">accessible,</span> sustainable, and{" "}
+          <span className="text-gray-500">empowering</span>.
+        </p>
+        <span className="absolute -bottom-10 right-0 text-8xl text-gray-300 dark:text-gray-600">
+          ”
         </span>
-        <span>
-          {" "}
-          sustainable, and <span className="text-gray-500">empowering</span>.
-        </span>
-      </div>
+      </blockquote>
+      <cite className="mt-6 text-lg md:text-xl lg:text-2xl font-medium text-gray-600 dark:text-gray-400">
+        — Fashion Stans
+      </cite>
     </motion.div>
   );
 }

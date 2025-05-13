@@ -9,24 +9,24 @@ const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const Footer = () => {
   const { theme } = useTheme();
   return (
-    <footer className="static bottom-0 left-0 w-full mt-20 bg-[#1A1A1A]">
-      <div className="pt-20 md:pt-40 md:pb-20 px-5 rounded-b-none w-full bg-[#1A1A1A]">
+    <footer className="static bottom-0 left-0 w-full bg-black  ">
+      <div className="pt-20 md:pt-40 md:pb-20 px-5 rounded-b-none w-full bg-black">
         <ul
           role="menu"
-          className="flex flex-col md:flex-row justify-around gap-10 md:gap-0 bg-[#1A1A1A] list-none m-auto w-full"
+          className="flex flex-col md:flex-row justify-around gap-10 md:gap-0 bg-black list-none m-auto w-full"
         >
           <li className="list_item">
             <div className="flex gap-2 md:justify-center items-center">
               <Image
-                src={"tillyn-logo-whyte.svg"}
+                src={"/logo.png"}
                 width={70}
                 height={60}
                 className="object-contain"
-                alt="tillyn logo"
+                alt="aura logo"
               />
               <div>
                 <a href={"/"} className="text-white">
-                  TillynClothings
+                  Aura
                 </a>
               </div>
             </div>
@@ -133,7 +133,7 @@ const Footer = () => {
         </ul>
         <hr className="border-gray-600 my-10" />
         <div className="flex flex-wrap justify-around items-center text-white mt-10 text-sm ">
-          <p>Copyright © 2025 TillynClothings</p>
+          <p>Copyright © 2025 Aura</p>
           {/* <p>All rights reserved</p> */}
           <div className=" hidden md:block">
             <div className="flex flex-row md:gap-4 space-x-8 items-center">

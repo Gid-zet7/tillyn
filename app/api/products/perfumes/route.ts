@@ -26,13 +26,10 @@ export const GET = async (request: Request) => {
   try {
     const regex = new RegExp("perfumes", "i");
     await connectDB();
-    console.log(regex);
 
     let products = await Product.find({
       $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
     }).lean();
-
-    console.log(products);
 
     // If no products found by name, search by category
     if (products.length === 0) {

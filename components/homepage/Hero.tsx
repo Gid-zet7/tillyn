@@ -3,62 +3,58 @@ import React from "react";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import localFont from "next/font/local";
 
-// const poppins = localFont({
-//   src: "../../app/fonts/Poppins-Medium.ttf",
-//   variable: "--font-zapfHumnst",
-//   weight: "100 900",
-// });
-
-const zapfHumnst = localFont({
+const helvetica = localFont({
   src: "../../app/fonts/bodoni.ttf",
-  // variable: "--font-zapfHumnst",
   weight: "100 900",
 });
 
 export default function Hero() {
   return (
-    <section
-      id="counter"
-      className="flex flex-col justify-center items-center "
-    >
-      <div className="flex flex-col lg:flex-row px-3 lg:px-0 justify-around custom-width mt-10 lg:mt-20 gap-14 lg:gap-0">
-        <div className="flex flex-col justify-center items-center gap-10 lg:gap-20 flex-1">
-          <div>
-            <h1 className={`clamp-text font-bold ${zapfHumnst.className}`}>
-              Vintage Vibes, Modern Finds
+    <section className="min-h-screen flex items-center justify-center w-full">
+      <div className="px-4 sm:px-6 lg:px-8 md:mx-auto">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+          {/* Left side - Text content */}
+          <div className="w-full lg:w-1/2 space-y-4 sm:space-y-6">
+            <div className="mb-2 sm:mb-4">
+              <p className="text-xs sm:text-sm font-medium text-gray-600">
+                02/44
+              </p>
+            </div>
+            <h1
+              className={`${helvetica.className} text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight z-40`}
+            >
+              BECAUSE
+              <br />
+              EVERY THREAD
+              <br />
+              TELLS A BOLD
+              <br />
+              AND QUIET STORY
             </h1>
+            <div className="flex items-center space-x-2 sm:space-x-4 mt-4 sm:mt-8 z-40">
+              <span className="text-4xl sm:text-6xl lg:text-8xl font-bold text-gray-200">
+                AURA
+              </span>
+              <div className="h-1 sm:h-2 w-6 sm:w-12 bg-red-600"></div>
+              <span className="text-4xl sm:text-6xl lg:text-8xl font-bold text-gray-200 ">
+                09
+              </span>
+            </div>
           </div>
-          <div className="border-2 border-orange-800 rounded-full flex w-full p-1">
-            <input
-              type="text"
-              placeholder="Sign up now and join the revolution"
-              className="px-3 lg:px-4 py-4 lg:py-6 w-[65%] lg:w-3/4 border-none rounded-l-full outline-none text-xs lg:text-xl bg-white  dark:bg-black/80"
-              aria-label="Create an account"
-              disabled
-            />
-            <button className="bg-orange-800 w-[35%] lg:w-3/12 rounded-full text-xl lg:text-2xl">
-              <RegisterLink className={zapfHumnst.className}>
-                Sign up
-              </RegisterLink>
-            </button>
-          </div>
-        </div>
 
-        <div className="flex-1 flex flex-row justify-center items-center gap-6">
-          <Image
-            src={"/joren-aranas.jpg"}
-            width={250}
-            height={250}
-            alt="hero-image"
-            className="rounded-full custom-image_width"
-          />
-          <Image
-            src={"/oladimeji-odunsi2.jpg"}
-            width={250}
-            height={250}
-            alt="hero-image"
-            className="rounded-full custom-image_width -mt-[4rem]"
-          />
+          {/* Right side - Image */}
+          <div className="w-full lg:w-1/2 mt-8 lg:mt-0">
+            <div className="relative w-full aspect-square max-w-[500px] sm:max-w-[600px] lg:w-[2400px] mx-auto z-0">
+              <Image
+                src="/aura.png"
+                alt="aura"
+                fill
+                className="object-contain h-screen"
+                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

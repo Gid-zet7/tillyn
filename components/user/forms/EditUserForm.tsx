@@ -101,7 +101,7 @@ export default function EditUserForm({ email }: Props) {
         // setSuccess here later
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setShowSpinner(false);
       router.back();

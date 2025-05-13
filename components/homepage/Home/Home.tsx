@@ -3,31 +3,18 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { getUsersession } from "@/lib/actions";
 import Categories from "@/components/homepage/Categories";
-import { FeaturedProducts } from "@/components/homepage/FeaturedProducts";
-import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
-import ThriftSection from "@/components/homepage/Thrift/ThriftSection";
 import Hero from "@/components/homepage/Hero";
-import Count from "@/components/homepage/Count";
 import localFont from "next/font/local";
-import ParallaxText from "@/components/ParallaxText";
 import { AlertHeadsUp } from "@/components/Alert/Alert";
 import { AlertHappy } from "@/components/Alert/HappyShopping";
 import { motion } from "framer-motion";
 import Perfumes from "../Perfumes";
 import Mission from "../Mission";
-import Link from "next/link";
-import { PerfumeCarousel } from "../PerfumeCarousel";
+import FlySection from "../Fly/FlySection";
 
-// const poppins = localFont({
-//   src: "../../../app/fonts/Poppins-Medium.ttf",
-//   variable: "--font-poppins",
-//   weight: "100 900",
-// });
-
-const zapfHumnst = localFont({
+const helvetica = localFont({
   src: "../../../app/fonts/bodoni.ttf",
-  // variable: "--font-zapfHumnst",
   weight: "100 900",
 });
 
@@ -35,7 +22,6 @@ const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function Home() {
   const [error, setError] = useState<any>("");
-  // const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState<string>("");
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -89,76 +75,30 @@ export default function Home() {
       {showErrorAlert && <AlertHeadsUp message={error} />}
       {showSuccessAlert && <AlertHappy message={isSuccess} />}
       <Hero />
-      <Count />
       <Mission />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{
-          type: "spring",
-          duration: 0.5,
-          mass: 1,
-          delay: 0.3,
-        }}
-        className={`${zapfHumnst.className} mt-20 md:mt-40 `}
+        transition={{ duration: 0.6 }}
+        className="mb-16 text-center"
       >
-        <ParallaxText baseVelocity={-3}>Categories</ParallaxText>
-        <ParallaxText baseVelocity={3}>Categories</ParallaxText>
+        <h2
+          className={`text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight z-50 ${helvetica.className}`}
+        >
+          CATEGORIES
+        </h2>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="h-1 sm:h-2 w-12 sm:w-40 mt-5 md:mt-10 bg-red-600 mx-auto"
+        />
       </motion.div>
       <Categories />
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{
-          type: "spring",
-          duration: 0.5,
-          mass: 1,
-          delay: 0.3,
-        }}
-        className={`${zapfHumnst.className} mt-20 md:mt-40`}
-      >
-        <ParallaxText baseVelocity={-3}>Featured Products</ParallaxText>
-        <ParallaxText baseVelocity={3}>Featured Products</ParallaxText>
-      </motion.div>
-      <div className="flex justify-center items-center mt-32">
-        <FeaturedProducts />
-      </div>
-
       <section className="flex justify-center items-center my-[10rem] ">
         <Perfumes />
       </section>
-      <section className="flex justify-center items-center mt-10">
-        <PerfumeCarousel />
-      </section>
-
-      <div className="mt-40 md:mt-[40rem] flex flex-col justify-center items-center px-3">
-        <motion.div
-          className=" flex flex-col justify-center items-center my-[10rem]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{
-            type: "spring",
-            damping: 10,
-            mass: 1,
-            delay: 0.3,
-          }}
-        >
-          <div className="max-w-7xl text-4xl md:text-6xl">
-            <span>
-              Style without the <span className="text-gray-500">spend...</span>
-            </span>
-          </div>
-        </motion.div>
-      </div>
-
-      <ThriftSection />
-
-      <section className="mt-32 lg:mt-[8rem] flex items-center justify-center">
-        <Button>
-          <Link href={`${SERVER_URL}/products`}>Shop Now</Link>{" "}
-        </Button>
-      </section>
-
+      <FlySection />
       <Footer />
     </main>
   );
