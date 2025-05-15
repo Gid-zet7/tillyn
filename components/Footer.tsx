@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { Facebook } from "lucide-react";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 

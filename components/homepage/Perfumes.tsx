@@ -22,10 +22,12 @@ export default function Perfumes() {
         }}
         className="flex flex-col-reverse justify-center items-center w-screen h-[60vh] md:h-[80vh] px-3"
       >
-        <span className="text-3xl lg:text-6xl">
+        <h1
+          className={`${zapfHumnst.className} text-3xl lg:text-6xl text-center`}
+        >
           Bottled <span className="text-gray-500">Emotions,</span> Worn
-          <span className="text-gray-500"> Daily</span>{" "}
-        </span>{" "}
+          <span className="text-gray-500"> Daily</span>
+        </h1>
         <Canvas>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={0.5} />
