@@ -18,7 +18,7 @@ import {
 import { getUsersession, search } from "@/lib/actions";
 import { useSelector } from "react-redux";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { ModeToggle } from "./mode-toggle";
+// import { ModeToggle } from "./mode-toggle";
 import { SearchIcon, ShoppingBagIcon, UserCircle2 } from "lucide-react";
 
 const components: { title: string; href: string; description: string }[] = [
@@ -127,7 +127,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="py-5 px-4 md:px-8 gap-4 top-0 z-[99] bg-white/80 backdrop-blur-[300px] dark:bg-black/80">
+      <header className="sm:relative sticky  py-5 px-4 md:px-8 gap-4 top-0 z-50 bg-white/80 dark:bg-black/80">
         <section
           className={`flex lg:px-20 items-center justify-between relative navbarContent`}
         >
@@ -193,23 +193,6 @@ export default function Navbar() {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-
-            {/* <nav
-              className="hidden space-x-8 text-xl md:block"
-              aria-label="main"
-            >
-              <ul className="flex gap-2 text-sm">
-                <li>
-                  <Link href={"/"}>Home</Link>
-                </li>
-                <li>
-                  <Link href={"/products"}>Products</Link>
-                </li>
-                <li>
-                  <Link href={"/products/new-arrivals"}>New Arrivals</Link>
-                </li>
-              </ul>
-            </nav> */}
           </div>
 
           <Link href="/">
@@ -223,7 +206,6 @@ export default function Navbar() {
           </Link>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <ModeToggle />
             <SearchIcon className="cursor-pointer" onClick={toggleSearchForm} />
 
             <div
@@ -246,37 +228,51 @@ export default function Navbar() {
         </section>
         <section
           id="mobile-menu"
-          className="top-[4.5rem] justify-center absolute hidden w-full origin-left animate-open-menu left-0 flex-col bg-white  dark:bg-black text-5xl z-[98]"
+          className="top-[4.5rem] fixed hidden w-full origin-left animate-open-menu left-0 flex-col bg-white dark:bg-black text-xl z-[999] h-screen"
         >
-          {/* <button className="text-8xl self-end px-6">
-                &times;
-            </button>  */}
           <nav
-            className="flex min-h-screen flex-col items-center py-8 w-screen"
+            className="flex flex-col items-center py-8 w-full h-full bg-white dark:bg-black z-[999]"
             aria-label="mobile"
           >
-            <Link href="/" className="w-full py-6 text-center hover:opacity-90">
+            <Link href="/" className="w-full py-4 text-center hover:opacity-90">
               Home
             </Link>
             <Link
               href="/products"
-              className="w-full py-6 text-center hover:opacity-90"
+              className="w-full py-4 text-center hover:opacity-90"
             >
               Products
             </Link>
             <Link
               href="/products/new-arrivals"
-              className="w-full py-6 text-center hover:opacity-90"
+              className="w-full py-4 text-center hover:opacity-90"
             >
-              New arrivals
+              New Arrivals
             </Link>
-
-            {/* <a href="#contact" className="w-full py-6 text-center hover:opacity-90"
-            >Contact Us</a
-          >
-          <a href="#footer" className="w-full py-6 text-center hover:opacity-90"
-            >Legal</a
-          > */}
+            <Link
+              href="/products/men"
+              className="w-full py-4 text-center hover:opacity-90"
+            >
+              Men
+            </Link>
+            <Link
+              href="/products/women"
+              className="w-full py-4 text-center hover:opacity-90"
+            >
+              Women
+            </Link>
+            <Link
+              href="/products/kids"
+              className="w-full py-4 text-center hover:opacity-90"
+            >
+              Kids
+            </Link>
+            <Link
+              href="/products/perfumes"
+              className="w-full py-4 text-center hover:opacity-90"
+            >
+              Perfumes
+            </Link>
           </nav>
         </section>
       </header>

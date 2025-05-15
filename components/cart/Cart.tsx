@@ -10,7 +10,6 @@ import {
 import CartItemCard from "./CartItemCard";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
-import Image from "next/image";
 import { ShoppingBasket, X } from "lucide-react";
 
 type Props = {

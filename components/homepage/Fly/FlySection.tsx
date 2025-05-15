@@ -11,8 +11,8 @@ const minera = localFont({
 export default function FlySection() {
   return (
     <>
-      <section className="w-screen bg-[#ccff00] p-5 flex flex-col justify-center items-center gap-4 md:gap-8 overflow-hidden md:rounded-t-3xl">
-        <div className="flex border border-black/50 w-full justify-center items-center gap-4 md:gap-8 overflow-hidden p-2">
+      <section className="w-screen bg-[#ccff00] p-5 flex flex-col justify-center items-center gap-4 md:gap-8 overflow-hidden md:rounded-t-3xl md:border-y-4 border-black">
+        <div className="flex border-y border-black w-full justify-center items-center gap-4 md:gap-8 overflow-hidden p-2">
           <h1
             className={`${minera.className} text-[1.8rem] sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl leading-none tracking-tight border border-black/50 text-center p-4  rounded-sm`}
           >
@@ -24,7 +24,7 @@ export default function FlySection() {
         <div className="w-screen h-screen flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 overflow-hidden">
           <div className="bg-[url('/fly.png')] bg-contain bg-no-repeat bg-center h-full w-3/4 md:w-full md:rounded-t-full flex flex-col justify-between ">
             <div className="flex justify-between md:gap-8 overflow-hidden px-2">
-              <div className="flex gap-4 md:gap-8 overflow-hidden border border-black/50 w-fit px-2">
+              <div className="flex gap-4 md:gap-8 overflow-hidden border-r-4 border-y-4 border-black w-fit px-2">
                 <Image
                   src={"/barcode.png"}
                   width={100}
@@ -53,11 +53,11 @@ export default function FlySection() {
                 </h1>
               </div>
             </div>
-            <div className="flex justify-center items-center z-50 text-white text-5xl">
+            <div className="flex justify-center items-center z-50 text-white text-3xl md:text-5xl">
               <button>Explore</button>
             </div>
             <div
-              className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className}`}
+              className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className} hidden md:block`}
             >
               <ParallaxText baseVelocity={1}>
                 EXPLORE OUR PUFFER JACKET COLLECTION
@@ -67,11 +67,21 @@ export default function FlySection() {
               </ParallaxText>
             </div>
           </div>
+          <div
+            className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className} block md:hidden`}
+          >
+            <ParallaxText baseVelocity={1}>
+              EXPLORE OUR PUFFER JACKET COLLECTION
+            </ParallaxText>
+            <ParallaxText baseVelocity={-1}>
+              STAY WARM, STAY STYLISH!
+            </ParallaxText>
+          </div>
         </div>
       </section>
 
-      <section className="w-screen bg-red-600 p-5 flex flex-col justify-center items-center gap-4 md:gap-8 overflow-hidden md:rounded-t-3xl">
-        <div className="flex border border-black/50 w-full justify-center items-center gap-4 md:gap-8 overflow-hidden p-2">
+      <section className="w-screen bg-red-600 p-5 flex flex-col justify-center items-center gap-4 md:gap-8 overflow-hidden md:rounded-t-3xl border-y-4 border-black">
+        <div className="flex border border-y border-black w-full justify-center items-center gap-4 md:gap-8 overflow-hidden p-2">
           <h1
             className={`${minera.className} text-[1.8rem] sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl leading-none tracking-tight border border-black/50 text-center p-4  rounded-sm`}
           >
@@ -83,7 +93,7 @@ export default function FlySection() {
         <div className="w-screen h-screen flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 overflow-hidden">
           <div className="bg-[url('/feeel.png')] bg-contain bg-no-repeat bg-center h-full w-3/4 md:w-full md:rounded-t-full flex flex-col justify-between ">
             <div className="flex justify-between md:gap-8 overflow-hidden px-2">
-              <div className="flex gap-4 md:gap-8 overflow-hidden border border-black/50 w-fit px-2">
+              <div className="flex gap-4 md:gap-8 overflow-hidden border-r-4 border-y-4 border-black w-fit px-2">
                 <Image
                   src={"/barcode.png"}
                   width={100}
@@ -112,11 +122,11 @@ export default function FlySection() {
                 </h1>
               </div>
             </div>
-            <div className="flex justify-center items-center z-50 text-white text-5xl">
+            <div className="flex justify-center items-center z-50 text-white text-3xl md:text-5xl">
               <button>Explore</button>
             </div>
             <div
-              className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className}`}
+              className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className} hidden md:block`}
             >
               <ParallaxText baseVelocity={1}>
                 They follow trends, We set &apos;em.
@@ -124,11 +134,19 @@ export default function FlySection() {
               <ParallaxText baseVelocity={-1}>We are not the same</ParallaxText>
             </div>
           </div>
+          <div
+            className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className} block md:hidden`}
+          >
+            <ParallaxText baseVelocity={1}>
+              They follow trends, We set &apos;em.
+            </ParallaxText>
+            <ParallaxText baseVelocity={-1}>We are not the same</ParallaxText>
+          </div>
         </div>
       </section>
 
-      <section className="w-screen bg-[#AABEFE] p-5 flex flex-col justify-center items-center gap-4 md:gap-8 overflow-hidden md:rounded-t-3xl">
-        <div className="flex border border-black/50 w-full justify-center items-center gap-4 md:gap-8 overflow-hidden p-2">
+      <section className="w-screen bg-[#AABEFE] p-5 flex flex-col justify-center items-center gap-4 md:gap-8 overflow-hidden md:rounded-t-3xl md:border-y-4 border-black">
+        <div className="flex border border-y-4 border-black w-full justify-center items-center gap-4 md:gap-8 overflow-hidden p-2">
           <h1
             className={`${minera.className} text-[1.8rem] sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl leading-none tracking-tight border border-black/50 text-center p-4  rounded-sm`}
           >
@@ -140,7 +158,7 @@ export default function FlySection() {
         <div className="w-screen h-screen flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 overflow-hidden">
           <div className="bg-[url('/flylady.jpeg')] bg-contain bg-no-repeat bg-center h-full w-3/4 md:w-full md:rounded-t-full flex flex-col justify-between ">
             <div className="flex justify-between md:gap-8 overflow-hidden px-2">
-              <div className="flex gap-4 md:gap-8 overflow-hidden border border-black/50 w-fit px-2">
+              <div className="flex gap-4 md:gap-8 overflow-hidden border-r-4 border-y-4 border-black w-fit px-2">
                 <Image
                   src={"/barcode.png"}
                   width={100}
@@ -169,11 +187,11 @@ export default function FlySection() {
                 </h1>
               </div>
             </div>
-            <div className="flex justify-center items-center z-50 text-white text-5xl">
+            <div className="flex justify-center items-center z-50 text-white text-3xl md:text-5xl">
               <button>Explore</button>
             </div>
             <div
-              className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className}`}
+              className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className} hidden md:block`}
             >
               <ParallaxText baseVelocity={1}>
                 FASHION STANS AND FLY KINGS ? *
@@ -182,6 +200,16 @@ export default function FlySection() {
                 FASHION STANS AND FLY KINGS ? *
               </ParallaxText>
             </div>
+          </div>
+          <div
+            className={`flex flex-col gap-4 md:gap-8 overflow-hidden ${minera.className} block md:hidden`}
+          >
+            <ParallaxText baseVelocity={1}>
+              FASHION STANS AND FLY KINGS ? *
+            </ParallaxText>
+            <ParallaxText baseVelocity={-1}>
+              FASHION STANS AND FLY KINGS ? *
+            </ParallaxText>
           </div>
         </div>
       </section>
